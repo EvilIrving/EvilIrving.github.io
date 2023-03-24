@@ -9,36 +9,10 @@ categories:
 - Vue
 ---
 
+## echarts动态设置图表大小
+
 ```js
-import Vue from "vue";
-import { isEmpty } from '@/utils/utils'; // [拓展方法中定义]
-
-Vue.directive('focus', function (el, option) {
-    var defClass = 'el-input', defTag = 'input';
-    var value = option.value || true;
-
-    if (typeof value === 'boolean')
-        value = { cls: defClass, tag: defTag, foc: value };
-    else
-        value = { cls: value.cls || defClass, tag: value.tag || defTag, foc: value.foc || false };
-
-    if (el.classList.contains(value.cls) && value.foc) {
-        Vue.nextTick(function () {
-            // console.log(value.tag)
-            el.getElementsByTagName(value.tag)[0].focus();
-        })
-    }
-});
-Vue.filter('dateTimeFormat', function (value) {
-    if (!value) return ''
-    return new Date(value).format("yyyy-MM-dd hh:mm:ss")
-})
-
-Vue.filter('emptyValue', function (value) {
-    return isEmpty(value);
-})
-
-//echarts动态设置图表大小
+//
 Vue.directive('onEchartResize', {
   bind(el) {
     el['_changeEchartsSize'] = () => {
@@ -58,7 +32,32 @@ Vue.directive('onEchartResize', {
     delete el['_changeEchartsSize'];
   },
 })
+```
 
+## el-input自动聚焦
+
+```js
+Vue.directive('focus', function (el, option) {
+    var defClass = 'el-input', defTag = 'input';
+    var value = option.value || true;
+
+    if (typeof value === 'boolean')
+        value = { cls: defClass, tag: defTag, foc: value };
+    else
+        value = { cls: value.cls || defClass, tag: value.tag || defTag, foc: value.foc || false };
+
+    if (el.classList.contains(value.cls) && value.foc) {
+        Vue.nextTick(function () {
+            // console.log(value.tag)
+            el.getElementsByTagName(value.tag)[0].focus();
+        })
+    }
+});
+```
+
+## 按钮级权限控制
+
+```js
 Vue.directive("permission", {
   inserted: (el, bind) => {
     let per = bind.value
@@ -68,7 +67,11 @@ Vue.directive("permission", {
     }
   }
 })
+```
 
+## 弹窗拖拽
+
+```js
 // v-dialogDrag: 弹窗拖拽属性
 Vue.directive("dialogdrag", {
   //属性名称dialogDrag，前面加v- 使用
@@ -147,6 +150,11 @@ Vue.directive("dialogdrag", {
     };
   },
 });
+```
+
+### 弹窗拖拽+水平方向伸缩
+
+```js
 // v-dialogDrag: 弹窗拖拽+水平方向伸缩
 Vue.directive("dialogDrag", {
   bind(el, binding, vnode, oldVnode) {
@@ -322,5 +330,4 @@ Vue.directive("dialogDrag", {
     };
   },
 });
-
 ```

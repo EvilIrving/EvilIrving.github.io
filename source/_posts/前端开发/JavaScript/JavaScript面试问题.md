@@ -90,7 +90,10 @@ cover:
   - Nodejs 异步IO模型
   - Linux命令
 - Vue
-  - 首屏加载慢、白屏时间检测及解决
+  - **首屏加载慢、[白屏时间检测](https://juejin.cn/post/7041571419381039118)及解决**
+    - 路由懒加载 组件懒加载 CDN 资源优化 gzip 关闭SourceMap 加速优化 SSR loading或 骨架屏
+    - 浏览器开始渲染 `<body>` 标签或者解析完 `<head>` 标签
+    - 白屏时间 = `firstPaint` - `performance.timing.navigationStart` / `firstPaint` - `pageStartTime`
   - 双向绑定的原理
   - 虚拟dom是什么? 原理? 优缺点?
   - 常用指令和自定义指令
@@ -104,6 +107,14 @@ cover:
   - Compile过程
 - React
   - redux原理
+  - diff算法与Vue之间的区别
+  - 数据传递虚拟
+  - 虚拟dom 与 diff 算法
+  - 调用 setState 之后发生了什么
+  - 生命周期函数
+  - 性能优化
+  - react-redux实现原理
+  - [自定义Hooks](https://ahooks.gitee.io/zh-CN/hooks/use-request/index)
 - 小程序
   - 小程序的页面构成/生命周期
   - 提高小程序的首屏加载时间
@@ -113,15 +124,7 @@ cover:
   - 微信扫一扫二维码网页上登陆前后端过程
   - 微信支付流程
 - 微前端
-
 - Uni-app
-- React
-  - 数据传递虚拟
-  - 虚拟dom 与 diff 算法
-  - 调用 setState 之后发生了什么
-  - 生命周期函数
-  - 性能优化
-  - react-redux实现原理
 - Electron
 - Flutter
 - webpack
@@ -129,9 +132,17 @@ cover:
   - Webpack 与 Vite 区别
   - 热更新原理
 - 个人
-  - 技术栈哪个有优势
   - 项目中难点、亮点、解决方案
   - 职业想法和规划
+- 反问
+  - 晋升机制+薪资构成 年终奖几个月
+  - 社保和公积金基数按什么标准
+  - 是否有技术分享会或培训
+  - 这个部门多数人几点上班，几点下班
+  - 工作日几点下班或工时达到多少小时算加班，如何算加班费或调休，是否有餐补或交通补助
+  - 部门架构&&工作职责
+  - 面试官本人在什么部门负责什么工作（如果对方在面试过程中没有自我介绍的话）
+  - 面试官在该公司工作了多久，认为公司的优缺点是什么
 
 ## 题目：含答案
 
