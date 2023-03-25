@@ -8,6 +8,7 @@ tags:
 - 验证登录
 categories: 
 - JavaScript
+description: 使用Cookie与Storage刷新页面或关闭页面后验证登录
 ---
 
 ```JavaScript

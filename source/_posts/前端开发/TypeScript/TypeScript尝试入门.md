@@ -1,11 +1,12 @@
 ---
-title: TypeScript尝试入门
+title: TypeScript学习笔记
 date: 2023-02-28
 updated: 2023-03-01
 tags: 
 - TypeScript
 categories: 
 - TypeScript
+description: TypeScript学习过程中的笔记、方法、总结
 ---
 
 ## 了解一下

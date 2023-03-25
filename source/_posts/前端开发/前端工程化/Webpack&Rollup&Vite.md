@@ -8,6 +8,7 @@ tags:
 - Rollup
 categories:
 - 前端工程化
+description: 简要约定式提交的实际应用
 ---
 
 ## WebPack

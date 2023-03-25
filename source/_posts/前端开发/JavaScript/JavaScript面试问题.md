@@ -83,44 +83,38 @@ cover:
     - 分页功能
     - 批量请求函数, 能够限制并发量
     - 数组转树结构，如果要在树中新增节点或者删除节点, 函数应该怎么扩展
-
 - Typescript
   - Typescript 与 JavaScript 的优势
 - Node
   - Nodejs 异步IO模型
   - Linux命令
+- 框架
+  - 组件通信
+  - 响应式数据原理
+  - 虚拟dom 与 diff 算法，不同框架之间的区别
+  - 生命周期函数
+  - SSR 服务端渲染
 - Vue
-  - **首屏加载慢、[白屏时间检测](https://juejin.cn/post/7041571419381039118)及解决**
+  - **首屏加载慢、闪烁问题、[白屏时间检测](https://juejin.cn/post/7041571419381039118)及解决**
     - 路由懒加载 组件懒加载 CDN 资源优化 gzip 关闭SourceMap 加速优化 SSR loading或 骨架屏
     - 浏览器开始渲染 `<body>` 标签或者解析完 `<head>` 标签
     - 白屏时间 = `firstPaint` - `performance.timing.navigationStart` / `firstPaint` - `pageStartTime`
-  - 双向绑定的原理
-  - 虚拟dom是什么? 原理? 优缺点?
+  - 响应式数据原理 `Object.defineProperty()` / `Proxy`
   - 常用指令和自定义指令
   - 过滤器
   - Computed、Watch原理
-  - 怎么解析template的? template会变成什么?
+  - template模版编译原理 template会变成什么?
   - keep-alive的作用是什么？怎么实现的？如何刷新的?
-  - 组件间传值方式
   - 什么是 FOUC（无样式内容闪烁）
   - 性能优化？具体哪些优化的收益较大？
-  - Compile过程
 - React
-  - redux原理
-  - diff算法与Vue之间的区别
-  - 数据传递虚拟
-  - 虚拟dom 与 diff 算法
-  - 调用 setState 之后发生了什么
-  - 生命周期函数
-  - 性能优化
-  - react-redux实现原理
+  - Redux实现原理
   - [自定义Hooks](https://ahooks.gitee.io/zh-CN/hooks/use-request/index)
 - 小程序
   - 小程序的页面构成/生命周期
   - 提高小程序的首屏加载时间
   - Wxss 与 css 的区别请简述
   - 小程序的双向绑定和 vue 的异同？
-  - 页面间有哪些传递数据的方法
   - 微信扫一扫二维码网页上登陆前后端过程
   - 微信支付流程
 - 微前端

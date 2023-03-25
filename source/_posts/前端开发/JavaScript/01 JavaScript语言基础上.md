@@ -4,7 +4,6 @@ date: 2020-03-01
 updated: 2020-03-05
 tags:
 - JavaScript
-- 基础
 categories:
 - JavaScript
 cover: https://file.crazywong.com/gh/jerryc127/CDN@latest/cover/default_bg.png

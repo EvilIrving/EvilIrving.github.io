@@ -4,10 +4,9 @@ date: 2023-03-08
 updated: 2023-03-08
 tags:
 - Electron
-- 基础
 categories:
 - Electron
-cover: https://file.crazywong.com/gh/jerryc127/CDN@latest/cover/default_bg.png
+description: Electron学习过程中的笔记、方法、总结
 ---
 
 ## 快速入门

@@ -3,11 +3,9 @@ title: vue中祖孙组件通信方法
 date: 2023-02-10
 tags:
   - Vue
-  - Echarts
 categories: Vue
-keywords: 'Vue'
+keywords: 'Vue,组件通信'
 description: vue中祖孙组件通信方法
-# cover: https://file.crazywong.com/gh/jerryc127/CDN/img/butterfly-docs-01-cover.png
 ---
 ## 祖孙通信
 
