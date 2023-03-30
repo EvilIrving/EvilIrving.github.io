@@ -14,36 +14,32 @@ cover:
 
 ## 题目：无答案
 
+- 浏览器
+  - SEO
+  - 跨域CORS
+  - 浏览器缓存
+  - 垃圾回收机制
+  - 从URL 到渲染完成的整个过程，包括 DOM 构建的过程
+  - 本地存储、Cookie及其之间的区别
 - JavaScript
   - 数据类型
   - CommonJS、AMD、CMD、ES Modules，模块加载机制
   - 原型、原型链、原型继承、this、apply、call、New操作符
-  - 设计模式：单例、工厂、观察者
-  - 跨域CORS
   - 图片格式：png、jpg、gif、webp
   - git和svn
-  - 网络协议
-  - 本地存储、Cookie及其之间的区别
-  - 服务器和浏览器之间的 cookies 是怎么传的，httponly 的 cookies 和可读写的 cookie 有什么区别，有无长度限制
   - 各种位置的区别
-  - 从URL 到渲染完成的整个过程，包括 DOM 构建的过程
-  - 公钥加密和私钥加密
   - 文件编码、URL 编码、Unicode编码：一个gbk编码的页面如何正确引用一个utf8的的资源
   - 移动端适配方案、移动端300毫秒延迟、移动端点击穿透
   - Async 和 Defer 的作用和区别
   - DOMContentLoaded 事件和 Load 事件的区别
-  - 需要注意哪些 SEO
-  - 简述作用域链、执行上下文和执行栈
-  - 介绍下 Set、Map、WeakSet 和 WeakMap 的区别
-  - AJAX、常见HTTP状态码
+  - 作用域链、执行上下文和执行栈
+  - Set、Map、WeakSet 和 WeakMap 的区别
   - GET和POST的不同
   - 闭包、其特性、影响
   - 常见的内存泄露
   - 事件委托、事件循环、事件(流)模型（冒泡、捕获）；什么事件不支持冒泡，捕获
   - 普通函数、箭头函数和构造函数的区别
-  - 如何理解Proxy
-  - 垃圾回收机制
-  - webscoket的连接原理
+  - Proxy Reflect
   - 手写代码
     - 深浅拷贝
     - 节流和防抖、sleep
@@ -73,7 +69,6 @@ cover:
     function exposedElement(root) {  };
     ```
 
-    - 判断数据是NaN
     - EventEmitter
     - 轮播图
     - 页面懒加载
@@ -83,57 +78,79 @@ cover:
     - 分页功能
     - 批量请求函数, 能够限制并发量
     - 数组转树结构，如果要在树中新增节点或者删除节点, 函数应该怎么扩展
-- Typescript
-  - Typescript 与 JavaScript 的优势
+  - Typescript
 - Node
   - Nodejs 异步IO模型
   - Linux命令
+- [计算机网络](https://juejin.cn/post/6901438933826502670#heading-1)
+  - [DNS](http://www.sunhao.win/articles/netwrok-dns.html)
+  - HTTP/HTTPS
+  - AJAX、常见HTTP状态码
+  - 三次握手和四次挥手
+  - WebSocket
+  - XSS：XSS 攻击是什么，XSS 攻击手段，XSS 防御方法？
+  - CSRF：CSRF 攻击是什么，CSRF 攻击手段，CSRF 防御方法？
+  - SQL 注入：什么是 SQL 注入？
+  - 流量劫持：什么是 DNS 劫持，什么是 HTTP 劫持？
+  - 对称加密 + 非对称加密
+  - 公钥加密和私钥加密
+- 设计模式
+  
+  | 单例模式 | 一个类只能构造出一个唯一实例 | Redux/Vuex 的 Store |
+  | --- | --- | --- |
+  | 工厂模式 | 对创建对象逻辑的封装 | jQuery 的 `$(selector)` |
+  | 观察者模式 | 当一个对象被修改时，会自动通知它的依赖对象 | Redux 的 `subsrcibe`、Vue 的双向绑定 |
+  | 装饰器模式 | 对类的包装，动态地扩展类的功能 | React 的高阶组件、ES7 装饰器 |
+  | 适配器模式 | 兼容新旧接口，对类的包装 | 封装旧 API |
+  | 代理模式 | 控制对象的访问 | 事件代理、ES6 的 `Proxy` |
+
+- 算法
+  - 字符串、数组、栈、队列、链表、树、深度优先搜索、广度优先搜索、回溯、滑动窗口、双指针
 - 框架
   - 组件通信
   - 响应式数据原理
-  - 虚拟dom 与 diff 算法，不同框架之间的区别
+  - 虚拟dom 与 diff 算法
+  - 框架之间的对比
   - 生命周期函数
   - SSR 服务端渲染
-- Vue
-  - **首屏加载慢、闪烁问题、[白屏时间检测](https://juejin.cn/post/7041571419381039118)及解决**
-    - 路由懒加载 组件懒加载 CDN 资源优化 gzip 关闭SourceMap 加速优化 SSR loading或 骨架屏
-    - 浏览器开始渲染 `<body>` 标签或者解析完 `<head>` 标签
-    - 白屏时间 = `firstPaint` - `performance.timing.navigationStart` / `firstPaint` - `pageStartTime`
-  - 响应式数据原理 `Object.defineProperty()` / `Proxy`
-  - 常用指令和自定义指令
-  - 过滤器
-  - Computed、Watch原理
-  - template模版编译原理 template会变成什么?
-  - keep-alive的作用是什么？怎么实现的？如何刷新的?
-  - 什么是 FOUC（无样式内容闪烁）
-  - 性能优化？具体哪些优化的收益较大？
-- React
-  - Redux实现原理
-  - [自定义Hooks](https://ahooks.gitee.io/zh-CN/hooks/use-request/index)
-- 小程序
-  - 小程序的页面构成/生命周期
-  - 提高小程序的首屏加载时间
-  - Wxss 与 css 的区别请简述
-  - 小程序的双向绑定和 vue 的异同？
-  - 微信扫一扫二维码网页上登陆前后端过程
-  - 微信支付流程
-- 微前端
-- Uni-app
-- Electron
-- Flutter
-- webpack
-  - 打包原理
-  - Webpack 与 Vite 区别
+  - Vue
+    - **首屏加载慢、闪烁问题、[白屏时间检测](https://juejin.cn/post/7041571419381039118)及解决**
+      - 路由懒加载 组件懒加载 CDN 资源优化 gzip 关闭SourceMap 加速优化 SSR loading或 骨架屏
+      - 浏览器开始渲染 `<body>` 标签或者解析完 `<head>` 标签
+      - 白屏时间 = `firstPaint` - `performance.timing.navigationStart` / `firstPaint` - `pageStartTime`
+    - 响应式数据原理 `Object.defineProperty()` / `Proxy`
+    - 常用指令和自定义指令
+    - 过滤器
+    - Computed、Watch原理
+    - template模版编译原理 template会变成什么?
+    - keep-alive的作用是什么？怎么实现的？如何刷新的?
+    - 什么是 FOUC（无样式内容闪烁）
+    - 性能优化？具体哪些优化的收益较大？
+  - React
+    - Redux实现原理
+    - React Fiber
+    - [自定义Hooks](https://ahooks.gitee.io/zh-CN/hooks/use-request/index)
+  - 小程序
+    - 小程序的页面构成/生命周期
+    - 提高小程序的首屏加载时间
+    - Wxss 与 css 的区别请简述
+    - 小程序的双向绑定和 vue 的异同？
+    - 微信扫一扫二维码网页上登陆前后端过程
+    - 微信支付流程
+  - Uni-app
+- Webpack
   - 热更新原理
+  - Tree Shaking
+  - 性能优化
+  - Webpack 与 Vite 区别
 - 个人
   - 项目中难点、亮点、解决方案
   - 职业想法和规划
 - 反问
+  - 上下班时间，和加班情况，如何算加班费或调休
   - 晋升机制+薪资构成 年终奖几个月
   - 社保和公积金基数按什么标准
   - 是否有技术分享会或培训
-  - 这个部门多数人几点上班，几点下班
-  - 工作日几点下班或工时达到多少小时算加班，如何算加班费或调休，是否有餐补或交通补助
   - 部门架构&&工作职责
   - 面试官本人在什么部门负责什么工作（如果对方在面试过程中没有自我介绍的话）
   - 面试官在该公司工作了多久，认为公司的优缺点是什么

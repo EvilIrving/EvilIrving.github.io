@@ -8,9 +8,7 @@ tags:
 categories: 
 - JavaScript
 ---
-## 原型函数
-
-### 对日期进行格式化输出
+## 格式化日期
 
 ```javascript
 Date.prototype.format = function (format) {
@@ -34,9 +32,7 @@ Date.prototype.format = function (format) {
 }
 ```
 
-## 其他函数
-
-### URL编码
+## URL编码
 
 ```javascript
 function toParams(param) {
@@ -54,7 +50,7 @@ function toParams(param) {
 }
 ```
 
-### 是否为url
+## 是否为url
 
 ```javascript
 function isUrl(path) {
@@ -71,7 +67,7 @@ function isUrl(path) {
 }
 ```
 
-### isNum
+## isNum
 
 ```javascript
 function isNum(str){
@@ -79,7 +75,7 @@ function isNum(str){
 }
 ```
 
-### 保留两位方法
+## 保留两位方法
 
 ```javascript
 function returnFloat(value) {
@@ -93,7 +89,7 @@ function returnFloat(value) {
     }
 ```
 
-### 数据类型判断
+## 数据类型判断
 
 ```js
 function typeOf(params) {
@@ -103,7 +99,7 @@ function typeOf(params) {
 }
 ```
 
-### 类数组转数组
+## 类数组转数组
 
 ```js
 Array.from(document.querySelectorAll('div'))
@@ -115,7 +111,7 @@ Array.prototype.concat.apply([], document.querySelectorAll('div'))
 [...document.querySelectorAll('div')]
 ```
 
-### 数组扁平化
+## 数组扁平化
 
 - `ES6 API flaten(Infinity)`
   
@@ -157,7 +153,7 @@ Array.prototype.concat.apply([], document.querySelectorAll('div'))
   }
   ```
 
-### Array.map | filter |  forEach | every | some | find  | findIndex | join
+## Array.map | filter |  forEach | every | some | find  | findIndex | join
 <!--  -->
 
 ```javascript
@@ -204,7 +200,7 @@ Array.prototype._map = function(Fn) {
 }
 ```
 
-### Array.reduce
+## Array.reduce
 
 实现一个仿Array.reduce功能的"Array._reduce"函数，并且需要将”_reduce“函数挂载在Array的原型对象上。根据Array.reduce的特点有：
 
@@ -229,7 +225,7 @@ Array.prototype._reduce = function (callback, initValue) {
 }
 ```
 
-### Compose
+## Compose
 
 ```js
 const add = (x) => x + 1;
@@ -250,7 +246,7 @@ function compose(...funcs) {
 let result = compose(add)(5);
 ```
 
-### N个数组取交集
+## N个数组取交集
 
 ```js
 const getIntersection = (...arrs) => {
@@ -260,7 +256,7 @@ const getIntersection = (...arrs) => {
 }
 ```
 
-### 查找数组中最值
+## 查找数组中最值
 
 ```javascript
 arrayMinOrMax(arrs) {
@@ -279,7 +275,7 @@ arrayMinOrMax(arrs) {
 }
 ```
 
-### 全排列
+## 全排列
 
 要求以数组的形式返回字符串参数的所有排列组合。
 注意：
@@ -321,7 +317,7 @@ const _permute = string => {
 }
 ```
 
-### Function.call | apply
+## Function.call | apply
 
 ```javascript
 
@@ -339,7 +335,7 @@ Function.prototype.mu_call = function (context, ...args | args) {
 };
 ```
 
-### Function.bind
+## Function.bind
 
 实现一个仿Function.bind功能的"Function._bind"函数，该函数会返回一个新的函数且该新函数内部通过apply修改了函数内部this指向
 
@@ -402,7 +398,7 @@ Function.prototype.mu_bind = function (context, ...args) {
 };
 ```
 
-### instanceof
+## instanceof
 
 ```javascript
 // 传入参数左侧为实例L, 右侧为构造函数R
@@ -424,9 +420,9 @@ const _instanceof = (L, R) => {
 }
 ```
 
-#### 相关知识
+### 相关知识
 
-##### 使用
+### 使用
 
 `instanceof` 操作符用于检查一个对象是否属于某个特定的 `class`
 
@@ -454,12 +450,12 @@ console.log(obj instanceof Animal); // true：Animal[Symbol.hasInstance](obj) �
 另外：
 方法 `objA.isPrototypeOf(objB)`，如果 `objA` 处在 `objB` 的原型链中，则返回 `true`。所以，可以将 `obj instanceof Class` 检查改为 `Class.prototype.isPrototypeOf(obj)`。
 
-##### 内部执行过程
+### 内部执行过程
 
 - 如果有静态方法 `Symbol.hasInstance`，那就直接调用这个方法：
 - 如果没有，使用 `obj instanceOf Class` 检查 `Class.prototype` 是否等于 `obj` 的原型链中的原型之一。
 
-##### 类型检查
+### 类型检查
 
 |  | 用于 | 返回值 |
 | :-----:| :----: | :----: |
@@ -467,7 +463,7 @@ console.log(obj instanceof Animal); // true：Animal[Symbol.hasInstance](obj) �
 | {}.toString | 原始数据类型，内建对象，包含 Symbol.toStringTag 属性的对象 | string |
 | instanceof | 对象 | true/false |
   
-### _Object.create
+## _Object.create
 
 实现一个仿Object.create功能的"_objectCreate"函数，该函数创建一个新对象，使用现有的对象来提供新创建的对象的proto
 
@@ -492,7 +488,7 @@ function create() {
 }
 ```
 
-### 实现new操作符
+## 实现new操作符
 
 实现一个仿new功能的新"_new"函数，该函数会返回一个对象，该对象的构造函数为函数参数、原型对象为函数参数的原型
 
@@ -516,7 +512,7 @@ function _new(fn,...arg){
 }
 ```
 
-### Object.freeze
+## Object.freeze
 
 实现一个仿Object.freeze功能的"_objectFreeze"函数，该函数可以冻结一个对象，一个被冻结的对象不能被修改、不能添加新的属性、不能删除已有属性
 
@@ -543,7 +539,7 @@ const _objectFreeze = object => {
 }
 ```
 
-### Object.is
+## Object.is
 
 ```js
 const is = (x, y) => {
@@ -552,7 +548,7 @@ const is = (x, y) => {
 }
 ```
 
-### Object.assign
+## Object.assign
 
 ```js
 Object.defineProperty(Object, 'assign', {
@@ -578,7 +574,7 @@ Object.defineProperty(Object, 'assign', {
 })
 ```
 
-### toSort按对象键名排序
+## toSort按对象键名排序
 
 ```javascript
 toSort(propertyName) {
@@ -589,7 +585,7 @@ toSort(propertyName) {
     }
 ```
 
-### 对象判空
+## 对象判空
 
 ```javascript
 Object.keys(object).length === 0 
@@ -597,9 +593,9 @@ Object.keys(object).length === 0
 JSON.stringify(data) === '{}'
 ```
 
-### 拷贝
+## 拷贝
 
-#### 浅拷贝
+### 浅拷贝
 
 实现一个对象参数的浅拷贝并返回拷贝之后的新对象，因为可能包含函数、正则、日期、ES6新对象，所以需要对这些对象类型进行特殊判断
 
@@ -626,7 +622,7 @@ const _shallowClone = target => {
 }
 ```
 
-#### 深拷贝
+### 深拷贝
 
 实现对象参数的深拷贝并返回拷贝之后的新对象，因为需要考虑参数对象和参数对象的每个数据项的数据类型可能包括函数、正则、日期、ES6新对象且必须考虑循环引用问题，所以需要引入ES6新对象Map并且详细的判断数据类型
 
@@ -667,7 +663,7 @@ const _completeDeepClone = (target, map = new Map()) => {
 > - Reflect
 > - slice(数组)
 >
-#### 拷贝正则表达式
+### 拷贝正则表达式
 
 使用`new RegExp()`构造函数来创建一个新的正则表达式，将原始正则表达式的各个部分作为参数传递给构造函数。
 
@@ -692,9 +688,9 @@ function cloneRegExp(regExp) {
 }
 ```
 
-### 继承
+## 继承
 
-#### 原型链继承
+### 原型链继承
 
 > 原型中包含的引用类型属性被所有实例共享
 > 子类在实例化时不能给父类构造函数传参
@@ -718,7 +714,7 @@ let dog2 = new Dog()
 console.log(dog2.colors); // ['black', 'white', 'brown']
 ```
 
-#### 构造函数继承
+### 构造函数继承
 
 ```js
 function Father(name) {
@@ -734,7 +730,7 @@ function Child(name) {
 Child.prototype = new Father()
 ```
 
-#### （寄生）组合式继承
+### （寄生）组合式继承
 
 ```js
 function Person(name) {
@@ -763,7 +759,7 @@ let stu2 = new Stu('Lee', 23)
 console.log(stu2); // {name: 'Lee', colors: ['black', 'white'], age: 23}
 ```
 
-#### 寄生组合式继承（完整）
+### 寄生组合式继承（完整）
 
 通过寄生组合式继承使"Chinese"构造函数继承于"Human"构造函数。寄生组合式继承，即通过借用构造函数来继承属性，通过原型链的形式来继承方法，只调用了一次父类构造函数，效率高，也避免了在子类的原型对象上创建不必要的、多余的属性，原型链也不会被改变
 
@@ -795,7 +791,7 @@ Chinese.prototype.getAge = function() {
 }
 ```
 
-#### class 继承
+### class 继承
 
 ```js
 class Animal {
@@ -816,7 +812,7 @@ class Dog extends Animal {
 }
 ```
 
-### 事件委托
+## 事件委托
 
 1. 给"ul"标签添加点击事件
 2. 当点击某"li"标签时，该标签内容拼接"."符号。如：某"li"标签被点击时，该标签内容为".."
@@ -831,7 +827,7 @@ document.querySelector('ul')
   }
 ```
 
-### 模板字符串
+## 模板字符串
 
 ```js
 function render(template, data) {
@@ -853,7 +849,7 @@ let person = {
 console.log(render(template, person));
 ```
 
-### 图片懒加载
+## 图片懒加载
 
 ```js
 let imgList = [...document.querySelectorAll('img')], length = imgList.length
@@ -878,7 +874,7 @@ const imgLazyLoad = function () {
 document.addEventListener('scroll', imgLazyLoad) // 添加防抖
 ```
 
-### 滚动加载
+## 滚动加载
 
 ```js
 window.addEventListener('scroll', function () {
@@ -891,13 +887,13 @@ window.addEventListener('scroll', function () {
 }, false)
 ```
 
-### 打印当前页面使用多少HTML元素
+## 打印当前页面使用多少HTML元素
 
 ```js
 const fn = () => [...new Set([...document.querySelectorAll('*').map(el => el.tagName)])].length
 ```
 
-### VirtualDom 转 Dom
+## VirtualDom 转 Dom
 
 ```js
 function render(vnode, container) {
@@ -919,7 +915,7 @@ function _render(vnode) {
 }
 ```
 
-### promise --> promise.all
+## promise --> promise.all
 
 ```js
 Promise.all = function (array) {
@@ -937,7 +933,7 @@ Promise.all = function (array) {
 }
 ```
 
-### promise.race
+## promise.race
 
 ```js
 Promise.race = function (array) {
@@ -952,7 +948,7 @@ Promise.race = function (array) {
 }
 ```
 
-### Promise 并行限制
+## Promise 并行限制
 
 ```js
 class Scheduler {
@@ -998,9 +994,9 @@ addTask(900, '4')
 scheduler.start()
 ```
 
-### AJAX
+## AJAX
 
-### JSONP
+## JSONP
 
 - `vue-resource`
 
@@ -1040,7 +1036,7 @@ scheduler.start()
   }
   ```
 
-### 防抖
+## 防抖
 
 防抖函数的作用是将多次触发的事件合并成一次执行，减少重复的操作。
 
@@ -1064,7 +1060,7 @@ function debounce(fn, delay) {
 }
 ```
 
-### 节流
+## 节流
 
 节流函数的作用是将多次触发的事件限制为一定时间内只执行一次，避免高频触发导致浏览器性能上的问题。
 
@@ -1088,7 +1084,7 @@ function throttle(fn, delay) {
 }
 ```
 
-### 柯里化
+## 柯里化
 
 ```ts
 function sum(a: number, b: number, c: number, d: number): number {
@@ -1126,7 +1122,7 @@ function curry(fn) {
 
 ```
 
-### 反柯里化
+## 反柯里化
 
 接收一个柯里化函数 `fn` 作为参数，并返回一个函数，该函数将传递的所有参数组成的参数数组展开，然后使用 `reduce` 函数将这些参数应用到 `fn` 中。
 
@@ -1147,7 +1143,7 @@ const addUncurried = uncurry(add);
 console.log(addUncurried(1, 2)); // 3
 ```
 
-### getQueryString
+## getQueryString
 
 ```javascript
 function getQueryString(name) {
@@ -1168,7 +1164,7 @@ function getQueryString(name){
 }
 ```
 
-### url查询参数转为params
+## url查询参数转为params
 
 ```js
 function query2Dict(param) {
@@ -1189,7 +1185,7 @@ function query2Dict(param) {
 }
 ```
 
-### 屏幕自动滚动
+## 屏幕自动滚动
 
 ```javascript
 setInterval(() => {
@@ -1201,7 +1197,7 @@ setInterval(() => {
 }, 30);
 ```
 
-### 格式化数字 每隔3位添加一个逗号
+## 格式化数字 每隔3位添加一个逗号
 
 ```javascript
 /**
@@ -1229,7 +1225,7 @@ function numFormat(value, int) {
 }
 ```
 
-### 金额格式化
+## 金额格式化
 
 ```JavaScript
 // 1 
@@ -1251,7 +1247,7 @@ String(1234567890).split('').reverse().reduce((prev, next, index) => (index % 3)
 String(1234567890).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 ```
 
-### 根据日期获取星期几
+## 根据日期获取星期几
 
 ```javascript
 /**
@@ -1266,7 +1262,7 @@ function getWeek(dateString) {
 }
 ```
 
-### 以下载方式保存Blob格式
+## 以下载方式保存Blob格式
 
 ```javascript
 /**
@@ -1292,7 +1288,7 @@ function saveFile(blob, filename) {
 }
 ```
 
-### 计时器清除
+## 计时器清除
 
 定时器返回值其实就是一个整数，并且是顺序生成的，因此循环清除定时器，在你构造的定时器数量不是太夸张（小于100）的情况下，该方法可以清除所有定时器
 
@@ -1312,7 +1308,7 @@ for (let i = 0; i <= endTid; i++) {
 }
 ```
 
-### 输入框数字大小限制
+## 输入框数字大小限制
 
 方式一：`max="100"` `min="10"`，限制的是数字输入框右边的增减箭头按钮，最大值和最小值，不能对手动输入的数进行限制。
 
@@ -1332,7 +1328,7 @@ for (let i = 0; i <= endTid; i++) {
 <input type="number" oninput="if(value>100)value=100;if(value.length>4)value=value.slice(0,4);if(value<0)value=0" />
 ```
 
-### 缓存封装
+## 缓存封装
 
 ```JavaScript
 /**
@@ -1401,7 +1397,7 @@ export {localData, sessionData}
 
 ```
 
-### 简易的jquery(考虑插件和扩展性)
+## 简易的jquery(考虑插件和扩展性)
 
 ```js
 class jQuery {
@@ -1444,7 +1440,7 @@ class myJQuery extends jQuery {
 }
 ```
 
-### Promise加载一张图片
+## Promise加载一张图片
 
 ```js
 function loadImg(src) {
@@ -1472,7 +1468,7 @@ loadImg(url).then(img => {
 }).catch(ex=>console.error(ex))
 ```
 
-### DOM查询做缓存
+## DOM查询做缓存
 
 ```js
 // 不缓存DOM查询结果
@@ -1487,7 +1483,7 @@ for(let i = 0; i<length; i++){
 }
 ```
 
-### 通用的事件绑定函数
+## 通用的事件绑定函数
 
 ```js
 function bindEvent(elem, type, selector, fn) {
@@ -1511,7 +1507,7 @@ function bindEvent(elem, type, selector, fn) {
 }
 ```
 
-### isEqual
+## isEqual
 
 ```js
 // 全相等
@@ -1531,7 +1527,7 @@ function isEqual(obj1,obj2){
 }
 ```
 
-### useFecth
+## useFecth
 
 ```js
 import { useState, useEffect } from "react";
