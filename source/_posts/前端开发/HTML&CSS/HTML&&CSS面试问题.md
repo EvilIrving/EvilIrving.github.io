@@ -63,7 +63,6 @@ categories:
 
 垂直居中对齐：`margin-top`使用`padding`设置为块宽度。垂直居中还可以使用`line-height`设置为块高度；`padding`方式联合文本居中可以水平垂直均居中
 
-
 ### CSS 多列等高如何实现
 
 - 利用`table-cell`所有单元格高度都相等
@@ -273,7 +272,6 @@ le=1.0,user-sca/>
 
 如果要实现图文混排，这种方法是很好的选择。
 
-
 ### 弹性布局
 
 #### 布局属性及设置
@@ -421,3 +419,52 @@ flex-basis只在弹性布局中的子元素有效；在绝对定位中对元素�
 #### 参考
 
 - <https://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/>
+
+### 浏览器如何管理和加载 HTML5 离线存储资源
+
+1. 用户首次访问站点时，浏览器会通过 cache.manifest 文件指定的缓存清单文件中列出的所有资源将它们缓存在本地。
+2. 浏览器检查清单文件中指定的资源并将它们与服务器上的副本进行比较，如有差异，它将自动下载新版本的文件并更新本地缓存。
+3. 当离线用户尝试访问站点时，浏览器会从本地缓存加载资源，而不是从服务器请求新文件。
+
+### track
+
+`<track>` 是 HTML5 中一种用于为诸如 `<video>` 和 `<audio>` 等媒体元素提供外部文本轨道的标记。
+
+`<track>` 标签包含以下属性：
+
+- src：文本轨道文件的 URL 地址。
+- kind：指定轨道的类型。可选值包括：subtitles、captions、descriptions、chapters 和 metadata。
+- srclang：轨道的语言，使用 BCP 47 格式指定。
+- label：轨道的标签，用于在用户界面上显示，通常是人类可读的文本。
+- default：布尔值，指示该轨道是否应该作为默认轨道。可选值为 true 或 false。
+
+以下是一个使用 `<track>` 标签的示例：
+
+```text
+<video controls>
+  <source src="video.mp4" type="video/mp4">
+  <track src="subtitles-en.vtt" kind="subtitles" srclang="en" label="English" default>
+  <track src="subtitles-fr.vtt" kind="subtitles" srclang="fr" label="Français">
+</video>
+```
+
+在这个例子中，我们为一个 `<video>` 元素添加了两个字幕轨道，分别是英文和法文。其中，kind 属性指定了轨道的类型为字幕（subtitles），srclang 属性指定了轨道的语言，label 属性设置了轨道的文本标签，default 属性指示了默认轨道为英文字幕。
+
+在浏览器中播放视频时，如果用户启用了字幕选项，将会显示相应的字幕。浏览器会自动选择与当前语言匹配的字幕轨道。如果没有匹配的轨道，浏览器会显示默认轨道。
+浏览器缓存策略是指在浏览器中加载Web页面资源时，如何判断资源是否需要重新获取，从而达到减少网络请求，加快网页访问速度的目的。常见的浏览器缓存策略如下：
+
+### 缓存策略
+
+1. 强制缓存：浏览器第一次请求Web页面资源时，服务器返回资源时可以设置强制缓存，浏览器在之后的请求中，如果发现该资源存在强制缓存时，直接从本地缓存中读取资源，减少了网络请求。常用的强制缓存策略有两种：
+
+   - Expires：设置过期时间，当客户端发起请求时，判断本地缓存是否过期，如果未过期，则直接从缓存中取数据。
+
+   - Cache-Control：在HTTP/1.1中，Cache-Control提供了多种控制缓存的方式，如max-age、no-cache、no-store等等。
+
+2. 协商缓存：当强制缓存失效或者浏览器不支持强制缓存时，浏览器会发起协商缓存请求，判断服务器端资源发生了变化没有。常用的协商缓存策略有两种：
+
+   - Last-Modified/If-Modified-Since：在请求时，服务器返回资源的最后修改时间，浏览器在下次请求时，通过If-Modified-Since请求头将上次请求时的更新时间传递给服务器，服务器根据这个时间来判断资源是否更新过。
+
+   - ETag/If-None-Match：ETag是服务器根据资源生成的唯一标识，当客户端请求资源时，服务器返回ETag值，客户端再次请求时，带上If-None-Match请求头，服务器检查这个值是否和服务端生成的一致，如果一致，则返回304状态码，表示客户端本地缓存资源可用。
+
+总之，浏览器缓存策略可以有效减少网络请求，提高网页载入速度，而且可以减轻服务器的负担。同时，为了避免用户看到过期的缓存资源，应该合理设置缓存时间，并定期更新缓存资源。

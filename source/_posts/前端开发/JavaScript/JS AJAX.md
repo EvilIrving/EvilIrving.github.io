@@ -13,6 +13,18 @@ categories:
 - 使用 `XMLHttpRequest` 对象与服务器通信
 - 可以使用JSON，XML，HTML和text文本等格式发送和接收数据。
 
+- `xhr.readyState`
+  - 0为还没有调用send()方法
+  - 1为已调用send()方法，正在发送请求
+  - 2为send()方法执行完成，已经接收到全部响应内容
+  - 3为正在解析响应内容
+  - 4为响应内容解析完成，可以在客户端调用
+- `xhr.status`
+  - 2xx表示成功处理请求
+  - 3xx表示需要重定向，浏览器直接跳转
+  - 4xx表示客户端请求错误
+  - 5xx表示服务器端错误
+
 ## 特性
 
 - 在不重新加载页面的情况下发送请求给服务器。
@@ -83,7 +95,7 @@ httpRequest.send();
 
 ### Note
 
-- :如果你向一个代码片段发送请求，将返回XML，而不是静态XML文件，在IE浏览器上则必须要设置响应头才能正常工作。如果不设置响应头为 Content-Type:application/xml ，IE浏览器会在你访问XML元素时抛出 “Object Expected” 错误。
+- 如果你向一个代码片段发送请求，将返回XML，而不是静态XML文件，在IE浏览器上则必须要设置响应头才能正常工作。如果不设置响应头为 Content-Type:application/xml ，IE浏览器会在你访问XML元素时抛出 “Object Expected” 错误。
 - 如果不设置响应头 Cache-Control: no-cache 浏览器将会把响应缓存下来而且再也无法重新提交请求。你也可以添加一个总是不同的 GET 参数，比如时间戳或者随机数 (详情见 bypassing the cache)
 - 如果变量 httpRequest 在全局范围内使用，它会在 makeRequest() 函数中被相互覆盖，从而导致资源竞争。为了避免这个情况，请在包含 AJAX 函数的闭包中声明 httpRequest 变量
 
@@ -205,3 +217,25 @@ var myNewAjax = function (url) {
     })
 }
 ```
+
+## 常见的 AJAX 状态码
+
+1. 200 OK：请求成功，服务器正常返回请求的数据。
+
+2. 201 CREATED：请求已经被服务器创建了，新的资源已经被创建。
+
+3. 204 NO CONTENT：服务器成功处理了请求，但不需要返回任何实体内容。
+
+4. 400 BAD REQUEST：请求参数有误，服务器无法理解。
+
+5. 401 UNAUTHORIZED / 403 FORBIDDEN：表示客户端没有权限访问该资源，需要身份验证或者 token 失效。
+
+6. 404 NOT FOUND：请求的 URI（资源）不存在于服务器上。
+
+7. 405 METHOD NOT ALLOWED：请求方法不被允许，例如 POST 请求访问只支持 GET 请求的 URL 等。
+
+8. 500 INTERNAL SERVER ERROR：服务器内部错误，无法完成请求处理。
+
+9. 503 SERVICE UNAVAILABLE：服务器目前无法处理请求，可能是由于过多的请求或服务器维护等原因。
+
+除此之外，还有一些 AJAX 库（如 jQuery、axios 等）可能会返回一些自定义的状态码，不同的库可能有不同的状态码含义。在实际开发中，可以根据返回的状态码来进行相应的错误处理，以提高用户体验。

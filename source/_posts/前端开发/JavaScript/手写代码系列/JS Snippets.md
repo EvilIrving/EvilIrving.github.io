@@ -14,7 +14,7 @@ categories:
 
 ```javascript
 Date.prototype.format = function (format) {
-    var o = {
+    let o = {
         "M+": this.getMonth() + 1, //month
         "d+": this.getDate(), //day
         "h+": this.getHours(), //hour
@@ -26,28 +26,11 @@ Date.prototype.format = function (format) {
     if (/(y+)/.test(format))
         format = format.replace(RegExp.$1, (this.getFullYear() + "")
             .substr(4 - RegExp.$1.length));
-    for (var k in o)
+    for (let k in o)
         if (new RegExp("(" + k + ")").test(format))
             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] :
                 ("00" + o[k]).substr(("" + o[k]).length));
     return format;
-}
-```
-
-### 输出名字后两字
-
-```javascript
-/**
- * @description: 输出名字后两字
- * @param { null }
- * @return { String }
- */
-String.prototype.smallName = function () {
-  if(this.length > 2){
-    return this.slice(this.length - 2, this.length);
-  }else{
-    return this;
-  }
 }
 ```
 
@@ -88,38 +71,11 @@ function isUrl(path) {
 }
 ```
 
-### isEmpty
-
-```javascript
- function isEmpty(v) {
-  if (v == null || v == '' || v == undefined || v == 'null') {
-    return '-';
-  } else {
-    if(v.length > 8){
-      if(isNum(v)){
-          return parseFloat(v).toFixed(2)
-      }else{
-        return v;
-      }
-    }else{
-      return v;
-    }
-  }
-}
-```
-
 ### isNum
 
 ```javascript
-
 function isNum(str){
-  var numReg = /^[0-9]*$/
-  var numRe = new RegExp(numReg)
-  if (!numRe.test(str)) {
-    return false;
-  }else{
-    return true;
-  }
+    return Blooean(new RegExp(/^[0-9]*$/).test(str));
 }
 ```
 
@@ -127,16 +83,11 @@ function isNum(str){
 
 ```javascript
 function returnFloat(value) {
-        var value = Math.round(parseFloat(value) * 100) / 100;
-        var xsd = value.toString().split(".");
-        if (xsd.length == 1) {
-            value = value.toString() + ".00";
-            return value;
-        }
-        if (xsd.length > 1) {
-            if (xsd[1].length < 2) {
-                value = value.toString() + "0";
-            }
+        let value = Math.round(parseFloat(value) * 100) / 100;
+        let decimal = value.toString().split(".");
+        if (decimal.length == 1) return value.toString() + ".00";
+        if (decimal.length > 1) {
+            if (decimal[1].length < 2) value = value.toString() + "0";
             return value;
         }
     }
@@ -146,9 +97,9 @@ function returnFloat(value) {
 
 ```js
 function typeOf(params) {
-    let res = Object.prototype.toString.call(obj).split(' ')[1]
-    res = substring(0, res.length - 1).toLowerCase()
-    return res
+    return Object.prototype.toString.call(params).slice(8,-1).toLowerCase()
+    return Object.prototype.toString.call(params).replace(/^.{8}(.+)]$/,(m,$1)=> $1.toLowerCase());
+    return Object.prototype.toString.call(params).replace(/\[object\s|\]/g,'');
 }
 ```
 
@@ -182,12 +133,18 @@ Array.prototype.concat.apply([], document.querySelectorAll('div'))
           return pre.concat(Array.isArray(cur) ? flat(cur) : cur)
       }, [])
   }
+  const flaten = arr => {
+      while (arr.some(item => Array.isArray(item))) {
+          arr = [].concat(...arr)
+      }
+      return arr
+  }
   ```
 
 - 递归/合并
 
   ```js
-  function flaten(arr) {
+  const flaten = arr => {
       let result = []
       for (let index = 0; index < arr.length; index++) {
           if (Array.isArray(arr[index])) {
@@ -198,58 +155,52 @@ Array.prototype.concat.apply([], document.querySelectorAll('div'))
           }
       }
   }
-
-  function flaten(arr) {
-      while (arr.some(item => Array.isArray(item))) {
-          arr = [].concat(...arr)
-      }
-      return arr
-  }
   ```
 
-### Array.map
-<!-- forEach、some、every -->
-实现一个仿Array.map功能的"Array._map"函数，该函数创建一个新数组，该新数组的结果是数组中的每个元素都调用一次函数参数后的返回值。
+### Array.map | filter |  forEach | every | some | find  | findIndex | join
+<!--  -->
 
 ```javascript
-
-// 判断参数是否为函数，如果不是则直接返回
-// 创建一个空数组用于承载新的内容
-// 循环遍历数组中的每个值，分别调用函数参数，将返回值添加进空数组中
-// 返回新的数组
-
 Array.prototype._map = function(Fn) {
     if (typeof Fn !== 'function') return
     const array = this
     const newArray = new Array(array.length)
     for (let i=0; i<array.length; i++) {
+        // map
         let result = Fn.call(arguments[1], array[i], i, array)
         newArray[i] = result
-    }
-    return newArray
-}
-```
-
-### Array.filter
-
-仿Array.filter功能的"Array._filter"函数，该函数创建一个新数组，该数组包含通过函数参数条件的所有元素。
-
-```javascript
-
-// 判断参数是否为函数，如果不是则直接返回
-// 创建一个空数组用于承载新的内容
-// 循环遍历数组中的每个值，分别调用函数参数，将满足判断条件的元素添加进空数组中
-// 返回新的数组
-
-Array.prototype._filter = function(Fn) {
-    if (typeof Fn !== 'function') return
-    const array = this
-    const newArray = []
-    for (let i=0; i<array.length; i++) {
-        const result = Fn.call(arguments[1], array[i], i, array)
+        // filter
         result && newArray.push(array[i])
     }
     return newArray
+
+     // join 参数为 s = ','
+    let str = ''
+    for (let i=0; i<array.length; i++) {
+         // forEach
+         Fn.call(arguments[1], array[i], i, array);
+
+        // every 
+        if (!Fn.call(arguments[1], array[i], i, array)) return false
+
+        // some 可优化为使用break打断循环
+        if (Fn.call(arguments[1], array[i], i, array)) return true
+
+        // find
+        if (Fn.call(arguments[1], array[i], i, array)) return array[i]
+
+        // findIndex
+        if (Fn.call(arguments[1], array[i], i, array)) return i
+
+        // join
+        str = i === array.length - 1 ?  str + array[i] :  str + array[i] + s
+    }
+     // every
+    return true
+     // some
+    return false
+    // join
+    return str
 }
 ```
 
@@ -261,26 +212,7 @@ Array.prototype._filter = function(Fn) {
 可以接收一个初始值，当没有初始值时，默认初始值为数组中的第一项
 
 ```javascript
-
-// 在Array的原型对象上添加”_reduce“函数
-// ”_reduce“函数第一个参数为回调函数，第二个参数为初始值
-// 进入数组长度的循环体中
-// 当初始值为空时，首个被加数为数组的第一项
-// 当初始值不为空时，首个被加数为初始值
-
-Array.prototype._reduce = function(fn, prev) {
-    for(let i=0 ; i<this.length ; i++) {
-        if(prev === undefined) {
-            prev = fn(this[i], this[i+1], i+1, this)
-                ++i
-        } else {
-            prev = fn(prev, this[i], i, this)
-        }
-    }
-    return prev
-}
-
-Array.prototype.selfReduce = function (callback, initValue) {
+Array.prototype._reduce = function (callback, initValue) {
     // 判断是否是数组调用
     if (!Array.isArray(this)) throw new TypeError('not a array')
     // 数组为空 且无初始值
@@ -297,6 +229,27 @@ Array.prototype.selfReduce = function (callback, initValue) {
 }
 ```
 
+### Compose
+
+```js
+const add = (x) => x + 1;
+const mul = (x) => x * 3;
+const div = (x) => x / 2;
+div(mul(add(add(0)))); //=>3
+compose(div, mul, add, add)
+
+// 把类似于f(g(h(x)))这种写法简化成compose(f, g, h)(x)
+function compose(...funcs) {
+  return function (val) {
+    return funcs.reverse().reduce((pre, cur, index, arr) => {
+      return cur(pre)
+    }, val)
+  }
+}
+
+let result = compose(add)(5);
+```
+
 ### N个数组取交集
 
 ```js
@@ -310,26 +263,19 @@ const getIntersection = (...arrs) => {
 ### 查找数组中最值
 
 ```javascript
-// 查找数组中最小值
-arrayMin(arrs) {
-    var min = arrs[0];
-    for (var i = 1, ilen = arrs.length; i < ilen; i += 1) {
-        if (arrs[i] < min) {
-            min = arrs[i];
+arrayMinOrMax(arrs) {
+    let extreme = arrs[0];
+    for (let i = 1, ilen = arrs.length; i < ilen; i += 1) {
+        // 最小
+        if (arrs[i] < extreme | ) {
+            extreme = arrs[i];
+        }
+        // 最大
+        if (arrs[i] > extreme) {
+            extreme = arrs[i];
         }
     }
-    return min;
-}
-
-// 查找数组中最大值
-arrayMax(arrs) {
-    var max = arrs[0];
-    for (var i = 1, ilen = arrs.length; i < ilen; i++) {
-        if (arrs[i] > max) {
-            max = arrs[i];
-        }
-    }
-    return max;
+    return extreme;
 }
 ```
 
@@ -375,41 +321,22 @@ const _permute = string => {
 }
 ```
 
-### _Object.create
-
-实现一个仿Object.create功能的"_objectCreate"函数，该函数创建一个新对象，使用现有的对象来提供新创建的对象的proto
+### Function.call | apply
 
 ```javascript
 
-// 创建一个临时函数
-// 将该临时函数的原型指向对象参数
-// 返回该临时对象的实例
+Function.prototype.mu_call = function (context, ...args | args) {
+    //obj不存在指向window
+    if (!context || context === null) context = window
 
-const _objectCreate = proto => {
-    if(typeof proto !== 'object' || proto === null) return
-    const fn = function() {}
-    fn.prototype = proto
-    return new fn()
-}
-```
-
-### Function.call
-
-实现一个仿Function.call功能的"Function._call"函数，该函数会临时修改内部this的指向并返回结果。
-
-```javascript
-
-// 参数默认为window
-// 获取调用该方法的对象，将this赋给对象参数，可以任意命名
-// 通过该对象参数临时调用函数并返回结果
-// 最后删除对象参数的临时函数属性
-
-Function.prototype._call = function(target = window) {
-    target['fn'] = this
-    const result = target['fn']([...arguments].shift())
-    delete target['fn']
-    return result
-}
+    // 创造唯一的key值  作为我们构造的context内部方法名
+    let fn = Symbol();
+    //this指向调用call的函数
+    context[fn] = this;
+    // 执行函数并返回结果 相当于把自身作为传入的context的方法进行调用了
+    // args 数组为 apply  ...args 为 call
+    return context[fn](...args);
+};
 ```
 
 ### Function.bind
@@ -421,42 +348,78 @@ Function.prototype._call = function(target = window) {
 // 创建一个新this用来保存旧的this对象
 // 返回一个匿名函数，该匿名函数返回通过apply修改了指针指向的函数运算结果
 
-Function.prototype._bind = function(target, ...arguments1) {
-    const _this = this
-    return function(...arguments2) {
-        return _this.apply(target,arguments1.concat(arguments2))
+Function.prototype._bind = function(){
+    // 将参数解析为数组
+    const args = Array.prototype.slice.call(arguments)
+    // 获取this
+    const t = args.shift()
+    const self = this // 当前函数
+    // 返回一个函数
+    return function() {
+        // 执行原函数，并返回结果
+        return self.apply(t, args)
     }
 }
+
+function bind(fn, obj) {
+    let arg = [].slice.call(arguments, 2)
+    return function() {
+        let args = arg.concat([].slice.call(arguments))
+        return fn.apply(obj, args)
+    }
+}
+
+
+Function.prototype.mu_bind = function (context, ...args) {
+    if (!context || context === null) {
+      context = window;
+    }
+    // 创造唯一的key值  作为我们构造的context内部方法名
+    let fn = Symbol();
+    context[fn] = this;
+    let _this = this;
+    //  bind情况要复杂一点
+    const result = function (...innerArgs) {
+      // 第一种情况 :若是将 bind 绑定之后的函数当作构造函数，通过 new 操作符使用，则不绑定传入的 this，而是将 this 指向实例化出来的对象
+      // 此时由于new操作符作用  this指向result实例对象  而result又继承自传入的_this 根据原型链知识可得出以下结论
+      // this.__proto__ === result.prototype   //this instanceof result =>true
+      // this.__proto__.__proto__ === result.prototype.__proto__ === _this.prototype; //this instanceof _this =>true
+      if (this instanceof _this === true) {
+        // 此时this指向指向result的实例  这时候不需要改变this指向
+        this[fn] = _this;
+        this[fn](...[...args, ...innerArgs]); //这里使用es6的方法让bind支持参数合并
+        delete this[fn];
+      } else {
+        // 如果只是作为普通函数调用  那就很简单了 直接改变this指向为传入的context
+        context[fn](...[...args, ...innerArgs]);
+        delete context[fn];
+      }
+    };
+    // 如果绑定的是构造函数 那么需要继承构造函数原型属性和方法
+    // 实现继承的方式: 使用Object.create
+    result.prototype = Object.create(this.prototype);
+    return result;
+};
 ```
 
 ### instanceof
 
-实现一个仿instanceof功能的"_instanceof"函数，该函数可以判断首参是否在第二个Fn构造函数的原型链上，核心步骤有：
-
-获取首个对象参数的原型对象
-获取Fn函数的原型对象
-进入死循环，当两个参数的原型对象相等时返回true
-当两个参数的原型对象不相等时获取首个对象参数原型的原型并且循环该步骤直到null时返回false
-
 ```javascript
+// 传入参数左侧为实例L, 右侧为构造函数R
+const _instanceof = (L, R) => {
+    // 处理边界：检测实例类型是否为原始类型
+    const baseTypes = ['string','number','boolean','symbol','undefined','null'];
+    if(baseTypes.includes(Object.prototype.toString.call(L).slice(8,-1).toLowerCase())) return false;
 
-// 创建返回的结果数组
-// 通过字符串参数创建等长的"被使用"数组用于递归过程中记录字符顺序
-// 创建回溯函数，通过该函数内部递归调用
-// 在回溯函数中，当临时数组的长度等于字符串参数长度时可以返回本次循环结果
-// 进入字符串参数长度的循环体中，将该次字符保存在临时数组中
-// 将该次字符的"被使用"数组位修改为true，表示该字符在本次之前的递归过程中已被记录使用，跳过即可
-// 递归调用回溯函数
-// 退栈时设置该字符"被使用"数组为false，删除临时数组最后一位
-// 返回结果
+    // 分别取传入参数的原型
+    let Lp = L.__proto__;
+    let Rp = R.prototype; // 函数才拥有prototype属性
 
-const _instanceof = (target, Fn) => {
-    let proto = target.__proto__
-    let prototype = Fn.prototype
-    while(true) {
-        if(proto === Fn.prototype) return true
-        if(proto === null) return false
-        proto = proto.__proto__
+    // 判断原型
+    while(true){
+        if(Lp === null) return false;
+        if(Lp === Rp) return true;
+        Lp = Lp.__proto__;
     }
 }
 ```
@@ -504,6 +467,31 @@ console.log(obj instanceof Animal); // true：Animal[Symbol.hasInstance](obj) �
 | {}.toString | 原始数据类型，内建对象，包含 Symbol.toStringTag 属性的对象 | string |
 | instanceof | 对象 | true/false |
   
+### _Object.create
+
+实现一个仿Object.create功能的"_objectCreate"函数，该函数创建一个新对象，使用现有的对象来提供新创建的对象的proto
+
+```javascript
+
+// 创建一个临时函数
+// 将该临时函数的原型指向对象参数
+// 返回该临时对象的实例
+
+const _objectCreate = proto => {
+    if(typeof proto !== 'object' || proto === null) return
+    const fn = function() {}
+    fn.prototype = proto
+    return new fn()
+}
+function create() {
+    let obj = new Object()
+    let Con = [].shift.call(arguments)
+    obj.__proto__ = Con.prototype
+    let result = Con.apply(obj, arguments)
+    return typeof result === 'object' ? result : obj
+}
+```
+
 ### 实现new操作符
 
 实现一个仿new功能的新"_new"函数，该函数会返回一个对象，该对象的构造函数为函数参数、原型对象为函数参数的原型
@@ -516,12 +504,15 @@ console.log(obj instanceof Animal); // true：Animal[Symbol.hasInstance](obj) �
 // 将新对象和参数传给构造器执行
 // 如果构造器返回的不是对象，那么就返回第一个新对象
 
-const _new = function() {
-    const object1 = {}
-    const Fn = [...arguments].shift()
-    object1.__proto__ = Fn.prototype
-    const object2 = Fn.apply(object1, arguments)
-    return object2 instanceof Object ? object2 : object1
+function _new(fn,...arg){
+    // 首先创建空对象
+    const obj = {};
+    // 将空对象的原型proto指向构造函数的原型prototype
+    Object.setPrototypeOf(obj, fn.prototype)
+    // 将this指向新创建的对象，并且执行构造函数
+    const result = fn.apply(obj,arg);
+    // 执行结果有返回值并且是一个对象，返回执行的结果，否侧返回新创建的对象
+    return result instanceof Object ? result : obj;
 }
 ```
 
@@ -601,16 +592,9 @@ toSort(propertyName) {
 ### 对象判空
 
 ```javascript
-if (Object.keys(object).length === 0)  return false // 如果为空,返回false
-return true // 如果不为空，则会执行到这一步，返回true
+Object.keys(object).length === 0 
 
-
-if (JSON.stringify(data) === '{}')  return false // 如果为空,返回false
-return true // 如果不为空，则会执行到这一步，返回true
-
-
-for (let i in obj) return true
-return false // 如果为空,返回false
+JSON.stringify(data) === '{}'
 ```
 
 ### 拷贝
@@ -628,57 +612,21 @@ return false // 如果为空,返回false
 // 最终返回该新变量
 
 const _shallowClone = target => {
-    if(typeof target === 'object' && target !== null) {
-        const constructor = target.constructor
-        if(/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return target
-        const cloneTarget = Array.isArray(target) ? [] : {}
-        for(prop in target) {
-            if(target.hasOwnProperty(prop)) {
-                cloneTarget[prop] = target[prop]
-            }
+    if(typeof target === 'object' && target !== null) return target 
+
+    const constructor = target.constructor
+    if(/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
+    const cloneTarget = Array.isArray(target) ? [] : {}
+    for(prop in target) {
+        if(target.hasOwnProperty(prop)) {
+            cloneTarget[prop] = target[prop]
         }
-        return cloneTarget
-    } else {
-        return target
     }
+    return cloneTarget
 }
 ```
 
-#### 简易深拷贝
-
-实现对象参数的深拷贝并返回拷贝之后的新对象，因为参数对象和参数对象的每个数据项的数据类型范围仅在数组、普通对象（{}）、基本数据类型中且无需考虑循环引用问题，所以不需要做过多的数据类型判断
-
-```javascript
-
-// 如果对象参数的数据类型不为“object”或为“null”，则直接返回该参数
-// 根据该参数的数据类型是否为数组创建新对象
-// 遍历该对象参数，将每一项递归调用该函数本身的返回值赋给新对象
-
-const _sampleDeepClone = target => {
-    if(typeof target === 'object' && target !== null) {
-        const cloneTarget = Array.isArray(target) ? [] : {}
-        for(prop in target) {
-            if(target.hasOwnProperty(prop)) {
-                cloneTarget[prop] = _sampleDeepClone(target[prop])
-            }
-        }
-        return cloneTarget
-    } else {
-        return target
-    }
-}
-```
-
-> 其他方法
->
-> - 递归
-> - JSON.stringify
-> - lodash
-> - Jquery.extend
-> - Reflect
-> - slice(数组)
-
-#### 完整深拷贝
+#### 深拷贝
 
 实现对象参数的深拷贝并返回拷贝之后的新对象，因为需要考虑参数对象和参数对象的每个数据项的数据类型可能包括函数、正则、日期、ES6新对象且必须考虑循环引用问题，所以需要引入ES6新对象Map并且详细的判断数据类型
 
@@ -694,8 +642,7 @@ const _sampleDeepClone = target => {
 // 遍历该对象参数，将每一项递归调用该函数本身的返回值赋给新对象
 
 const _completeDeepClone = (target, map = new Map()) => {
-    if(target === null) return target
-    if(typeof target !== 'object') return target
+     if(typeof target === 'object' && target !== null) return target 
     const constructor = target.constructor
     if(/^(Function|RegExp|Date|Map|Set)$/i.test(constructor.name)) return new constructor(target)
     if(map.get(target)) return map.get(target)
@@ -707,6 +654,41 @@ const _completeDeepClone = (target, map = new Map()) => {
         }
     }
     return cloneTarget
+}
+
+
+```
+
+> 其他方法
+>
+> - JSON.stringify
+> - lodash
+> - Jquery.extend
+> - Reflect
+> - slice(数组)
+>
+#### 拷贝正则表达式
+
+使用`new RegExp()`构造函数来创建一个新的正则表达式，将原始正则表达式的各个部分作为参数传递给构造函数。
+
+```javascript
+function cloneRegExp(regExp) {
+    // `/\w*$/`正则表达式获取正则表达式的标识符(flags)
+    const flags = /\w*$/.exec(regExp)[0];
+    // RegExp.prototype.source 获取正则表达式的源字符串
+    // 创建一个新的正则表达式对象
+    const clonedRegEx = new RegExp(regExp.source, flags);
+    // 原始正则表达式的`lastIndex`值赋值给新的正则表达式对象
+    clonedRegEx.lastIndex = regExp.lastIndex;
+    return clonedRegEx;
+}
+```
+
+拷贝正则表达式的源字符串
+
+```javascript
+function cloneRegExp(regExp) {
+  return new RegExp(regExp.source);
 }
 ```
 
@@ -848,127 +830,6 @@ document.querySelector('ul')
       : ''
   }
 ```
-
-### 发布订阅模式
-
-完成"EventEmitter"类实现发布订阅模式，考虑到同一名称事件可能有多个不同的执行函数，所以在构造函数中需要以对象的结构存放事件
-
-```javascript
-
-// 构造函数中创建”events“对象变量用于存放所有的事件
-// 添加”on“函数，用于订阅事件。当总事件中不存在此事件时创建新的事件数组，当存在时将”fn“函数添加在该事件对应数组中
-// 添加”emit“函数，用于发布事件，遍历该事件下的函数数组并全部执行
-
-class EventEmitter {
-    constructor() {
-        this.events = {}
-    }
-    on(event, fn) {
-        if(!this.events[event]) {
-            this.events[event] = [fn]
-        } else {
-            this.events[event].push(fn)
-        }
-    }
-    emit(event) {
-        if(this.events[event]) {
-            this.events[event].forEach(callback => callback())
-        }
-    }
-}
-```
-
-### 观察者模式
-
-完成"Observer"、"Observerd"类实现观察者模式。
-
-```javascript
-
-// 被观察者构造函数声明三个属性分别为"name"用于保存被观察者姓名、"state"用于保存被观察者状态、"observers"用于保存观察者们
-// 被观察者创建"setObserver"函数，该函数通过数组的push函数将观察者参数传入"observers"数组中
-// 被观察者创建"setState"函数，该函数首先通过参数修改被观察者的"state"属性，然后通过遍历"observers"数组分别调用各个观察者的"update"函数并且将该被观察者作为参数传入
-// 观察者创建"update"函数，用于打印信息
-
-class Observerd {
-    constructor(name) {
-        this.name = name
-        this.state = '走路'
-        this.observers = []
-    }
-    setObserver(observer) {
-        this.observers.push(observer)
-    }
-    setState(state) {
-        this.state = state
-        this.observers.forEach(observer => observer.update(this))
-    }
-}
-class Observer {
-    constructor() {
-         
-    }
-    update(observerd) {
-        console.log(observerd.name + '正在' + observerd.state)
-    }
-}
-```
-
-```js
-function typeOf(params) {
-    let res = Object.prototype.toString.call(obj).split(' ')[1]
-    res = substring(0, res.length - 1).toLowerCase()
-    return res
-}
-```
-
-### 装饰器模式
-
-装饰器模式是一种动态地为对象添加功能的设计模式，它通过将一个对象嵌入到另一个对象中实现对原对象的包装，并且可以在不改变原有对象的情况下添加新的功能。
-
-在装饰器模式中，有三个核心角色：
-
-1. 抽象构件(Component)：定义一个对象接口，可以给这些对象动态地添加职责。
-
-2. 具体构建(ConcreteComponent)：实现抽象构件接口，提供了具体的功能实现。
-
-3. 装饰器(Decorator)：持有一个构件(Component)对象的实例，并定义一个与抽象构件接口一致的接口。
-
-装饰器模式通过将对象的包装层层叠加，在不改变原有对象的基础上，动态地添加新的行为或功能，这使得行为或功能的添加变得更加灵活和方便，并且降低了系统的耦合度，增强了对象的扩展性。
-
-举个例子来说，我们可以使用装饰器模式为一个类动态地添加新的方法或改变其属性，而不需要修改原有的代码。例如，我们可以给一个已经存在的类添加一个日志记录的功能：
-
-```javascript
-class Order {
-  constructor(name) {
-    this.name = name;
-  }
-  
-  getName() {
-    return this.name;
-  }
-}
-
-// 日志装饰器
-class OrderLogDecorator {
-  constructor(order) {
-    this.order = order;
-  }
-  
-  getName() {
-    console.log(`Order has been created with name: ${this.order.getName()}`);
-    return this.order.getName();
-  }
-}
-
-// 使用装饰器
-const order = new Order('test');
-const orderLogDecorator = new OrderLogDecorator(order);
-orderLogDecorator.getName(); // 输出结果：Order has been created with name: test
-```
-
-在上述代码中，我们首先定义了一个原有的Order类。然后我们又定义了一个装饰器类OrderLogDecorator，它持有了一个Order对象的实例，通过在getName()方法中添加日志记录的功能，实现了对原有Order类的包装。最后，我们将Order对象传递给OrderLogDecorator，通过调用OrderLogDecorator的getName()方法来让Order对象拥有了日志记录的功能。
-
-装饰器模式常常与其他设计模式相结合，如工厂方法模式、抽象工厂模式、建造者模式等，以实现更复杂的功能和逻辑。
 
 ### 模板字符串
 
@@ -1181,76 +1042,49 @@ scheduler.start()
 
 ### 防抖
 
-防抖：在用户停止某个操作一段时间之后才执行相应的监听函数，当事件被触发时，设定一个周期延迟执行动作，若期间又被触发，则重新设定周期，直到周期结束，执行监听函数。
+防抖函数的作用是将多次触发的事件合并成一次执行，减少重复的操作。
 
 ```javascript
 /**
- * @description: 防抖函数
- * @param { Function } fn 高频函数
- * @param { Number, String } wait 等待时间
- * @returns { Function }
+ * 防抖函数
+ * @param {Function} fn - 需要防抖的函数
+ * @param {Number} delay - 防抖延迟时间
+ * @returns {Function} 防抖后的函数
  */
-function debounce(fn, wait) {
-  let context = this,
-    args = arguments,
-    timer = null;
-  return function() {
-    context = this;
-    args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(function() {
-      fn.apply(context, args);
-    }, wait || 250);
+function debounce(fn, delay) {
+  let timerId; // 声明一个定时器id
+  return function (...args) { // 返回一个函数
+    if (timerId) { // 如果定时器存在，则清除定时器
+      clearTimeout(timerId);
+    }
+    timerId = setTimeout(() => { // 设置定时器，指定延迟时间之后执行原函数
+      fn.apply(this, args);
+    }, delay || 250);
   };
-}
-let debounce = (fn, wait) => {
-    let timer, timeStamp = 0, context, args
-    let run = () => {
-        timer = setTimeout(() => {
-            fn.apply(context, args)
-        }, wait)
-    }
-
-    let clean = () => {
-        clearTimeout(timer)
-        timer = null
-    }
-
-    return function (params) {
-        context = this
-        args = arguments
-        let now = (new Date()).getTime()
-        if (now - timeStamp < wait) {
-            clean()
-            run()
-        } else {
-            run()
-        }
-        timeStamp = now
-    }
 }
 ```
 
 ### 节流
 
-节流：当持续触发事件时，保证隔间时间触发一次事件，固定周期内，只执行一次动作，若有新事件触发，不执行。周期结束后，又有事件触发，开始新的周期。
+节流函数的作用是将多次触发的事件限制为一定时间内只执行一次，避免高频触发导致浏览器性能上的问题。
 
 ```js
-let throtting = (fn, wait) => {
-    let timer, context, args
-    let run = () => {
-        timer = setTimeout(() => {
-            fn.apply(context, args)
-            clearTimeout(timer)
-            timer = null
-        }, wait)
-    }
-
-    return function () {
-        context = this
-        args = arguments
-        if (!timer) run()
-    }
+/**
+ * 节流函数
+ * @param {Function} fn - 需要节流的函数
+ * @param {Number} delay - 节流时间
+ * @returns {Function} 节流后的函数
+ */
+function throttle(fn, delay) {
+  let canRun = true; // 声明一个变量，用于记录该时间段内是否已经执行过函数
+  return function (...args) { // 返回一个函数
+    if (!canRun) return; // 如果已经执行过函数，则直接返回
+    canRun = false; // 将canRun设置为false
+    setTimeout(() => { // 在延迟时间之后将canRun重新设置为true
+      fn.apply(this, args);
+      canRun = true;
+    }, delay);
+  };
 }
 ```
 
@@ -1274,40 +1108,64 @@ console.log(currying(sum)(1)(2, 3)(4)); // 10
 ```
 
 ```js
-function curry() {
-    const _args = [...arguments]
-    function fn() {
-        _args.push(...arguments)
-        return fn
+/**
+ * 柯里化函数
+ * @param {Function} fn - 需要柯里化的函数
+ * @returns {Function} 柯里化后的函数
+ */
+function curry(fn) {
+  return function curried(...args) { // 返回一个函数
+    if (args.length >= fn.length) { // 如果传入参数的数量已经足够，则执行原函数
+      return fn.apply(this, args);
     }
-
-    fn.toString = function () {
-        return _args.reduce((sum, cur) => sum + cur)
-    }
-    return fn
+    return function (...args2) { // 如果传入参数的数量不足够，则返回一个新函数，继续接收参数
+      return curried.apply(this, args.concat(args2)); // 将之前接收到的参数与当前接收的参数合并，并继续执行curried函数
+    };
+  };
 }
+
+```
+
+### 反柯里化
+
+接收一个柯里化函数 `fn` 作为参数，并返回一个函数，该函数将传递的所有参数组成的参数数组展开，然后使用 `reduce` 函数将这些参数应用到 `fn` 中。
+
+```javascript
+function uncurry(fn) {
+  return function (...args) {
+    return args.reduce((acc, cur) => acc(cur), fn);
+  };
+}
+
+function add(x) {
+  return function (y) {
+    return x + y;
+  };
+}
+
+const addUncurried = uncurry(add);
+console.log(addUncurried(1, 2)); // 3
 ```
 
 ### getQueryString
 
 ```javascript
 function getQueryString(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg);
+      let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      let r = window.location.search.substr(1).match(reg);
       if (r != null) return unescape(r[2]);
       return null;
     }
 
 function getQueryString(name){
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
+  let query = window.location.search.substring(1);
+  let lets = query.split("&");
+  for (let i=0;i<lets.length;i++) {
+    let pair = lets[i].split("=");
     if(pair[0] == name){return pair[1];}
   }
   return(false);
 }
-
 ```
 
 ### url查询参数转为params
@@ -1355,11 +1213,11 @@ setInterval(() => {
 function numFormat(value, int) {
   if (!value) return "0.00";
 
-  var intPart = Number(value) - (Number(value) % 1); 
-  var intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); 
+  let intPart = Number(value) - (Number(value) % 1); 
+  let intPartFormat = intPart.toString().replace(/(\d)(?=(?:\d{3})+$)/g, "$1,"); 
 
-  var floatPart = ".00"; 
-  var value2Array = value.toString().split(".");
+  let floatPart = ".00"; 
+  let value2Array = value.toString().split(".");
 
   //=2表示数据有小数位
   if (value2Array.length == 2) {
@@ -1439,9 +1297,9 @@ function saveFile(blob, filename) {
 定时器返回值其实就是一个整数，并且是顺序生成的，因此循环清除定时器，在你构造的定时器数量不是太夸张（小于100）的情况下，该方法可以清除所有定时器
 
 ```js
-var end = setTimeout(function(){},1);
-var start = (end -100)>0?end-100:0;
-for(var i=start;i<=end;i++){
+let end = setTimeout(function(){},1);
+let start = (end -100)>0?end-100:0;
+for(let i=start;i<=end;i++){
   clearTimeout(i);
 }
 ```
@@ -1454,7 +1312,7 @@ for (let i = 0; i <= endTid; i++) {
 }
 ```
 
-## 输入框数字大小限制
+### 输入框数字大小限制
 
 方式一：`max="100"` `min="10"`，限制的是数字输入框右边的增减箭头按钮，最大值和最小值，不能对手动输入的数进行限制。
 
@@ -1541,6 +1399,178 @@ const sessionData = function (method, name, obj) {
 
 export {localData, sessionData}
 
+```
+
+### 简易的jquery(考虑插件和扩展性)
+
+```js
+class jQuery {
+    constructor(selector){
+        const result = document.querySelectorAll(selector)
+        const length = result.length
+        for(let i=0; i<length; i++){
+            this[i] = result[i]
+        }
+        this.length = length
+    }
+    get(index){
+        return this[index]
+    }
+    each(fn){
+        for(let i=0;i<this.length;i++){
+            const elem = this[i]
+            fn(elem)
+        }
+    }
+    on(type,fn){
+        return this.each(elem=>{
+            elem.addEventListener(type,fn,false)
+        })
+    }
+}
+// 插件的扩展性
+jQuery.prototype.dialog = function(info) {
+    alert(info)
+}
+// 复写机制
+class myJQuery extends jQuery {
+    constructor(selector) {
+        super(selector)
+    }
+    // 扩展自己的方法
+    study(){
+        
+    }
+}
+```
+
+### Promise加载一张图片
+
+```js
+function loadImg(src) {
+    return new Promise(
+        (resolve, reject) => {
+            const img = document.createElement('img')
+            img.onload = () => {
+                resolve(img)
+            }
+            img.onerror = () => {
+                const err = new Error(`图片加载失败 ${src}`)
+                reject(err)
+            }
+            img.src = src
+        }
+    )
+}
+
+const url = ''
+loadImg(url).then(img => {
+    console.log(img.width)
+    return img
+}).then(img => {
+    console.log(img.height)
+}).catch(ex=>console.error(ex))
+```
+
+### DOM查询做缓存
+
+```js
+// 不缓存DOM查询结果
+for(let=0; i<document.getElementsByTagName('p').length;i++) {
+    // 每次循环，都会计算length，频繁进行dom查询
+}
+// 缓存dom查询结果
+const pList = document.getElementsByTagName('p')
+const length = pList.length
+for(let i = 0; i<length; i++){
+    // 缓存length,只进行一次dom查询
+}
+```
+
+### 通用的事件绑定函数
+
+```js
+function bindEvent(elem, type, selector, fn) {
+    if(fn==null) {
+        fn = selector
+        selector = null
+    }
+    elem.addEventListener(type, e=>{
+        let target
+        if(selector) {
+            // 需要代理
+            target = e.target
+            if(target.matches(selector)){
+                fn.call(target, e)
+            }
+        } else {
+            // 不需要代理
+            fn(e)
+        }
+    })
+}
+```
+
+### isEqual
+
+```js
+// 全相等
+function isEqual(obj1,obj2){
+    if(!isObject(obj1) || !isObject(obj2))  return obj1===obj2
+    if(obj1===obj2) return true
+    // 两个都是对象或数组，而且不相等
+    const obj1key = Object.keys(obj1)
+    const obj2key = Object.keys(obj2)
+    
+    if(obj1key.length !== obj2key.length) return false
+    for(let key in obj1){
+        const res = isEqual(obj1[key],obj2[key])
+        if(!res)  return false
+    }
+    return true
+}
+```
+
+### useFecth
+
+```js
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(url);
+        if (mounted) {
+          setData(response.data);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        if (mounted) {
+          setError(error);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      mounted = false;
+    };
+  }, [url]);
+
+  return { data, error, isLoading };
+};
+
+export default useFetch;
 ```
 
 ## 参考

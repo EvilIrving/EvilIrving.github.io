@@ -140,6 +140,70 @@ cover:
 
 ## 题目：含答案
 
+### 从URL 到渲染完成的整个过程，包括 DOM 构建的过程
+
+从 URL 到渲染完成的整个过程包含以下几个步骤：
+
+1. URL 解析：浏览器通过解析输入的 URL，获取域名、协议、端口、路径等信息。
+
+2. DNS 解析：浏览器向 DNS 服务器发送域名解析请求，并根据返回的 IP 地址进行连接。
+
+3. 建立 TCP 连接：浏览器和服务器进行 TCP 三次握手建立连接。
+
+4. 发送 HTTP 请求：浏览器向服务器发送 HTTP 请求，请求资源文件。
+
+5. 服务器处理请求：服务器接收到浏览器发送的请求，进行解析和处理，并返回相应的资源文件。
+
+6. 接收响应数据：浏览器接收到服务器返回的资源文件。
+
+7. HTML 解析：浏览器开始解析 HTML，构建 DOM 树。
+
+8. CSS 解析：解析 CSS 文件，并构建 CSSOM 树。
+
+9. 渲染页面：根据 DOM 树和 CSSOM 树构建渲染树，计算节点尺寸、位置等信息，并最终将页面渲染出来。
+
+10. JavaScript 执行：当浏览器遇到 JavaScript 时，会执行脚本，对 DOM 树和 CSSOM 树进行修改，从而还要重新进行渲染。
+
+11. 页面加载完成：当渲染进程完成页面渲染后，页面加载完成。
+
+至此，从 URL 到渲染完成的整个过程就结束了。在整个过程中，DOM 构建的过程是将 HTML 文件解析为一个文档树的过程，CSS 解析的过程是将 CSS 代码解析为 CSSOM 树的过程。DOM 树和 CSSOM 树构成了渲染树，完成了页面的渲染。
+
+### 三次握手和四次挥手
+
+TCP（Transmission Control Protocol）是基于连接的协议，用于在网络上的两个应用程序之间稳定、可靠地传输数据。在 TCP 连接中，三次握手和四次挥手是 TCP 协议中的两个重要的过程，下面分别进行介绍：
+
+- 三次握手
+  
+  >三次握手（Three-way Handshake）是建立 TCP 连接的过程，主要包含以下三个步骤：
+  >
+  > 1. 客户端向服务器发送 SYN 报文。
+  > 2. 服务器收到 SYN 报文后，回应一个 SYN + ACK 报文。
+  > 3. 客户端收到 SYN + ACK 报文后，回应一个 ACK 报文，表示建立连接。
+
+- 四次挥手
+  > 四次挥手（Four-way Handshake）是关闭 TCP 连接的过程，主要包含以下四个步骤：
+  >
+  >1. 客户端向服务器发送一个 FIN 报文，表示希望关闭连接。
+  >2. 服务器收到 FIN 报文后，回应一个 ACK 报文，表示已经接收到关闭请求。
+  > 3. 服务器向客户端发送一个 FIN 报文，表示服务器准备关闭连接。
+  > 4. 客户端收到 FIN 报文后，回应一个 ACK 报文，表示已经接收到关闭请求，并确认可以关闭连接。
+
+总之，三次握手和四次挥手是 TCP 协议中保证连接稳定和可靠的核心过程。在建立 TCP 连接之前，需要进行三次握手以确保双方都能正常通信。而在关闭连接之前，需要进行四次挥手以确保双方都能安全、顺利地关闭连接。
+
+### MMVM、MVC
+
+MMVM（Model-View-ViewModel）和MVC（Model-View-Controller）都是一种架构模式，用于构建应用程序。它们的区别主要在于以下几点：
+
+1. 数据绑定方式不同。MVVM中的View和ViewModel之间使用了双向数据绑定，View中的变化会自动更新ViewModel，反之亦然。而MVC中，View和Controller之间采用的是单向数据绑定，只有Controller可以更新View。
+
+2. 视图组件的复杂程度不同。MVVM中的ViewModel可以包含业务逻辑，因此它的功能比MVC的Controller更加复杂。ViewModel可处理网页的交互、服务端数据请求并作出回应，并控制页面的展示，避免了在View层中出现过多的业务判断逻辑和事件操作，使得View层只需专注于视图渲染和交互响应。
+
+3. 界面开发方式不同。在MVVM中，ViewModel的自动翻译降低了View的前端开发难度，开发者无须再按照传统MVC方式编写繁琐的UI监听、事件绑定等代码。MVVM减少大量的冗余的代码，提升开发效率和开发者的开发体验。
+
+4. 分工不同。MVVM将业务逻辑、数据映射、视图逻辑、页面展示分离，可以让各个模块更加独立，有利于团队成员的分工协作，提高开发效率。
+
+综上所述，MVVM相对于MVC在分离视图显示和业务逻辑方面做得更加彻底，且简化开发模版和设计的复杂性，能够有效地解决大型项目中View层复杂业务逻辑的问题。
+
 ### 请解释事件委托（event delegation）
 
 事件委托是将事件监听器添加到父元素，而不是每个子元素单独设置事件监听器。当触发子元素时，事件会冒泡到父元素，监听器就会触发。这种技术的好处是：
@@ -329,3 +393,314 @@ document.addEventListener('DOMMouseScroll',function(event){
 - `elem.attributes` — 所有特性的集合。
 
 在大多数情况下，最好使用 DOM 属性。仅当 DOM 属性无法满足开发需求，并且我们真的需要特性时，才使用特性。
+
+### 什么是闭包（closure），为什么使用闭包？
+
+闭包是指有权访问另一个函数作用域中变量的函数，即被保护起来的函数和变量形成的作用域称为闭包。闭包使得函数可以在其作用域外部获取外部变量，而这些变量在函数定义时不在其作用域内。
+
+当一个函数内嵌套另一个函数时，内部函数可以访问外部函数的变量。外部函数的变量会被保存在内部函数的作用域中，即使外部函数的执行已经结束，这些变量仍然可以被内部函数访问。由于内部函数可以访问外部函数的变量，而外部函数又无法访问内部函数的变量，所以形成了闭包。
+
+闭包可以用来模拟块作用域，可以用来封装私有变量和私有方法，还可以用来实现函数柯里化和函数记忆等高级函数。当然，闭包也会带来一定的风险，比如内存不释放、变量污染等问题，需要注意管理好闭包。
+
+下面是一个简单的闭包示例：
+
+```javascript
+function outerFunction() {
+  var outerValue = 'I am outside!';
+
+  function innerFunction() {
+    console.log(outerValue);
+  }
+
+  return innerFunction;
+}
+
+var inner = outerFunction();
+inner(); // 输出 "I am outside!"
+```
+
+在这个示例中，函数`innerFunction`引用了其外部作用域`outerFunction`中的变量`outerValue`，因此`innerFunction`形成了闭包。在调用`outerFunction`后，返回值被赋给了变量`inner`。当在调用`inner`时，`innerFunction`仍然可以访问`outerValue`的值，因为它形成了闭包。
+
+其他应用：
+
+- 利用闭包实现数据私有化或模拟私有方法。这个方式也称为[模块模式（module pattern）](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript)。
+- [部分参数函数（partial applications）柯里化（currying）](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.l4b6l1i3x).
+
+### JavaScript 中创建对象的方式
+
+1. 使用 `{}` 语法创建对象字面量。
+2. 使用 `new Object()` 方法创建对象。
+3. 使用构造函数创建对象，例如 `function Person(name) { this.name = name; }`，然后通过 `new Person('张三')` 来创建实例。
+4. 使用原型方式创建对象，例如 `var obj = Object.create(proto)`。其中 `proto` 是指定的原型对象。
+5. 使用 ES6 的 class 语法来创建面向对象的形式，例如 `class Person { constructor(name) {this.name = name;} }`，然后通过  `new Person('张三')` 来创建实例。
+
+### node加载http
+
+在 `Node.js` 中，可以使用内置模块 `http` 来创建 `HTTP` 服务器和客户端。以下是一个简单的示例：
+
+```js
+// 加载 http 模块
+const http = require('http');
+
+// 创建 HTTP 服务器
+const server = http.createServer((req, res) => {
+  // 设置响应头
+  res.setHeader('Content-Type', 'text/plain');
+
+  // 发送响应数据
+  res.write('Hello, World!');
+  res.end();
+});
+
+// 监听端口
+server.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
+
+在这个例子中，我们首先使用 `require` 函数加载了 `http` 模块，然后使用 `http.createServer` 方法创建了一个 `HTTP` 服务器。在服务器的回调函数中，我们设置了响应头和响应数据，并发送了响应数据。最后，我们使用 `server.listen` 方法监听了端口 `3000`，并在控制台输出了一条提示信息。
+
+可以在浏览器中访问 [localhost](http://localhost:3000) 来查看服务器返回的响应数据。
+
+### `with`改变作用域
+
+`with` 是 JavaScript 中的一个语句，它可以将一个对象添加到作用域链的头部，从而在代码块内快速访问该对象的属性和方法。
+
+使用 `with` 可能会改变作用域，因为在使用 `with` 语句时，JavaScript 引擎需要在执行代码块之前检查对象的所有属性，以便将它们添加到作用域链。这可能会导致代码的性能下降，并且在搜索属性时可能会出现意外的结果。此外，`with` 语句可能会使代码更难以理解和维护。
+
+以下是一个使用 `with` 语句的示例：
+
+```js
+var person = {
+  name: 'John',
+  age: 30
+};
+
+`with` (person) {
+  console.log(name + ' is ' + age + ' years old.');
+}
+```
+
+在这个例子中，我们定义了一个包含 name 和 age 属性的对象 person。然后，我们使用 `with` 语句将 person 对象添加到作用域链的头部，并在代码块内使用了它的 name 和 age 属性。在这个例子中，使用 `with` 语句可以使代码更加简洁。
+
+但是，建议不要使用 `with` 语句，因为它可能会导致代码性能下降并引起不必要的错误。在绝大部分情况下，都可以通过其他方式实现相同的效果。
+
+### 微信小程序生命周期、鉴权登录、支付流程
+
+#### 微信小程序的生命周期
+
+1. 小程序启动阶段：小程序启动时，会执行app.js中的onLaunch()方法，这是小程序生命周期的开始。
+
+2. 小程序显示阶段：当小程序启动后，会根据配置文件app.json中的配置信息，显示各个页面。
+
+3. 小程序隐藏阶段：当小程序不再处于前台时，进入隐藏状态，此时会触发onHide()方法。
+
+4. 小程序卸载阶段：当小程序被完全关闭时，会触发onUnload()方法。
+
+#### 微信小程序的鉴权登录流程
+
+1. 用户进入小程序，在小程序中点击登录按钮。
+
+2. 小程序会请求服务器获取code。
+
+3. 获取到code之后，小程序向服务器发送请求，请求服务器换取sessionkey。
+
+4. 服务器根据code换取sessionkey，并将sessionkey和一个唯一的openid返回给小程序。
+
+5. 小程序将sessionkey和openid缓存到本地。
+
+6. 用户在小程序内部进行各种操作时，小程序会将用户的openid发送到服务器，服务器根据openid判断用户信息是否合法。
+
+#### 微信小程序的支付流程
+
+1. 用户在小程序内部选择商品并提交订单。
+
+2. 小程序向服务器发送请求，请求下单接口。
+
+3. 服务器返回预支付订单信息和签名串。
+
+4. 小程序调用微信支付接口，并将预支付信息和签名传输给微信支付后台。
+
+5. 微信支付后台校验预支付信息和签名，校验通过后返回预支付结果。
+
+6. 小程序接收到预支付结果，提示用户进行支付。
+
+7. 用户成功完成支付后，微信支付后台返回支付结果，小程序接收到支付结果，并将结果发送到服务器进行校验。
+
+8. 服务器接收到状态为支付成功的回调通知，更新订单状态，并向用户发送订单支付成功的通知。
+
+### V8 垃圾回收
+
+V8 是一款非常优秀的 JavaScript 引擎，在 Node.js 和 Chrome 等浏览器中广泛使用。V8 使用了基于标记-清除垃圾回收算法（Mark-and-Sweep Garbage Collection Algorithm）的自动垃圾回收机制，可以自动管理内存。
+
+V8 内存分为新生代和老生代两个区域，新生代用于存放活跃时间较短的对象，而老生代则用于存放活跃时间较长的对象。新生代内存分为 From 和 To 两个空间，对象在 From 空间进行分配，当进行垃圾回收时，活跃对象会被复制到 To 空间，同时 From 空间变成空闲状态，反之亦然。垃圾回收的过程分为标记和清除两个阶段，通过遍历根对象，标记所有与其相关的对象，然后进行清除操作。
+
+在老生代区域，V8 则使用了更高级别的垃圾回收算法，如标记-压缩垃圾回收算法（Mark-and-Compact Garbage Collection Algorithm）和增量标记（Incremental Marking）等。增量标记用于将标记和清除两个操作分为多个阶段，避免了长时间的停顿，可以提高应用运行的流畅性。
+
+值得注意的是，V8 还有一项优化机制，叫做内联缓存（Inline Cache），通过记录对象属性的类型，可以减少变量访问的时间。当获取对象属性时，V8 会先检查对象上该属性的类型是否变化，从而提高函数的效率。
+
+总的来说，V8 对于内存管理的优化非常细致，不仅使用了多种垃圾回收算法，还有内联缓存等优化措施，从而让 JavaScript 程序可以更高效、流畅地运行。
+
+### OpenLayer常用对象
+
+1. Map （地图对象）
+2. View （视图对象）
+3. Layer （图层对象）
+4. Source （数据源对象）
+5. Feature （要素对象）
+6. Geometry （几何对象）
+7. Style （样式对象）
+8. Control （控件对象）
+9. Interaction （交互对象）
+10. Projection （投影对象）
+
+### 自定义React Hooks
+
+ 自定义React Hooks 是在 React v16.8 之后推出的，它允许我们将组件逻辑提取到可重用的函数中，从而可以减少组件中的样板代码，并更好地组织组件逻辑。自定义 React Hooks 应该遵循以下规则：
+
+1. 自定义Hooks 命名应该以 “use” 开头。
+
+2. React Hook 必须在组件的顶层作用域中调用，不能在循环，条件语句等函数内调用。
+
+下面是一个自定义 React Hooks 的示例代码，该自定义 Hook 可以设置和获取元素的宽度和高度：
+
+```
+import { useState, useEffect } from 'react';
+
+function useElementSize(ref) {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    function handleResize() {
+      setSize({
+        width: ref.current.offsetWidth,
+        height: ref.current.offsetHeight,
+      });
+    }
+
+    if (ref.current) {
+      handleResize();
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [ref.current]);
+
+  return size;
+}
+
+export default useElementSize;
+```
+
+在这个例子中，我们使用了 useState 和 useEffect 这两个常见的 React Hooks，来获取元素的宽度和高度，并实时更新宽度和高度。我们将其封装在自定义 Hook 中，这样，每个需要获取元素大小的组件都可以使用这个自定义 Hook，而无需再重复编写代码。
+
+在组件中使用该 Hook：
+
+```
+import useElementSize from './useElementSize';
+
+function App() {
+  const ref = useRef(null);
+  const { width, height } = useElementSize(ref);
+
+  return (
+    <div ref={ref}>
+      The size of this div is {width}px x {height}px.
+    </div>
+  );
+}
+
+export default App;
+```
+
+在这个例子中，我们使用了 useRef 来获取元素的引用，然后将其传递给 useElementSize 这个自定义 Hook 中，从而获取 div 元素的宽度和高度，并实时更新这两个值。
+
+总之，自定义 React Hooks 允许我们在组件之间和项目之间共享逻辑代码，并且可以有效减少代码的重复程度，提高代码的重用性和维护性。
+
+### 函数和自定义 Hook 的区别
+
+在 React 中，函数和自定义 Hook 都可以达到封装代码的效果。但是，它们的使用场景和优劣势是不一样的，下面是它们之间的优异比较：
+
+使用场景：
+
+- 函数通常用于封装一些简单的、单一的逻辑代码，如计算、格式化、验证等操作。
+- 自定义 Hook 通常用于封装一组相关的、共享的状态逻辑，如获取远程数据、订阅事件等操作。
+
+优劣势：
+
+- 函数的优劣势在于使用简单灵活，可随意添加、删除、修改函数。
+- 自定义 Hook 的优点是提高了代码的复用性，尤其是在实现类似的功能时，可以减少代码的复制和粘贴。
+
+使用注意：
+
+- 在使用自定义 Hook 时应注意，使用 Hook 的组件与自定义 Hook 之间是解耦的，自定义 hook 中尽量不要对组件进行调用和操作，保持独立性和可复用性。
+- 函数代码尽量可被重用，配置项使用更加模块化和易用。
+
+总之，在 React 中，函数和自定义 Hook 的优劣势，以及针对不同的使用场景，开发者可以根据具体情况灵活选择和使用，以达到更好的代码复用和封装效果。
+
+### useDebounce
+
+自定义 `useDebounce` 是一个常见的操作，其作用是将一个容易频繁触发的操作（如搜索、滚动等）进行节流，避免频繁的无效请求。
+
+下面是一个自定义 `useDebounce` 的示例代码：
+
+```jsx
+import { useState, useEffect } from 'react';
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
+export default useDebounce;
+```
+
+该代码将使用 `useState` 和 `useEffect` 自定义了一个 `useDebounce` Hook，用于对 `value` 进行 `delay` 毫秒的节流处理，并返回节流处理后的结果。
+
+使用该 Hook 的代码示例：
+
+```jsx
+import { useState } from 'react';
+import useDebounce from './useDebounce';
+
+function App() {
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 500);
+
+  function handleInputChange(e) {
+    setSearchValue(e.target.value);
+  }
+
+  function handleSearch() {
+    // 发送搜索请求
+  }
+
+  useEffect(() => {
+    handleSearch();
+  }, [debouncedSearchValue]);
+
+  return (
+    <div>
+      <input type="text" value={searchValue} onChange={handleInputChange} />
+      <button onClick={handleSearch}>搜索</button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+在这个例子中，我们将用户输入的搜索关键字通过 `useState` 更新，并用 `useDebounce` 对其进行节流处理，最后在搜索请求前，通过 `useEffect` 监听节流处理后的搜索关键字，并进行搜索请求。
+
+总之，使用自定义的 `useDebounce` Hook 可以对容易频繁触发的操作进行节流处理，从而达到更好的用户体验和代码优化效果。
