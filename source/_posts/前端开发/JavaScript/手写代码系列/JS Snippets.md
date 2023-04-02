@@ -6,7 +6,7 @@ tags:
 - JavaScript
 - Snippets
 categories: 
-- JavaScript
+- 算法
 ---
 ## 格式化日期
 
@@ -408,7 +408,7 @@ const _instanceof = (L, R) => {
     if(baseTypes.includes(Object.prototype.toString.call(L).slice(8,-1).toLowerCase())) return false;
 
     // 分别取传入参数的原型
-    let Lp = L.__proto__;
+    let Lp = L.__proto__;  // Object.getPrototypeOf(L)
     let Rp = R.prototype; // 函数才拥有prototype属性
 
     // 判断原型
@@ -591,6 +591,10 @@ toSort(propertyName) {
 Object.keys(object).length === 0 
 
 JSON.stringify(data) === '{}'
+
+const isEmpty = obj => Reflect.ownKeys(obj).length === 0 && obj.constructor === Object;
+isEmpty({}) // true
+isEmpty({a:"not empty"}) //false
 ```
 
 ## 拷贝
@@ -1183,6 +1187,13 @@ function query2Dict(param) {
     })
     return dict
 }
+
+const getParameters = URL => JSON.parse(`{"${decodeURI(URL.split("?")[1]).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`
+  )
+
+getParameters("https://www.google.com.hk/search?q=js+md&newwindow=1");
+// {q: 'js+md', newwindow: '1'}
+
 ```
 
 ## 屏幕自动滚动
@@ -1486,25 +1497,54 @@ for(let i = 0; i<length; i++){
 ## 通用的事件绑定函数
 
 ```js
-function bindEvent(elem, type, selector, fn) {
-    if(fn==null) {
-        fn = selector
-        selector = null
+const EventUtils = {
+  // 视能力分别使用 dom0||dom2||IE 方式 来绑定事件
+  // 添加事件
+  addEvent: function (element, type, handler) {
+    if (element.addEventListener) {
+      element.addEventListener(type, handler, false);
+    } else if (element.attachEvent) {
+      element.attachEvent("on" + type, handler);
+    } else {
+      element["on" + type] = handler;
     }
-    elem.addEventListener(type, e=>{
-        let target
-        if(selector) {
-            // 需要代理
-            target = e.target
-            if(target.matches(selector)){
-                fn.call(target, e)
-            }
-        } else {
-            // 不需要代理
-            fn(e)
-        }
-    })
-}
+  },
+  // 移除事件
+  removeEvent: function (element, type, handler) {
+    if (element.removeEventListener) {
+      element.removeEventListener(type, handler, false);
+    } else if (element.detachEvent) {
+      element.detachEvent("on" + type, handler);
+    } else {
+      element["on" + type] = null;
+    }
+  },
+  // 获取事件目标
+  getTarget: function (event) {
+    return event.target || event.srcElement;
+  },
+  // 获取 event 对象的引用，取到事件的所有信息，确保随时能使用 event
+  getEvent: function (event) {
+    return event || window.event;
+  },
+  // 阻止事件（主要是事件冒泡，因为 IE 不支持事件捕获）
+  stopPropagation: function (event) {
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
+  },
+  // 取消事件的默认行为
+  preventDefault: function (event) {
+    if (event.preventDefault) {
+      event.preventDefault();
+    } else {
+      event.returnValue = false;
+    }
+  }
+};
+
 ```
 
 ## isEqual
@@ -1567,6 +1607,276 @@ const useFetch = (url) => {
 };
 
 export default useFetch;
+```
+
+## 下划线转驼峰
+
+```javascript
+function toCamelCase(str) {
+  return str.replace(/(_\w)/g, function(m) {
+    return m[1].toUpperCase();
+  });
+}
+```
+
+## 计算周数
+
+计算一年中周数可以基于ISO-8601标准，该标准规定一年中第一周是包含有4个或以上的星期四的周，因此，我们可以基于此规则来计算一年中的周数。
+
+```javascript
+function getWeeksInYear(year, startWeekday = 1, endWeekday = 0, skipFirstWeek = false, skipLastWeek = false) {
+  // 获取一年中的第一天和最后一天
+  const firstDayOfYear = new Date(year, 0, 1).getDay();
+  const lastDayOfYear = new Date(year, 11, 31).getDay();
+  
+  // 如果指定了不完整的起始和结束周，修改开始和结束日期，保证包含完整的可计算周
+  let startDate = new Date(year, 0, 1);
+  let endDate = new Date(year, 11, 31);
+  if (skipFirstWeek && firstDayOfYear > startWeekday) {
+    startDate = new Date(year, 0, 1 + (7 - firstDayOfYear + startWeekday));
+  }
+  if (skipLastWeek && lastDayOfYear < endWeekday) {
+    endDate = new Date(year, 11, 31 - (7 - endWeekday + lastDayOfYear));
+  }
+  
+  // 计算第一周的结束日期
+  const endOfFirstWeek = new Date(startDate);
+  endOfFirstWeek.setDate(startDate.getDate() + (7 - startDate.getDay() + startWeekday) % 7);
+  
+  // 计算最后一周的起始日期
+  const startOfLastWeek = new Date(endDate);
+  startOfLastWeek.setDate(endDate.getDate() - (7 + endDate.getDay() - endWeekday) % 7);
+  
+  // 计算周数
+  const days = (endDate - startDate) / (24 * 3600 * 1000);
+  const weeks = Math.ceil((days + 1 - (8 - startWeekday) % 7 - endWeekday) / 7);
+  
+  // 如果指定了去掉不完整的起始和结束周，将周数减 1
+  let result = weeks;
+  if (skipFirstWeek && startWeekday > firstDayOfYear) {
+    result -= 1;
+  }
+  if (skipLastWeek && endWeekday < lastDayOfYear) {
+    result -= 1;
+  }
+  
+  return {
+    weeks: result,
+    startWeekday: startWeekday,
+    endWeekday: endWeekday,
+    endOfFirstWeek: endOfFirstWeek,
+    startOfLastWeek: startOfLastWeek,
+    skipFirstWeek: skipFirstWeek,
+    skipLastWeek: skipLastWeek
+  };
+}
+```
+
+该函数接收以下参数：
+
+- `year`: 年份，为 4 位数字
+- `startWeekday`: 一周的开始日期，0 代表星期日，1 代表星期一，以此类推，默认为 1
+- `endWeekday`: 一周的结束日期，默认为 0，代表星期日
+- `skipFirstWeek`: 是否去掉第一周，如果第一周不足一周，会从第二周开始计数，默认为 `false`
+- `skipLastWeek`: 是否去掉最后一周，如果最后一周不足一周，会从倒数第二周结束，即不计入最后一周，默认为 `false`
+
+该函数返回一个对象，包含以下属性：
+
+- `weeks`: 一年中的周数
+- `startWeekday`: 一周的开始日期
+- `endWeekday`: 一周的结束日期
+- `endOfFirstWeek`: 第一周的结束日期
+- `startOfLastWeek`: 最后一周的起始日期
+- `skipFirstWeek`: 是否去掉第一周
+- `skipLastWeek`: 是否去掉最后一周
+
+例如，计算 2022 年的周数，并去掉第一周和最后一周：
+
+```javascript
+const weeksInYear = getWeeksInYear(2022, 1, 0, true, true);
+console.log(weeksInYear);  // { weeks: 50, startWeekday: 1, endWeekday: 0, endOfFirstWeek: Tue Jan 04 2022 ..., startOfLastWeek: Sun Dec 11 2022 ..., skipFirstWeek: true, skipLastWeek: true }
+```
+
+## 遍历问题
+
+以下代码执行后，array 的结果是？
+
+```js
+let array = [ , 1, , 2, , 3];
+array = array.map((i) => ++i)
+```
+
+- A：`[ , 2, , 3, , 4]`
+- B：`[NaN, 2, NaN, 3, NaN, 4]`
+- C：`[1, 2, 1, 3, 1, 4]`
+- D：`[null, 2, null, 3, null, 4]`
+
+---
+
+答案：A
+
+解释：
+
+1. `forEach()`、`filter()`、`reduce()`、`every()` 和 `some()` 都会跳过空位。
+2. `map()` 会跳过空位，但会保留这个值
+3. `join()` 和 `toString()` 会将空位视为 `undefined`，而 `undefined` 和 `null` 会被处理成空字符串。
+
+## 常用正则表达式
+
+- 邮箱地址：
+
+```javascript
+/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/
+```
+
+- 手机号码（中国大陆）：
+
+```javascript
+/^1[3456789]\d{9}$/
+```
+
+- 身份证号码（中国大陆）：
+
+```javascript
+/^\d{17}(\d|x)$/i
+```
+
+- URL 地址：
+
+```javascript
+/^https?:\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:\/~+#]*[\w\-\@?^=%&\/~+#])?$/
+```
+
+- IP 地址：
+
+```javascript
+/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{1,5})?$/
+```
+
+## 随机数
+
+1. `(min, max)` 随机数 `Math.random() * (max - min) + min`;
+2. `(min, max)` 随机整数
+
+```javascript
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);//向上取整
+    max = Math.floor(max);//向下取整
+
+    return Math.floor(Math.random() * (max - min)) + min; //不含最大值，含最小值
+  }
+```
+
+1. [min, max] 随机整数
+
+```js
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+}
+```
+
+- 生成指定范围内的整数：
+
+```javascript
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+```
+
+- 从数组中随机选取一个元素：
+
+    ```javascript
+    function getRandomElement(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+    }
+    ```
+
+- 生成随机颜色：
+
+    ```javascript
+    const randomHexColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16)
+
+    const randomHexColor = () => `#${Math.floor(Math.random() * 0xffffff).toString(16).padEnd(6, "0")}`
+
+    console.log(randomHexColor());
+    // #a2ce5b
+    ```
+
+- 生成指定长度的随机字符串：
+
+    ```javascript
+    function getRandomString(length) {
+    var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var str = '';
+    for (var i = 0; i < length; i++) {
+        str += charSet.charAt(Math.floor(Math.random() * charSet.length));
+    }
+    return str;
+    }
+    ```
+
+## 倒计时纠偏
+
+使用实际的时间戳和倒计时开始的时间戳之间的差来计算剩余时间。这样做可以避免遗漏任何由于计时器延迟等因素而导致的误差。
+
+```js
+function startCountdown(duration, display) {
+  var start = Date.now();
+  var diff, minutes, seconds;
+
+  function timer() {
+    diff = duration - (((Date.now() - start) / 1000) | 0);
+
+    minutes = (diff / 60) | 0;
+    seconds = (diff % 60) | 0;
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    display.textContent = minutes + ":" + seconds;
+
+    if (diff <= 0) {
+      clearInterval(intervalId);
+    }
+  }
+
+  timer();
+  var intervalId = setInterval(timer, 1000);
+}
+
+var duration = 60 * 5; // 5 minutes
+var display = document.querySelector("#timer");
+startCountdown(duration, display);
+```
+
+该函数接受倒计时持续时间（秒）和将在其中显示剩余时间的DOM元素作为参数。它使用`Date.now()`获得实际时间戳，然后使用倒计时开始的时间戳计算剩余时间。使用位运算符`| 0`将时间戳转换为整数。最后，计算出倒计时剩余的分钟和秒数，并在显示元素中显示。
+
+## 下载
+
+```js
+function download(url, filename){
+    const a = document.createElement("a"); // 创建 a 标签
+    a.href = url; // 下载路径
+    a.download = filename;  // 下载属性，文件名
+    a.style.display = "none"; // 不可见
+    document.body.appendChild(a); // 挂载
+    a.click(); // 触发点击事件
+    document.body.removeChild(a); // 移除
+}
+```
+
+```js
+function download(url, filename){
+    const a = document.createElement("a"); // 创建 a 标签
+    a.href = url; // 下载路径
+    a.download = filename;  // 下载属性，文件名
+    a.style.display = "none"; // 不可见
+    document.body.appendChild(a); // 挂载
+    a.click(); // 触发点击事件
+    document.body.removeChild(a); // 移除
+}
 ```
 
 ## 参考

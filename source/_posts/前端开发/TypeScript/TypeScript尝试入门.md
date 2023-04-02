@@ -1,5 +1,5 @@
 ---
-title: TypeScript学习笔记
+title: TypeScript尝试入门
 date: 2023-02-28
 updated: 2023-03-01
 tags: 
@@ -316,6 +316,123 @@ let BigTrain: Train = {
 }
 
 console.log(getSpeedRatio(BigTrain));
+```
+
+## 技巧
+
+* Uppercase：构造一个 Type 的所有属性都设置为大写的类型
+
+  ```ts
+  type Role = "admin" | "user" | "guest";
+  type UppercaseRole = Uppercase<Role>; // "ADMIN" | "USER" | "GUEST"
+  ```
+
+* Lowercase：构造一个 Type 的所有属性都设置为小写的类型
+
+  ```ts
+  type Role = "ADMIN" | "USER" | "GUEST";
+  type LowercaseRole = Lowercase<Role>; // "admin" | "user" | "guest"
+  ```
+
+* Uncapitalize：构造一个将 Type 的所有属性设置为 uncapitalize 的类型
+
+```ts
+type Role = "Admin" | "User" | "Guest";
+type UncapitalizeRole = Uncapitalize<Role>; // "admin" | "user" | "guest"
+```
+
+* Capitalize：构造一个 Type 的所有属性都设置为小写的类型
+
+```ts
+type Role = "admin" | "user" | "guest";
+type CapitalizeRole = Capitalize<Role>; // "Admin" | "User" | "Guest"
+```
+
+* Partial/Required：构造一个 Type 的所有属性都设置为可选/必选的类型
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  password: string;
+}
+type RequiredUser = Required<User>;
+
+interface User {
+  name?: string;
+  age?: number;
+  password?: string;
+}
+
+type PartialUser = Partial<User>;
+```
+
+* Readonly
+
+```ts
+interface User {
+  role: string;
+}
+type ReadonlyUser = Readonly<User>;
+const user: ReadonlyUser = { role: "ADMIN" };
+```
+
+* Record：构造一个具有一组类型 T 的属性 K 的类型，每个属性 K 都映射到类型 T
+
+```ts
+interface Address {
+  street: string;
+  pin: number;
+}
+
+type AddressesRecord = Record<"home" | "office", Address>;
+```
+
+* Pick：只选择键在联合类型键中的 Type 的属性
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  password: string;
+}
+
+type UserPartial = Pick<User, "name" | "age">;
+```
+
+* Omit：忽略键在联合类型键中的 Type 属性
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  password: string;
+}
+type UserPartial = Omit<User, "password">;
+```
+
+* Pick：只选择键在联合类型键中的 Type 的属性
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  password: string;
+}
+
+type UserPartial = Pick<User, "name" | "age">;
+```
+
+* Pick：只选择键在联合类型键中的 Type 的属性
+
+```ts
+interface User {
+  name: string;
+  age: number;
+  password: string;
+}
+
+type UserPartial = Pick<User, "name" | "age">;
 ```
 
 ## 资料

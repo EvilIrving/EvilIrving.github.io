@@ -26,7 +26,7 @@ cover:
   - CommonJS、AMD、CMD、ES Modules，模块加载机制
   - 原型、原型链、原型继承、this、apply、call、New操作符
   - 图片格式：png、jpg、gif、webp
-  - git和svn
+  - git和svn git工作流
   - 各种位置的区别
   - 文件编码、URL 编码、Unicode编码：一个gbk编码的页面如何正确引用一个utf8的的资源
   - 移动端适配方案、移动端300毫秒延迟、移动端点击穿透
@@ -94,15 +94,16 @@ cover:
   - 流量劫持：什么是 DNS 劫持，什么是 HTTP 劫持？
   - 对称加密 + 非对称加密
   - 公钥加密和私钥加密
-- 设计模式
+- [设计模式](https://www.cnblogs.com/cczlovexw/p/16899624.html)
   
-  | 单例模式 | 一个类只能构造出一个唯一实例 | Redux/Vuex 的 Store |
+  | Singleton Pattern | 一个类只能构造出一个唯一实例 | Redux/Vuex 的 Store |
   | --- | --- | --- |
-  | 工厂模式 | 对创建对象逻辑的封装 | jQuery 的 `$(selector)` |
-  | 观察者模式 | 当一个对象被修改时，会自动通知它的依赖对象 | Redux 的 `subsrcibe`、Vue 的双向绑定 |
+  | 工厂模式 | 对创建对象逻辑的封装 | jQuery 的 `$(selector)` `VNode` |
+  | Observer Pattern | 当一个对象被修改时，会自动通知它的依赖对象 | EventBus、Vue 的双向绑定 |
   | 装饰器模式 | 对类的包装，动态地扩展类的功能 | React 的高阶组件、ES7 装饰器 |
-  | 适配器模式 | 兼容新旧接口，对类的包装 | 封装旧 API |
-  | 代理模式 | 控制对象的访问 | 事件代理、ES6 的 `Proxy` |
+  | Adapter Pattern | 兼容新旧接口，对类的包装 | Axios adapter |
+  | Proxy Pattern | 控制对象的访问 | interceptor、ES6 的 `Proxy` |
+  | Strategy Pattern | 策略的实现和使用分离 | 表格 `formatter` `validator` |
 
 - 算法
   - 字符串、数组、栈、队列、链表、树、深度优先搜索、广度优先搜索、回溯、滑动窗口、双指针
@@ -142,7 +143,16 @@ cover:
   - 热更新原理
   - Tree Shaking
   - 性能优化
+  - Babel的原理
+    - **解析**：将代码转换成 `AST`
+      - **词法分析**：将代码（字符串）分割为 `token` 流，即语法单元成的数组
+      - **语法分析**：分析 token 流（上面生成的数组）并生成 `AST`
+    - **转换**：访问 `AST` 的节点进行变换操作生产新的 `AST`
+      - `Taro` 就是利用 `babel` 完成的小程序语法转换
+    - **生成**：以新的 `AST` 为基础生成代码
+  - 写一个babel插件
   - Webpack 与 Vite 区别
+
 - 个人
   - 项目中难点、亮点、解决方案
   - 职业想法和规划
@@ -155,37 +165,124 @@ cover:
   - 面试官本人在什么部门负责什么工作（如果对方在面试过程中没有自我介绍的话）
   - 面试官在该公司工作了多久，认为公司的优缺点是什么
 
-## 题目：含答案
+## 浏览器
 
-### 从URL 到渲染完成的整个过程，包括 DOM 构建的过程
+### 你做的页面在哪些流览器测试过？这些浏览器的内核分别是什么?
 
-从 URL 到渲染完成的整个过程包含以下几个步骤：
+- IE --> trident内核
+- Firefox --> gecko内核
+- Safari --> webkit内核
+- Opera -->  Blink
+- Chrome --> Blink 基于webkit
 
-1. URL 解析：浏览器通过解析输入的 URL，获取域名、协议、端口、路径等信息。
+### 跨域问题及其解决办法
 
-2. DNS 解析：浏览器向 DNS 服务器发送域名解析请求，并根据返回的 IP 地址进行连接。
+如果两个 URL 具有相同的协议，域和端口，则称它们是“同源”的。，而“同源策略”的机制规定，同源下的文件可以相互通信，非同源下的不可以，如果非要通信，JS就报错---“跨域错误”。
 
-3. 建立 TCP 连接：浏览器和服务器进行 TCP 三次握手建立连接。
+#### 解决
 
-4. 发送 HTTP 请求：浏览器向服务器发送 HTTP 请求，请求资源文件。
+- document.domain + iframe跨域
+- location.hash + iframe
+- window.name + iframe跨域
+- postMessage跨域
+- nginx代理跨域
+- nodejs中间件代理跨域
+- WebSocket协议跨域
 
-5. 服务器处理请求：服务器接收到浏览器发送的请求，进行解析和处理，并返回相应的资源文件。
+### V8 垃圾回收
 
-6. 接收响应数据：浏览器接收到服务器返回的资源文件。
+V8 是一款非常优秀的 JavaScript 引擎，在 Node.js 和 Chrome 等浏览器中广泛使用。V8 使用了基于标记-清除垃圾回收算法（Mark-and-Sweep Garbage Collection Algorithm）的自动垃圾回收机制，可以自动管理内存。
 
-7. HTML 解析：浏览器开始解析 HTML，构建 DOM 树。
+V8 内存分为新生代和老生代两个区域，新生代用于存放活跃时间较短的对象，而老生代则用于存放活跃时间较长的对象。新生代内存分为 From 和 To 两个空间，对象在 From 空间进行分配，当进行垃圾回收时，活跃对象会被复制到 To 空间，同时 From 空间变成空闲状态，反之亦然。垃圾回收的过程分为标记和清除两个阶段，通过遍历根对象，标记所有与其相关的对象，然后进行清除操作。
 
-8. CSS 解析：解析 CSS 文件，并构建 CSSOM 树。
+在老生代区域，V8 则使用了更高级别的垃圾回收算法，如标记-压缩垃圾回收算法（Mark-and-Compact Garbage Collection Algorithm）和增量标记（Incremental Marking）等。增量标记用于将标记和清除两个操作分为多个阶段，避免了长时间的停顿，可以提高应用运行的流畅性。
 
-9. 渲染页面：根据 DOM 树和 CSSOM 树构建渲染树，计算节点尺寸、位置等信息，并最终将页面渲染出来。
+值得注意的是，V8 还有一项优化机制，叫做内联缓存（Inline Cache），通过记录对象属性的类型，可以减少变量访问的时间。当获取对象属性时，V8 会先检查对象上该属性的类型是否变化，从而提高函数的效率。
 
-10. JavaScript 执行：当浏览器遇到 JavaScript 时，会执行脚本，对 DOM 树和 CSSOM 树进行修改，从而还要重新进行渲染。
+总的来说，V8 对于内存管理的优化非常细致，不仅使用了多种垃圾回收算法，还有内联缓存等优化措施，从而让 JavaScript 程序可以更高效、流畅地运行。
 
-11. 页面加载完成：当渲染进程完成页面渲染后，页面加载完成。
+v8 的垃圾回收机制基于分代回收机制，这个机制又基于世代假说，这个假说有两个特点，一是新生的对象容易早死，另一个是不死的对象会活得更久。基于这个假说，v8 引擎将内存分为了新生代和老生代。新创建的对象或者只经历过一次的垃圾回收的对象被称为新生代。经历过多次垃圾回收的对象被称为老生代。
+新生代被分为 From 和 To 两个空间，To 一般是闲置的。当 From 空间满了的时候会执行Scavenge 算法进行垃圾回收。当我们执行垃圾回收算法的时候应用逻辑将会停止，等垃圾回收结束后再继续执行。这个算法分为三步：
 
-至此，从 URL 到渲染完成的整个过程就结束了。在整个过程中，DOM 构建的过程是将 HTML 文件解析为一个文档树的过程，CSS 解析的过程是将 CSS 代码解析为 CSSOM 树的过程。DOM 树和 CSSOM 树构成了渲染树，完成了页面的渲染。
+  1. 首先检查 From 空间的存活对象，如果对象存活则判断对象是否满足晋升到老生代的条件，如果满足条件则晋升到老生代。如果不满足条件则移动 To 空间。
+  2. 如果对象不存活，则释放对象的空间。
+  3. 最后将 From 空间和 To 空间角色进行交换。新生代对象晋升到老生代有两个条件：
+     1. 第一个是判断是对象否已经经过一次 Scavenge 回收。若经历过，则将对象从 From 空间复制到老生代中；若没有经历，则复制到 To 空间。
+     2. 第二个是 To 空间的内存使用占比是否超过限制。当对象从 From 空间复制到 To 空间时，若 To 空间使用超过 25%，则对象直接晋升到老生代中。设置 25% 的原因主要是因为算法结束后，两个空间结束后会交换位置，如果 To 空间的内存太小，会影响后续的内存分配。
+老生代采用了标记清除法和标记压缩法。标记清除法首先会对内存中存活的对象进行标记，标记结束后清除掉那些没有标记的对象。由于标记清除后会造成很多的内存碎片，不便于后面的内存分配。所以了解决内存碎片的问题引入了标记压缩法。
+由于在进行垃圾回收的时候会暂停应用的逻辑，对于新生代方法由于内存小，每次停顿的时间不会太长，但对于老生代来说每次垃圾回收的时间长，停顿会造成很大的影响。 为了解决这个问题 V8 引入了增量标记的方法，将一次停顿进行的过程分为了多步，每次执行完一小步就让运行逻辑执行一会，就这样交替运行。
 
-### 三次握手和四次挥手
+### 浏览器架构
+
+- 用户界面
+  - 主进程
+  - 内核
+    - 渲染引擎
+    - JS 引擎
+      - 执行栈
+    - 事件触发线程
+      - 消息队列
+        - 微任务
+        - 宏任务
+    - 网络异步线程
+    - 定时器线程
+
+## HTTP
+
+### http和https
+
+#### HTTP
+
+- HTTP/0.9：传输体积很小的文件，没有 `HTTP` 请求头和请求体，服务器也不返回头信息。
+- HTTP/1.0：核心诉求是支持多种类型的文件下载。加入了请求头和响应头支持多种不同类型的数据。以及状态码、`Cache` 机制、用户代理等。
+- HTTP/1.1
+  - 默认开启 `Connection: keep-alive`，让一个 `TCP` 连接能重复发送/接收多次 `HTTP` 请求。
+  - 新增了六种请求方法：`OPTIONS`、`PUT`、`PATCH`、`DELETE`、`TRACE` 和 `CONNECT` 方法。
+- HTTP/2.0
+  - **头部压缩**：`HTTP/2` 压缩消息头，减少了传输数据的大小
+  - **多路复用**：即多个请求都通过一个 `TCP` 连接并发地完成
+  - **服务器推送**：服务端能够主动把资源推送给客户端
+- HTTP/3.0
+  - 实现了类似 TCP 的流量控制、传输可靠性的功能。
+  - 集成了 TLS 加密功能。
+  - 实现了 HTTP/2 中的多路复用功能。
+  - 实现了快速握手功能。
+
+##### http1.1 和 和 http1.0 之间有哪些区别
+
+1. 缓存策略：HTTP 1.1具有更强大和灵活的缓存策略，此版本允许客户端和服务器进行高效的缓存，以减少带宽和延迟。
+
+2. 请求方式：HTTP 1.1引入了新的请求方法，如PUT和DELETE等。HTTP 1.0只支持GET和POST方法。
+
+3. 流水线技术：HTTP 1.1具有流水线技术，它允许客户端一次发送多个请求，而HTTP 1.0只能一次进行一个请求和响应。
+
+4. 请求头：HTTP 1.1中的请求头比HTTP 1.0中更具扩展性，允许更灵活的请求和响应。
+
+5. 长连接:HTTP 1.1假设所有的连接都是持久化的，请求和响应之间可以多次复用同一个TCP连接，并在无需重新建立连接的情况下传输多个请求和响应。但在HTTP 1.0中，每次请求和响应都需要重新建立连接。
+
+#### HTTPS
+
+HTTPS 协议是由 HTTP 和 SSL 协议构建的可进行加密传输和身份认证的网络协议，作用是建立一个信息安全通道，来确保数组的传输，确保网站的真实性。
+
+##### 工作原理
+
+1. 浏览器请求 `URL`，找到服务器，向服务器发送请求。服务器将自己的证书（包含服务器公钥）、对称加密算法种类以及其他相关信息返回给浏览器。
+2. 浏览器检查 `CA` 证书是否可依赖，确认证书有效。
+3. 如果不是，给服务器发警告，询问是否可以继续使用。
+4. 如果是，浏览器使用公钥加密一个随机对称秘钥，包含加密的 `URL` 一起发送给服务器。
+5. 服务器用自己的私钥解密浏览器发送的钥匙，然后用这把对称加密的钥匙给浏览器请求的 `URL` 连接解密。
+6. 服务器用浏览器发送的对称钥匙给请求的网页加密，浏览器使用相同的钥匙就可以解密网页。
+
+#### 对比
+
+- **概念对比**。`HTTP` 是超文本传输协议，信息是明文传输，`HTTPS` 则是具有安全性的 `SSL` 加密传输协议。
+- **费用对比**。`HTTPS` 协议需要 `CA` 证书，费用较高。
+- **连接方式和端口**。使用不同的连接方式，端口也不同，一般而言，`HTTP` 协议的端口为 `80`，`HTTPS` 的端口为 `443`。
+- **安全性对比**。`HTTP` 的连接很简单，是无状态的；`HTTPS` 协议是由 `SSL + HTTP` 协议构建的可进行加密传输、身份认证的网络协议，比 `HTTP` 协议安全。
+
+#### 三次握手和四次挥手
+
+> 一句话：客户端和服务端都需要直到各自可收发，因此需要三次握手。  
 
 TCP（Transmission Control Protocol）是基于连接的协议，用于在网络上的两个应用程序之间稳定、可靠地传输数据。在 TCP 连接中，三次握手和四次挥手是 TCP 协议中的两个重要的过程，下面分别进行介绍：
 
@@ -207,21 +304,243 @@ TCP（Transmission Control Protocol）是基于连接的协议，用于在网络
 
 总之，三次握手和四次挥手是 TCP 协议中保证连接稳定和可靠的核心过程。在建立 TCP 连接之前，需要进行三次握手以确保双方都能正常通信。而在关闭连接之前，需要进行四次挥手以确保双方都能安全、顺利地关闭连接。
 
-### MMVM、MVC
+#### TCP和UDP的区别
 
-MMVM（Model-View-ViewModel）和MVC（Model-View-Controller）都是一种架构模式，用于构建应用程序。它们的区别主要在于以下几点：
+- TCP是面向连接的，udp是无连接的即发送数据前不需要先建立链接。
+- TCP提供可靠的服务。也就是说，通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达;UDP尽最大努力交付，即不保证可靠交付。 并且因为tcp可靠，面向连接，不会丢失数据因此适合大数据量的交换。
+- TCP是面向字节流，UDP面向报文，并且网络出现拥塞不会使得发送速率降低（因此会出现丢包，对实时的应用比如IP电话和视频会议等）。
+- TCP只能是 1 对 1 的，UDP支持 1 对 1 , 1 对多。
+- TCP的首部较大为 20 字节，而UDP只有 8 字节。
+- TCP是面向连接的可靠性传输，而UDP是不可靠的。
 
-1. 数据绑定方式不同。MVVM中的View和ViewModel之间使用了双向数据绑定，View中的变化会自动更新ViewModel，反之亦然。而MVC中，View和Controller之间采用的是单向数据绑定，只有Controller可以更新View。
+### WebSocket的实现和应用
 
-2. 视图组件的复杂程度不同。MVVM中的ViewModel可以包含业务逻辑，因此它的功能比MVC的Controller更加复杂。ViewModel可处理网页的交互、服务端数据请求并作出回应，并控制页面的展示，避免了在View层中出现过多的业务判断逻辑和事件操作，使得View层只需专注于视图渲染和交互响应。
+`WebSocket` 是 `HTML5` 新增的一种全双工通信协议，客户端和服务器基于 TCP 握手连接成功后，两者之间就可以建立持久性的连接，实现双向数据传输。
 
-3. 界面开发方式不同。在MVVM中，ViewModel的自动翻译降低了View的前端开发难度，开发者无须再按照传统MVC方式编写繁琐的UI监听、事件绑定等代码。MVVM减少大量的冗余的代码，提升开发效率和开发者的开发体验。
+对比一下 `HTTP` 和 `WebSocket`。
 
-4. 分工不同。MVVM将业务逻辑、数据映射、视图逻辑、页面展示分离，可以让各个模块更加独立，有利于团队成员的分工协作，提高开发效率。
+- 相同点
+  1. 都需要建立 `TCP` 连接
+  2. 都属于七层协议中的应用层协议
+- 不同点
+  1. `HTTP` 是单向数据流，客户端向服务器发送请求，服务器响应并返回数据；`WebSocket` 连接后可以实现客户端和服务器双向数据传递，除非某一端断开连接。
+  2. `HTTP` 的 `url` 使用 `http//` 或者 `https//` 开头，而 `WebSocket` 的 `url` 使用 `ws//` 开头
 
-综上所述，MVVM相对于MVC在分离视图显示和业务逻辑方面做得更加彻底，且简化开发模版和设计的复杂性，能够有效地解决大型项目中View层复杂业务逻辑的问题。
+ `WebSocket` 的一个使用方式
 
-### 请解释事件委托（event delegation）
+```js
+const ws = new WebSocket("ws//:xxx.xx", [protocol])
+
+ws.onopen = () => {
+  ws.send('hello')
+  console.log('send')
+}
+
+ws.onmessage = (ev) =>{
+  console.log(ev.data)
+  ws.close()
+}
+
+ws.onclose = (ev) =>{
+  console.log('close')
+}
+
+ws.onerror = (ev) =>{
+  console.log('error')
+}
+```
+
+`Socket.io` 基于 `WebSocket`，加上轮询机制以及其他的实时通讯方面的内容，实现的一个库，它在服务端实现了实时机制的响应代码。
+
+实现一个简单的聊天。通过 `npm i` 安装依赖包后，直接通过 `node index.js` 可以开启服务。
+
+ 服务端代码
+
+```json
+{
+  "devDependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^2.3.0"
+  }
+}
+```
+
+> index.js
+
+```js
+let express = require('express');
+let app = express();
+let server = require('http').createServer(app);
+let io = require('socket.io')(server);
+let path = require('path');
+
+app.use('/', (req, res, next) => {
+  res.status(200).sendFile(path.resolve(__dirname, 'index.html'));
+});
+
+// 开启 socket.io
+io.on('connection', (client) => {
+
+  // 如果有新客户端进来，显示 ID
+  console.log(`客户端 ID：${client.id}`);
+
+  // 监听客户端的输入信息
+  client.on('channel', (data) => {
+    console.log(`客户端 ${client.id} 发送信息 ${data}`);
+    io.emit('broadcast', data);
+  });
+
+  // 判断客户端是否关闭
+  client.on('disconnect', () => {
+    console.log(`客户端关闭：${client.id}`);
+  });
+});
+
+server.listen(3000, () => {
+  console.log('服务监听 3000 端口');
+});
+```
+
+客户端代码
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Socket.io</title>
+  <script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.slim.js"></script>
+</head>
+
+<body>
+
+  <input type="text" id="input">
+  <button id="btn">send</button>
+  <div id="content-wrap"></div>
+
+  <script>
+    window.onload = function () {
+      let inputValue = null;
+
+      // 连接 socket.io
+      let socket = io('http://localhost:3000');
+      // 将创建的信息以添加 p 标签的形式展示成列表
+      socket.on('broadcast', data => {
+        let content = document.createElement('p');
+        content.innerHTML = data;
+        document.querySelector('#content-wrap').appendChild(content);
+      })
+
+      // 设置输入框的内容
+      let inputChangeHandle = (ev) => {
+        inputValue = ev.target.value;
+      }
+      // 获取输入框并监听输入
+      let inputDom = document.querySelector("#input");
+      inputDom.addEventListener('input', inputChangeHandle, false);
+
+      // 当用户点击发送信息的时候，进行数据交互
+      let sendHandle = () => {
+        socket.emit('channel', inputValue);
+      }
+      let btnDom = document.querySelector("#btn");
+      btnDom.addEventListener('click', sendHandle, false);
+
+      // 打页面卸载的时候，通知服务器关闭
+      window.onunload = () => {
+        btnDom.removeEventListener('click', sendHandle, false);
+        inputDom.removeEventListener('input', inputChangeHandle, false);
+      }
+    };
+  </script>
+</body>
+
+</html>
+```
+
+`Socket.io` 不仅支持 `WebSocket`，还支持许多种轮询机制以及其他实时通信方式，并封装了通用的接口。
+
+这些方式包含 `Adobe Flash Socket`、`Ajax` 长轮询、`Ajax multipart streaming`、持久 `Iframe`、`JSONP` 轮询等。
+
+换句话说，当 `Socket.io` 检测到当前环境不支持 `WebSocket` 时，能够自动地选择最佳的方式来实现网络的实时通信。
+
+- [x] [websocket 与Socket.IO介绍](https://www.cnblogs.com/mazg/p/5467960.html)【阅读建议：10min】
+- [x] [WebSocket 与 Socket.IO](https://zhuanlan.zhihu.com/p/23467317)【阅读建议：10min】
+- [x] [Websocket和Socket.io的区别及应用](https://www.jianshu.com/p/970dcfd174dc)【阅读建议：20min】
+
+## BOM
+
+Bom是浏览器对象
+
+- location对象
+  - location.href
+  - location.search
+  - location.hash
+  - location.host  域名部分，例如www.dreamdu.com
+  - location.hostname  主域名部分，例如dreamdu.com
+  - location.pathname  路径。
+  - location.port--端口
+  - location.protocol
+  - location.assign
+  - location.replace()  
+  - location.reload()
+- history对象
+  - history.go()
+  - history.back()
+  - history.forward()
+- Navigator对象
+  - navigator.userAgent--返回用户代理头的字符串表示(就是包括浏览器版本信息等的字符串)
+  - navigator.cookieEnabled--返回浏览器是否支持(启用)cookie
+
+## JavaScript
+
+### 基本数据类型
+
+JS 数据类型：`Boolean`/`Null`/`Undefined`/`Number`/`String`/`Symbol`/`BigInt`/`Object`
+
+简单数据类型存放在栈中，复杂数据类型存放在堆中
+
+堆和栈的概念存在于数据结构中和操作系统内存中。在数据结构中，栈中数据的存取方式为先进后出。而堆是一个优先队列，是按优先级来进行排序的，优先级可以按照大小来规定。完全二叉树是堆的一种实现方式。在操作系统中，内存被分为栈区和堆区。栈区内存由编译器自动分配释放，存放函数的参数值，局部变量的值等。其操作方式类似于数据结构中的栈。堆区内存一般由程序员分配释放，若程序员不释放，程序结束时可能由垃圾回收机制回收。
+
+[JavaScript 标准内置对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects)
+
+#### 类型转换规则
+
+其他值到字符串
+其他值到数字值
+其他值到布尔类型
+
+### `valueOf`和`toString`
+
+`{}`的`valueOf`结果为`{}`，`toString`的结果为`"[object Object]"`
+
+`[]`的`valueOf`结果为`[]`，`toString`的结果为`""`
+
+### 不同进制数字的表示方式
+
+### 整数的安全范围是多少
+
+### `~`操作符的作用
+
+`~` 返回 2 的补码，并且 `~` 会将数字转换为 32 位整数，因此我们可以使用 `~` 来进行取整操作。`~x` 大致等同于 `-(x+1)`。
+
+### `["1", "2", "3"].map(parseInt)`
+
+parseInt() 函数能解析一个字符串，并返回一个整数，需要两个参数 (val, radix)，其中radix 表示要解析的数字的基数。（该值介于 2 ~ 36 之间，并且字符串中的数字不能大于radix 才能正确返回数字结果值）。此处 map 传了 3 个参数 (element, index, array)，默认第三个参数被忽略掉，因此三次传入的参数分别为 "1-0", "2-1", "3-2"因为字符串的值不能大于基数，因此后面两次调用均失败，返回 NaN ，第一次基数为 0 ，按十进制解析返回 1。
+
+### `[].forEach.call($$(""),function(a){a.style.outline="1px solid#"+(~~(Math.random()(1<<24))).toString(16)})` [解释代码意思](https://www.iteye.com/blog/2008winstar-2128290)
+
+1. 选取页面所有 DOM 元素。在浏览器的控制台中可以使用$$()方法来获取页面中相应的元，这是现代浏览器提供的一个命令行 API 相当于 document.querySelectorAll 方法。
+2. 循环遍历 DOM 元素
+3. 给元素添加 outline 。由于渲染的 outline 是不在 CSS 盒模型中的，所以为元素添加outline 并不会影响元素的大小和页面的布局。
+4. 生成随机颜色函数。Math.random()*(1<<24) 可以得到 0~2^24 - 1 之间的随机数，因为得到的是一个浮点数，但我们只需要整数部分，使用取反操作符 ~ 连续两次取反获得整数部分，然后再用 toString(16) 的方式，转换为一个十六进制的字符串。
+
+### 不同进制数字的表示方式
+
+### 请解释事件代理/事件委托（event delegation）
 
 事件委托是将事件监听器添加到父元素，而不是每个子元素单独设置事件监听器。当触发子元素时，事件会冒泡到父元素，监听器就会触发。这种技术的好处是：
 
@@ -242,6 +561,20 @@ MMVM（Model-View-ViewModel）和MVC（Model-View-Controller）都是一种架�
 3. 事件冒泡：第三阶段，真正触发事件的节点触发完毕，会沿着直系继承树一直向上传递该事件，一直传递到根节点，沿途绑定了相同事件的节点会依次触发。即同一事件，自子元素冒泡向父元素。自底向上。
 
 触发顺序：捕获 >> 触发 >> 冒泡
+
+#### 如何让事件先冒泡后捕获
+
+在DOM标准事件模型中，是先捕获后冒泡。但是如果要实现先冒泡后捕获的效果，对于同一个事件，监听捕获和冒泡，分别对应相应的处理函数，监听到捕获事件，先暂缓执行，直到冒泡事件被捕获后再执行捕获之间。
+
+#### DOM的分级
+
+### 原型，原型链，作用域链
+
+#### js获取原型的方法
+
+- `p.__proto__`
+- `p.constructor.prototype`
+- `Object.getPrototypeOf(p)`
 
 ### 请简述`JavaScript`中的`this`
 
@@ -371,20 +704,6 @@ document.addEventListener('DOMMouseScroll',function(event){
 },false)
 ```
 
-### 跨域问题及其解决办法
-
-如果两个 URL 具有相同的协议，域和端口，则称它们是“同源”的。，而“同源策略”的机制规定，同源下的文件可以相互通信，非同源下的不可以，如果非要通信，JS就报错---“跨域错误”。
-
-#### 解决
-
-- document.domain + iframe跨域
-- location.hash + iframe
-- window.name + iframe跨域
-- postMessage跨域
-- nginx代理跨域
-- nodejs中间件代理跨域
-- WebSocket协议跨域
-
 ### attr() 和 prop()区别
 
 - attr()的内部原生JS实现set get方法；prop()的原生实现是直接的点语法
@@ -502,6 +821,396 @@ var person = {
 
 但是，建议不要使用 `with` 语句，因为它可能会导致代码性能下降并引起不必要的错误。在绝大部分情况下，都可以通过其他方式实现相同的效果。
 
+### 即时通讯的实现，短轮询、长轮询、SSE 和 和 WebSocket 间的区别
+
+即时通讯可以使用多种技术实现，其中包含短轮询、长轮询、SSE和WebSocket等。以下是它们之间的区别：
+
+1. 短轮询：短轮询是客户端在一定时间间隔内持续向服务器发送HTTP请求来查询消息是否有更新。如果有更新，则服务器返回相应的数据，否则返回一个空的响应。这种方式相对简单，但需要频繁的网络请求，会导致带宽和服务器的负载增加。
+
+2. 长轮询：长轮询是一种向服务器发送请求并保持连接打开状态的技术。客户端发送一个长时间打开的请求，直到服务器有消息时才会返回响应，否则会等待一段时间后再关闭连接并重新打开一个新的请求以保持连接。这种方式相对于短轮询来说减少了网络请求的次数，但仍然需要频繁的重新创建连接，因此也会增加服务器的负载。
+
+3. SSE（Server-Sent Events）：SSE是一种基于HTTP的技术，通过允许服务器向客户端推送数据，减少了客户端持续发送请求的需要。客户端先向服务器发送一个开放请求，在服务器端绑定一个响应函数，当有状态更新时，服务器端推送一条消息给客户端，客户端响应函数被触发并处理消息。SSE提供了一种单向通信的方式，服务器只能向客户端发送信息。
+
+4. WebSocket：WebSocket是一种基于TCP的双向通信协议，通过在客户端和服务器之间建立持久连接，允许真正的双向通信。服务器可以主动向客户端发送消息而不需要等待客户端请求。WebSocket 的通信过程类似于HTTP 握手过程，但在握手成功后不会关闭连接。WebSocket 允许客户端和服务器之间进行实时通信，能够更有效地协调消息交互，减少比轮询方式更多的网络流量和服务器负载。
+
+因此，SSE和 WebSocket 是更现代、高效的实时通信技术。长轮询和短轮询是早期实时通信技术的代表，其效率和可扩展性相对较低，但在一些场合下仍有用武之地。
+
+### 实现多个网站之间共享登录状态
+
+1. 单点登录（Single Sign-On, SSO）：SSO是一种在多个网站和应用程序中实现单个登录会话的解决方案。当用户在任何一个接受SSO的网站登录时，他们也会在其他所有接受SSO的网站上自动登录。
+
+2. 跨域共享Cookie：当用户在一个网站上登录时，将该网站创建的cookie设置为一个在所有网站上都可用的域，以在不同域名之间共享它。
+
+3. 使用Token：用户在登录后，对应的后端系统会生成一个token，并将该token保存为Cookie或者在网址上保存。在其他网站中使用同样的方式将token保持一致，即可实现跨网站的登录状态共享。
+
+4. 统一用户信息库：将所有用户信息集中存储到一个数据库中，并在所有网站中共享该数据库，以验证用户的登录状态。
+
+### 二维码扫描登录的原理
+
+1. 用户打开客户端登录界面，客户端向服务器请求一个二维码登录码，请求成功后，服务器会返回一个唯一的二维码码值。
+
+2. 服务器生成一个唯一的登录ID，将登录ID与二维码码值存储在服务器端，等待客户端扫描二维码。
+
+3. 客户端使用摄像头扫描二维码，并从中获取二维码码值，并在客户端中提交此码值给服务器。
+
+4. 当服务器收到来自客户端发送的二维码码值后，将二维码码值从数据库中读取出来，然后与客户端提交的码值进行比较，如果匹配成功，服务器会获取该登录ID，并将其发送给客户端。
+
+5. 客户端使用该登录ID向服务器发送请求，服务器验证该请求是否合法，如果合法，则将相关用户的信息返回给客户端。
+
+在这个过程中，服务器需要及时通知客户端有关登录状态的变化。为了实现此功能，服务器可以使用以下两种不同的方式之一：
+
+1. 服务器推送（Server Push）：通过开启一个长连接并将数据直接推送到客户端，即时通知客户端有关的登录状态变化。
+
+2. 客户端轮询（Client Pull）：定时向服务器发出请求，查询是否有新的数据更新，这种方式相对于服务器推送，需要客户端不断地发出请求，占用更多的带宽和服务器资源。
+
+需要注意的是，在使用服务器推送或客户端轮询时，也需要考虑到网络延迟和负载均衡等因素，以最优的性能和响应速度来完成数据传输和通知。
+
+### escape,encodeURI,encodeURIComponent 有什么区别？ 有什么区别
+
+encodeURI 是对整个 URI 进行转义，将 URI 中的非法字符转换为合法字符，所以对于一些在URI 中有特殊意义的字符不会进行转义。
+encodeURIComponent 是对 URI 的组成部分进行转义，所以一些特殊字符也会得到转义。
+escape 和 encodeURI 的作用相同，不过它们对于 unicode 编码为 0xff 之外字符的时候会有区别，escape 是直接在字符的 unicode 编码前加上 %u，而 encodeURI 首先会将字符转换为 UTF-8 的格式，再在每个字节前加上 %
+
+### OpenLayer常用对象
+
+1. Map （地图对象）
+2. View （视图对象）
+3. Layer （图层对象）
+4. Source （数据源对象）
+5. Feature （要素对象）
+6. Geometry （几何对象）
+7. Style （样式对象）
+8. Control （控件对象）
+9. Interaction （交互对象）
+10. Projection （投影对象）
+
+### 发布/订阅模式和观察者模式区别
+
+发布/订阅模式和观察者模式都是用于对象间的通信，但它们之间有几个关键的区别：
+
+1. 松耦合性：在观察者模式中，观察者直接订阅主题，并接收更新。但在发布/订阅模式中，发布者和订阅者不知道对方的存在。它们只通过事件通道通信。这建立了一种松耦合的架构，使组件之间相互独立，互不影响。
+
+2. 中心枢纽：发布/订阅模式中，有一个称为“事件总线”的中心枢纽，用于协调所有组件之间的通信。这样可以使组件间的通信更加简单和高效。然而，在观察者模式中，主题直接通知观察者，没有中心枢纽。
+
+3. 编程范式：观察者模式通常被认为是一种面向对象编程范式，而发布/订阅模式则更加广义，可以用于其他编程范式，如函数式编程。
+
+### 检测Webp
+
+浏览器通常使用以下两种方法来检测 WebP 图片格式的支持：
+
+1. 使用 canvas 的 toDataURL 进行判断
+
+    ```js
+    const isSupportWebp = function () {
+      try {
+        return document.createElement('canvas').toDataURL('image/webp', 0.5).indexOf('data:image/webp') === 0;
+      } catch(err) {
+        return false;
+      }
+    }
+
+    isSupportWebp()
+    ```
+
+2. 通过加载一张 webp 图片进行判断
+
+    ```js
+    const supportsWebp = ({ createImageBitmap, Image }) => {
+      if (!createImageBitmap || !Image) return Promise.resolve(false);
+
+      return new Promise(resolve => {
+          const image = new Image();
+          image.onload = () => {
+              createImageBitmap(image)
+                  .then(() => {
+                      resolve(true);
+                  })
+                  .catch(() => {
+                      resolve(false);
+                  });
+          };
+          image.onerror = () => {
+              resolve(false);
+          };
+          image.src = 'data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=';
+      });
+    };
+
+    supportsWebp(window)
+    ```
+
+3. [Modernizr](https://modernizr.com/)
+
+### 图片优化
+
+1. 图片压缩
+2. 图片格式优化：选择合适的图片格式可以有效减小图片的文件大小。JPEG格式适合呈现大量的细节或颜色渐变的图片；PNG格式适合呈现颜色丰富、对比度较强或具有透明背景的图片；GIF格式适合呈现动态的图片。
+3. 图片懒加载
+4. 采用 CDN
+5. 使用CSS精灵
+6. 响应式图片
+7. 图片缓存
+
+### 保存滚动位置
+
+1. 浏览器缓存
+
+   - 在每次滚动事件中，记录滚动的scrollTop位置。
+   - 在路由更改事件中，将scrollTop位置保存到会话存储或浏览器缓存中。
+   - 在每次加载页面事件中，检查是否有scrollTop位置在会话存储或浏览器缓存中，如果有，则将其设置为scrollTop位置。
+
+2. ScrollToTop
+
+```js
+import React, { useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+
+function ScrollToTop({ history }) {
+  useEffect(() => {
+    const unlisten = history.listen(() => {
+      window.scrollTo(0, 0);
+    });
+    return () => {
+      unlisten();
+    }
+  }, [history]);
+
+  return null;
+}
+
+export default withRouter(ScrollToTop);
+```
+
+将`ScrollToTop`组件包装在路由配置中即可：
+
+```js
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import ScrollToTop from './ScrollToTop';
+
+function App() {
+  return (
+    <Router>
+      <ScrollToTop />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+      </Switch>
+    </Router>
+  );
+}
+```
+
+### [Performance API](https://developer.mozilla.org/en-US/docs/Web/API/Performance)
+
+Performance API主要包括以下几个部分：
+
+1. Navigation Timing：提供了有关当前页面加载性能的信息，如页面开始加载和结束加载的时间、DNS查询时间、TCP连接时间、DOM处理时间、资源加载时间等。
+
+2. User Timing：允许开发者在代码中标记时间戳，以便跟踪自定义操作的性能。
+
+3. Resource Timing：提供有关浏览器加载每个资源的性能信息，如CSS文件、JavaScript文件、图像等，包括DNS查询、TCP连接、发送时间、接收时间等。
+
+4. Performance Entry：提供关于各种浏览器活动的高级性能指标，如长任务、跟踪符、内存使用等。
+
+开发者可以使用Performance API执行以下操作：
+
+1. 测量页面加载性能和资源性能。
+
+2. 检测和识别性能瓶颈。
+
+3. 优化代码和资源加载顺序，以提高性能和用户体验。
+
+4. 监视应用程序的性能，并收集相关的性能数据。
+
+以下是一个简单的示例代码，使用Performance API来测量页面加载时间：
+
+```js
+const performanceData = window.performance.timing;
+
+const pageLoadTime = performanceData.loadEventEnd - performanceData.navigationStart;
+
+console.log(`页面加载时间: ${pageLoadTime} 毫秒`);
+```
+
+### ES6模块和CommonJS/AMD/CMD
+
+首先，ES6模块、CommonJS和AMD/CMD都是解决Javascript文件之间依赖关系的问题，并且都能够导出（export）和导入（import）模块。但它们的区别在于，ES6模块是语言层面的支持，而CommonJS/AMD/CMD是在库层面上实现的。
+
+ES6模块与CommonJS的主要区别是：
+
+1. CommonJS 的 require() 是同步加载模块，而ES6模块的加载是异步的，因为ES6模块的设计思想是面向浏览器的。
+
+2. ES6模块的导出和导入模块的方式更加灵活。ES6模块的一个模块可以导出多个变量，在导入时可以使用 `import {name1, name2} from 'myModule'`的命名导入方法。也可以使用 `import * as myModule from 'myModule'` 一次性导入整个模块。而CommonJS则只能一次导出和导入一个模块。
+
+3. ES6模块的时机更早，可以在解析代码前确定模块的依赖关系，因此在编译阶段可以做一些优化工作，例如提前导出变量、剪裁不需要的模块等。而CommonJS则需要在代码运行时解析模块的依赖关系，显得略有些低效。
+
+ES6模块与AMD/CMD的主要区别是：
+
+1. ES6模块是静态的，编译时确定依赖关系。而AMD/CMD则是动态的，需要在运行时确定依赖关系。
+
+2. ES6模块的语法更加简洁，易于理解和使用。而AMD/CMD的语法相比ES6则更为复杂。
+
+3. ES6模块支持 import/export 关键字进行导入和导出。而AMD/CMD则是使用 define()/require() 进行定义和引入。
+
+总体而言，ES6模块相比其他模块具有更好的语法、更强的静态编译优化、更好的浏览器支持，并且是未来Javascript模块化的趋势。在现代开发中，如果不需要与旧系统集成，通常使用ES6模块是最好的选择。
+
+### Proxy/Reflect
+
+Proxy 是 ES6 中引入的一个新特性，它可以在目标对象和操作之间进行拦截。它提供了一个拦截器函数的集合，用来代理对目标对象属性的访问、赋值、方法调用等操作，从而可以在执行这些操作前后进行自定义处理和控制，可用于实现数据绑定、校验、缓存、权限控制、日志记录等功能。Proxy 可以代理包括基础数据类型、对象、数组、函数等各种类型的操作，极大地增强了 JavaScript 的灵活性和可扩展性。
+
+Reflect 是一个全局对象，提供了一组静态方法，用于操作对象的属性和方法，它的每个方法和 Proxy 相应的拦截器进行性质的映射，它们是 Proxy 的基础组成部分，可以完成大多数与对象相关的元编程特性。Reflect 使得原本分散在对象上的操作变得集中和更容易分析维护，可以使代码更加清晰、简洁。
+
+对于 Proxy 和 Reflect 的区别，主要表现在以下三个方面：
+
+1. Proxy 对对象属性的拦截是通过钩子函数来实现的，而 Reflect 提供了与 Proxy 拦截器方法一一对应的 API，可以直接操作对象属性。
+
+2. Proxy 可以通过修改拦截器函数，改变底层的操作行为；而 Reflect 只能通过提供新的 API 来改变底层操作行为。
+
+3. 在 Proxy 中访问原始对象可以直接使用 target，而 Reflect 中需要传入目标对象和相关参数。
+
+## TypeScript
+
+### 主要特点和好处
+
+- 特点
+  - Cross-platform
+  - ES6 features
+  - Object-oriented language
+  - Static type checking
+  - Optional static typing
+  - DOM manipulation
+- 好处
+  - less syntactical clutter
+  - catching logical errors before compile-time
+  - easier to read and more structured
+  - due to versatile transpiling
+
+### 内置类型（built-in data types）
+
+- Number type
+
+  ```ts
+  let identifier: number = value;
+  ```
+
+- String type
+
+  ```ts
+  let identifier: string = " ";
+  ```
+
+- Boolean type
+
+  ```ts
+  let identifier: bool = Boolean value;
+  ```
+
+- Null type
+
+  ```ts
+  let num: number = null;
+  ```
+
+- Undefined type
+
+  ```ts
+  let num: number = undefined;
+  ```
+
+- Void type
+
+  ```ts
+  let unusable: void = undefined;
+  ```
+
+### interface
+
+Interfaces define a contract or structure for objects that use that interface
+
+```ts
+interface IEmployee {
+    empCode: number;
+    empName: string;
+    getSalary: (number) => number; // arrow function
+    getManagerName(number): string; 
+}
+```
+
+### 模块
+
+TypeScript 中的模块是相关变量、函数、类和接口的集合
+
+```ts
+module module_name {
+  class xyz{
+    export sum(x, y){
+      return x+y;
+  }
+}
+```
+
+### 类型断言
+
+类似于其他语言中的类型转换，类型断言对运行时没有影响，仅由编译器使用。类型断言本质上是类型转换的软版本，它建议编译器将变量视为某种类型，但如果它处于不同的形式，则不会强制它进入该模型。
+
+### 子类调用基类构造函数
+
+  `super()`函数
+
+### 检查 null 和 undefined
+
+```ts
+//juggle-check
+if (x == null) {  
+}
+
+var a: number;  
+var b: number = null;  
+function check(x, name) {  
+    if (x == null) {  
+        console.log(name + ' == null');  
+    }  
+    if (x === null) {  
+        console.log(name + ' === null');  
+    }  
+    if (typeof x === 'undefined') {  
+        console.log(name + ' is undefined');  
+    }  
+}  
+check(a, 'a');  
+check(b, 'b');
+```
+
+### Omit类型
+
+`Omit` is a form of utility type, which facilitates common type transformations. `Omit` lets you construct a type by passing a current `Type` and selecting `Keys` to be omitted in the new type.
+
+### 装饰器
+
+装饰器是一种特殊的声明，它允许你通过使用`@<name>`注释标记来一次性修改类或类成员。每个装饰器都必须引用一个将在运行时评估的函数。例如，装饰器`@sealed`将对应于sealed函数。任何标有 的`@sealed`都将用于评估sealed函数。
+
+- <https://betterprogramming.pub/top-50-typescript-interview-questions-explained-5e69b73eeab1>
+- [练习题](https://github.com/semlinker/awesome-typescript/issues?q=is%3Aissue+is%3Aopen+sort%3Acreated-asc)
+
+## Node
+
+## 框架
+
+### MMVM、MVC
+
+MMVM（Model-View-ViewModel）和MVC（Model-View-Controller）都是一种架构模式，用于构建应用程序。它们的区别主要在于以下几点：
+
+1. 数据绑定方式不同。MVVM中的View和ViewModel之间使用了双向数据绑定，View中的变化会自动更新ViewModel，反之亦然。而MVC中，View和Controller之间采用的是单向数据绑定，只有Controller可以更新View。
+
+2. 视图组件的复杂程度不同。MVVM中的ViewModel可以包含业务逻辑，因此它的功能比MVC的Controller更加复杂。ViewModel可处理网页的交互、服务端数据请求并作出回应，并控制页面的展示，避免了在View层中出现过多的业务判断逻辑和事件操作，使得View层只需专注于视图渲染和交互响应。
+
+3. 界面开发方式不同。在MVVM中，ViewModel的自动翻译降低了View的前端开发难度，开发者无须再按照传统MVC方式编写繁琐的UI监听、事件绑定等代码。MVVM减少大量的冗余的代码，提升开发效率和开发者的开发体验。
+
+4. 分工不同。MVVM将业务逻辑、数据映射、视图逻辑、页面展示分离，可以让各个模块更加独立，有利于团队成员的分工协作，提高开发效率。
+
+综上所述，MVVM相对于MVC在分离视图显示和业务逻辑方面做得更加彻底，且简化开发模版和设计的复杂性，能够有效地解决大型项目中View层复杂业务逻辑的问题。
+
 ### 微信小程序生命周期、鉴权登录、支付流程
 
 #### 微信小程序的生命周期
@@ -546,31 +1255,6 @@ var person = {
 
 8. 服务器接收到状态为支付成功的回调通知，更新订单状态，并向用户发送订单支付成功的通知。
 
-### V8 垃圾回收
-
-V8 是一款非常优秀的 JavaScript 引擎，在 Node.js 和 Chrome 等浏览器中广泛使用。V8 使用了基于标记-清除垃圾回收算法（Mark-and-Sweep Garbage Collection Algorithm）的自动垃圾回收机制，可以自动管理内存。
-
-V8 内存分为新生代和老生代两个区域，新生代用于存放活跃时间较短的对象，而老生代则用于存放活跃时间较长的对象。新生代内存分为 From 和 To 两个空间，对象在 From 空间进行分配，当进行垃圾回收时，活跃对象会被复制到 To 空间，同时 From 空间变成空闲状态，反之亦然。垃圾回收的过程分为标记和清除两个阶段，通过遍历根对象，标记所有与其相关的对象，然后进行清除操作。
-
-在老生代区域，V8 则使用了更高级别的垃圾回收算法，如标记-压缩垃圾回收算法（Mark-and-Compact Garbage Collection Algorithm）和增量标记（Incremental Marking）等。增量标记用于将标记和清除两个操作分为多个阶段，避免了长时间的停顿，可以提高应用运行的流畅性。
-
-值得注意的是，V8 还有一项优化机制，叫做内联缓存（Inline Cache），通过记录对象属性的类型，可以减少变量访问的时间。当获取对象属性时，V8 会先检查对象上该属性的类型是否变化，从而提高函数的效率。
-
-总的来说，V8 对于内存管理的优化非常细致，不仅使用了多种垃圾回收算法，还有内联缓存等优化措施，从而让 JavaScript 程序可以更高效、流畅地运行。
-
-### OpenLayer常用对象
-
-1. Map （地图对象）
-2. View （视图对象）
-3. Layer （图层对象）
-4. Source （数据源对象）
-5. Feature （要素对象）
-6. Geometry （几何对象）
-7. Style （样式对象）
-8. Control （控件对象）
-9. Interaction （交互对象）
-10. Projection （投影对象）
-
 ### 自定义React Hooks
 
  自定义React Hooks 是在 React v16.8 之后推出的，它允许我们将组件逻辑提取到可重用的函数中，从而可以减少组件中的样板代码，并更好地组织组件逻辑。自定义 React Hooks 应该遵循以下规则：
@@ -581,7 +1265,7 @@ V8 内存分为新生代和老生代两个区域，新生代用于存放活跃�
 
 下面是一个自定义 React Hooks 的示例代码，该自定义 Hook 可以设置和获取元素的宽度和高度：
 
-```
+```js
 import { useState, useEffect } from 'react';
 
 function useElementSize(ref) {
@@ -613,7 +1297,7 @@ export default useElementSize;
 
 在组件中使用该 Hook：
 
-```
+```js
 import useElementSize from './useElementSize';
 
 function App() {
@@ -721,3 +1405,5 @@ export default App;
 在这个例子中，我们将用户输入的搜索关键字通过 `useState` 更新，并用 `useDebounce` 对其进行节流处理，最后在搜索请求前，通过 `useEffect` 监听节流处理后的搜索关键字，并进行搜索请求。
 
 总之，使用自定义的 `useDebounce` Hook 可以对容易频繁触发的操作进行节流处理，从而达到更好的用户体验和代码优化效果。
+
+## 工程化

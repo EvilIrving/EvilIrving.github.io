@@ -23,6 +23,7 @@ categories:
 - attribute 和 property 的区别
 - 伪类 LVHA 的解释
 - 块级格式化上下文（BFC）、外边距折叠解决方式
+- 用css实现一个硬币旋转的效果
 - rem和其他单位之间的区别
 - 清除浮动方式及其特点
 - 元素水平和垂直居中
@@ -39,6 +40,24 @@ categories:
 
 ## 题目：含答案
 
+### 主流浏览器内核私有属性css前缀
+
+mozilla firefox  -moz
+webkit safari,chrome -webkit
+
+### [Flex布局](https://www.zhangxinxu.com/wordpress/2018/10/display-flex-css3-css/)
+
+Flex布局相关属性正好分为两拨，一拨作用在flex容器上，还有一拨作用在flex子项上。
+
+|容器  |  作用 | 子项 |作用 |
+| -- | -- | --  | -- |
+|flex-direction |  控制子项整体布局方向 |order|改变某一个flex子项的排序位置|
+|flex-wrap | 控制子项整体单行显示还是换行显示| flex-grow|扩展的就是flex子项所占据的宽度，扩展所侵占的空间就是除去元素外的剩余的空白间隙。|
+|flex-flow | 是flex-direction和flex-wrap的缩写 <br> 如 `flex-flow: row-reverse rap-reverse;| flex-shrink|--|
+|justify-content | 水平方向子项的对齐和分布方式| flex-basis|--|
+|align-items | flex子项们相对于flex容器在垂直方向上的对齐方式| flex|--|
+|align-content | 指明垂直方向每一行flex元素的对齐和分布方式| align-self|--|
+
 ### 为什么 height:100% 会无效
 
 对于普通文档流中的元素，百分比高度值要想起作用，其父级必须有一个可以生效的高度值。使用绝对定位的元素会有计算值，即使祖先元素的height计算为auto也是如此。
@@ -50,6 +69,8 @@ categories:
 
 - max-width会覆盖width，即使width是行类样式或者设置了!important。
 - min-width会覆盖max-width，此规则发生在min-width和max-width冲突的时候。
+
+### text-indent 的特殊性
 
 ### 居中
 
@@ -426,6 +447,14 @@ flex-basis只在弹性布局中的子元素有效；在绝对定位中对元素�
 2. 浏览器检查清单文件中指定的资源并将它们与服务器上的副本进行比较，如有差异，它将自动下载新版本的文件并更新本地缓存。
 3. 当离线用户尝试访问站点时，浏览器会从本地缓存加载资源，而不是从服务器请求新文件。
 
+### link标签和import标签的区别
+
+link属于html标签，而@import是css提供的页面被加载时，link会同时被加载，而@import引用的css会等到页面加载结束后加载。link是html标签，因此没有兼容性，而@import只有IE 5 以上才能识别。link方式样式的权重高于@import的。
+
+### transition和animation的区别
+
+Animation和transition大部分属性是相同的，他们都是随时间改变元素的属性值，他们的主要区别是transition需要触发一个事件才能改变属性，而animation不需要触发任何事件的情况下才会随时间改变属性值，并且transition为 2 帧，从from....to，而animation可以一帧一帧的。
+
 ### track
 
 `<track>` 是 HTML5 中一种用于为诸如 `<video>` 和 `<audio>` 等媒体元素提供外部文本轨道的标记。
@@ -459,7 +488,7 @@ flex-basis只在弹性布局中的子元素有效；在绝对定位中对元素�
 
    - Expires：设置过期时间，当客户端发起请求时，判断本地缓存是否过期，如果未过期，则直接从缓存中取数据。
 
-   - Cache-Control：在HTTP/1.1中，Cache-Control提供了多种控制缓存的方式，如max-age、no-cache、no-store等等。
+   - Cache-Control：在HTTP/1.1中，Cache-Control提供了多种控制缓存的方式，如max-age、no-cache、no-store等等，默认为private。
 
 2. 协商缓存：当强制缓存失效或者浏览器不支持强制缓存时，浏览器会发起协商缓存请求，判断服务器端资源发生了变化没有。常用的协商缓存策略有两种：
 
@@ -468,3 +497,421 @@ flex-basis只在弹性布局中的子元素有效；在绝对定位中对元素�
    - ETag/If-None-Match：ETag是服务器根据资源生成的唯一标识，当客户端请求资源时，服务器返回ETag值，客户端再次请求时，带上If-None-Match请求头，服务器检查这个值是否和服务端生成的一致，如果一致，则返回304状态码，表示客户端本地缓存资源可用。
 
 总之，浏览器缓存策略可以有效减少网络请求，提高网页载入速度，而且可以减轻服务器的负担。同时，为了避免用户看到过期的缓存资源，应该合理设置缓存时间，并定期更新缓存资源。
+
+### dragapi
+
+- `dragstart`：事件主体是被拖放元素，在开始拖放被拖放元素时触发，。
+- `darg`：事件主体是被拖放元素，在正在拖放被拖放元素时触发。
+- `dragenter`：事件主体是目标元素，在被拖放元素进入某元素时触发。
+- `dragover`：事件主体是目标元素，在被拖放在某元素内移动时触发。
+- `dragleave`：事件主体是目标元素，在被拖放元素移出目标元素是触发。
+- `drop`：事件主体是目标元素，在目标元素完全接受被拖放元素时触发。
+- `dragend`：事件主体是被拖放元素，在整个拖放操作结束时触发
+
+### HTTP状态码
+
+ HTTP 状态码为 3 位数，被归为 5 类：
+
+- **1XX**：表示目前是协议处理的中间状态，还需要后续操作。
+- **2XX**：表示成功状态。
+- **3XX**：重定向状态，资源位置发生变动，需要重新请求。
+- **4XX**：请求报文有误。
+- **5XX**：服务器端发生错误。
+
+- **101 Switching Protocols**：在 HTTP 升级为 `WebSocket` 的时候，如果服务器同意变更，就会发送状态码为 101。
+- **200 OK**：请求成功状态码，响应体中含有数据。
+- **204 No Content**：含义同 200，但是响应报文不含实体的主体部分。
+- **206 Partial Content**：表示部分内容请求成功。使用场景为 HTTP 分块下载和断点续传，当然也会带上相应的响应头字段 `Content-Range`。
+- **301 Move Permanently**：永久重定向。HTTP 升级 HTTPS，之前站点再也不用，那就是 301。
+- **302 Found**：临时重定向。当前站点暂时不可用，那就是 302，后续可能换回来。
+- **304 Not Modified**：当命中协商缓存时会返回这个状态码。
+- **400 Bad Request**：请求无效。通常为前后端数据格式不一致或者其他原因。
+- **403 Forbidden**：服务器已经得到请求，但是拒绝执行，比如没权限、法律禁止等。
+- **404 Not Found**：资源未找到，服务器不存在对应的资源。
+- **500 Internal Server Error**：服务器报错，有些时候可以在 Response 看到后端 PHP 等技术的报错信息等。
+- **502 Bad Gateway**：服务器正常，但是访问出错。
+- **503 Service Unavailable**：服务器繁忙或者停机维护，暂时无法处理请求。
+
+### cookies、session、sessionStorage、localStorage的区别
+
+- **cookies**：存储于浏览器端的数据。可以设置 cookies 的到期时间，如果不设置时间，则在浏览器关闭窗口的时候会消失。
+- **session**：存储于服务器端的数据。session 存储特定用户会话所需的属性和配置信息。
+- **cookies** 和 **session** 的区别在于：
+
+1. cookies 数据存放在客户的浏览器上，session 数据存放在服务器上。
+2. 前端都是裸君子，没有安全可言，cookies 可能会被黑客利用作数据欺骗。所以重要信息记得存 session。
+3. session 如果在生效期内量过大，会占用服务器性能。
+4. 单个 cookies 保存的数据不能超过 4 K，很多浏览器限制一个站点保存最多 20 个 cookies。
+
+cookie有哪些字段可以设置
+
+name字段为一个cookie的名称。
+value字段为一个cookie的值。
+domain字段为可以访问此cookie的域名。
+
+- **sessionStorage**：生命周期存在于标签页或窗口，用于本地存储一个会话（session）中的数据，这些数据会随着窗口或者标签页的关闭而被清空。
+- **localStorage**：生命周期是永久的，除非用户主动清除浏览器上存储的 localStorage 信息，否则它将会永久存在，空间 达到 5 M或更大
+- **sessionStorage** 和 **localStorage** 操作方法：`setItem`、`getItem` 以及 `removeItem`。
+
+[《前端分享之cookie的使用及单点登录》](https://segmentfault.com/a/1190000011295587)  
+[《Cookie、session和localStorage、以及sessionStorage之间的区别》](https://www.cnblogs.com/zr123/p/8086525.html)
+
+### Web Worker
+
+在 HTML5 的新规范中，实现了 `Web Worker` 来引入 JavaScript 的 “多线程” 技术，他的能力让我们可以在页面主运行的 JavaScript 线程中加载运行另外单独的一个或者多个 JavaScript 线程。
+
+> 注意：JavaScript 本质上还是单线程的，`Web Worker` 只是浏览器（宿主环境）提供的一个得力 API。
+>
+#### 调用 Web Worker
+
+> index.js
+
+```js
+console.log('index-同步任务');
+Promise.resolve().then((res) => {
+  console.log('index-Promise');
+});
+setTimeout(() => {
+  console.log('index-setTimeout');
+}, 1000);
+```
+
+> index.html
+
+```html
+<script>
+  window.onload = function() {
+    console.log('本地-同步任务');
+    // 微任务之间
+    Promise.resolve().then((res) => {
+      console.log('本地-微任务 1');
+    })
+    const worker1 = new Worker('./index.js');
+    Promise.resolve().then((res) => {
+      console.log('本地-微任务 2');
+    })
+
+    // 宏任务之间
+    setTimeout(() => {
+      console.log('本地-宏任务 1');
+    }, 1000);
+    const worker2 = new Worker('./index.js');
+    setTimeout(() => {
+      console.log('本地-宏任务 2');
+    }, 1000);
+  };
+</script>
+```
+
+执行的时候打印结果：
+
+```
+本地-同步任务
+本地-微任务 1
+本地-微任务 2
+index-同步任务
+index-Promise
+index-同步任务
+index-Promise
+本地-宏任务 1
+本地-宏任务 2
+index-setTimeout
+index-setTimeout
+```
+
+可以看到：
+
+1. 先执行 `script` 中同步任务
+2. 再执行 `script` 中微任务
+3. 然后执行 UI 线程的渲染工作（这里在代码中没有体现，感兴趣的可以试试添加 `rAF`）
+4. 接着才执行 `Web Worker` 里面内容
+5. 再来是 `index.html` 中的宏任务
+6. 最后才是 `Web Worker` 文件中的宏任务
+
+可以看出它仍符合 `Event Loop` 流程。
+
+#### Web Worker 数据通讯
+
+> index.js
+
+```js
+onmessage = (res) => {
+  // Worker 接收数据
+  console.log('Worker 收到数据：', res);
+  // Worker 收到数据：
+  // MessageEvent {isTrusted: true, data: "查房，这里是 index.html！", origin: "", lastEventId: "", source: null, …}
+
+  // Worker 发送数据
+  postMessage('开门！这里是 index.js');
+}
+```
+
+> index.html
+
+```html
+<script>
+window.onload = function() {
+  // 实例化 Worker
+  const worker = new Worker('./index.js');
+
+  // index.html 接收数据
+  worker.addEventListener('message', (res) => {
+  console.log('index.html 收到数据：', res);
+  // index.html 收到数据：
+  // MessageEvent {isTrusted: true, data: "开门！这里是 index.js", origin: "", lastEventId: "", source: null, …}
+  });
+
+  // index.html 发送数据
+  worker.postMessage('查房，这里是 index.html！');
+
+  //  终止 Worker
+  worker.terminate();
+};
+</script>
+```
+
+在 `index.html` 中，通过：
+
+- `worker.addEventListener('message', callback)`。接收 Web Worker 传递的数据。
+- `worker.postMessage('xxx')`。发送数据给 Web Worker。
+- `worker.terminate()`。终止通讯
+
+在 `index.js` 中，通过：
+
+```js
+onmessage = (res) => {
+  console.log(res); // 在 onmessage 方法接受数据
+  postMessage('xxx'); // 通过 postMessage 发送数据
+}
+```
+
+#### Web Worker 可操作 API
+
+- `setTimeout()， clearTimeout()， setInterval()， clearInterval()`：有了这几个函数，就可以在 `Web Worker` 线程中执行定时操作了；
+- `XMLHttpRequest` 对象：意味着我们可以在 `Web Worker` 线程中执行 `Ajax` 请求；
+- `navigator` 对象：可以获取到 `ppName`，`appVersion`，`platform`，`userAgent` 等信息；
+- `location` 对象（只读）：可以获取到有关当前 URL 的信息；
+
+如果需要加载其他 JS 脚本：
+
+```js
+importScripts('./index2.js', './index3.js');
+
+// 或者
+
+// importScripts('./index2.js');
+// importScripts('./index3.js');
+```
+
+#### Web Worker 兼容性
+
+- IE：11 版本
+- Edge：14+ 版本
+- Firefox：51+ 版本
+- Chrome：56+ 版本
+- 其他：看 [caniuse 链接](https://caniuse.com/webworkers)
+
+### HTML语义化标签
+
+为什么需要语义化
+
+- 易修改、易维护
+- 无障碍阅读支持
+- 搜索引擎良好，利于 SEO
+- 面向未来的 HTML，浏览器在未来可能提供更丰富的支持
+
+常见的 HTML5 标签有：
+
+- `<section>` - 章节
+- `<nav>` - 导航
+- `<article>` - 完整独立内容块
+- `<aside>` - 和页面内容关联度较低的内容：例如广告（剩余的）
+- `<header>` - 页面或者文章头部
+- `<footer>` - 页面或者文字尾部
+- `<main>` - 文档主要内容
+- `<figure>` - 一个和文档有关的图例
+- `<figcaption>` - 图例说明
+- `<mark>` - 需要被高亮的引用文字
+- `<video>` - 视频
+- `<audio>` - 音频
+- `<source>` - 为 `video` 和 `audio` 指定 **媒体源**
+- `<track>` - 为 `video` 和 `audio` 指定 **文本轨道**（字幕）
+- `<canvas>` - 位图区域
+- `<svg>` - 矢量图
+- `<progress>` - 进度条
+- `<meter>` - 滑动条
+
+结构语义化
+
+```html
+<!-- 头部 -->
+<header>
+  <nav></nav>
+</header>
+
+<!-- 内容区 -->
+<main>
+  <!-- 左侧 -->
+  <article>
+    <!-- 左侧标题 -->
+    <header></header>
+    <!-- 图片区块 -->
+    <figure>
+      <img>
+      <figcaption></figcaption>
+    </figure>
+  </article>
+
+  <!-- 右侧 -->
+  <aside>
+    <!-- 友情链接 -->
+    <nav></nav>
+    <section></section>
+  </aside>
+</main>
+
+<!-- 底部 -->
+<footer></footer>
+```
+
+### 替换元素和不可替换元素
+
+**替换元素** 就是浏览器根据元素的标签和属性，来决定元素的具体显示内容。
+
+- `<img>` 根据 `src` 属性来读取图片信息并显示出来
+- `<input>` 根据标签的 `type` 属性来决定是显示输入框，还是单选按钮。
+
+替换元素有：`<img>`、`<input>`、`<textarea>`、`<select>`、`<object>`。
+
+HTML 大多数元素都是不可替换的，即其内容直接展现给浏览器。
+
+- `<p>` 直接全部展示
+
+### 行内元素和块级元素
+
+| 块级元素 | 行内元素 |
+| --- | --- |
+| 独占一行。默认情况下宽度自动填充父元素宽度 | 宽度随元素内容变化。相邻的行内元素会排列在同一行内，直到一行排不下，才会换行。 |
+| 可以设置 `width`、`height` | 设置 `width`、`height` 无效 |
+| 可以设置 `margin` 和 `padding` | 可以设置 `margin-left`、`margin-right`、`padding-left`、`padding-right` |
+| 对应：`display: block` | 对应 `display: inline` |
+
+#### 常见块级元素
+
+- `<div>` - 标签块
+- `<h1>`、`<h2>`、`<h3>`、`<h4>`、`<h5>`、`<h6>` - 标题 1 - 标题 6
+- `<form>` - 表单
+- `<hr>` - 水平线
+- `<ul>` - 无序列表
+- `<ol>` - 有序列表
+- `<li>` - 定义列表项目，用于 `ul` 和 `li` 中
+- `<p>` - 段落
+- `<table>`、`<thead>`、`<tbody>`、`<thead>`、`<th>`、`<tr>`、`<td>` - 表格元素
+
+#### 常见行内元素
+  
+- `<a>` - 超链接或者锚点
+- `<b>` - 字体加粗
+- `<br>` - 换行
+- `<code>` - 定义计算机代码文本
+- `<i>` - 斜体
+- `<img>` - 图片
+- `<input>` - 输入框
+- `<label>` - 为 `input` 进行标记/标注
+- `<button>` - 按钮
+- `<textarea>` - 多行文本框
+
+#### 行内元素和块级元素转换
+
+`display` 属性可以使行内元素和块级元素之间转换。
+
+- `display: inline` - 转换为行内元素
+- `display: block` - 转换为块级元素
+- `display: inline-block` - 转换为行内块元素
+
+### Doctype作用?严格模式与混杂模式如何区分？它们有何意义?
+
+Doctype声明于文档最前面，告诉浏览器以何种方式来渲染页面，这里有两种模式，严格模式和混杂模式。
+
+- 严格模式的排版和JS运作模式是以该浏览器支持的最高标准运行。
+- 混杂模式，向后兼容，模拟老式浏览器，防止浏览器无法兼容页面。
+
+### XSS、CSRF、流量劫持
+
+#### XSS
+
+XSS（Cross Site Script）跨站脚本攻击。指的是攻击者向网页注入恶意的客户端代码，通过恶意的脚本对客户端网页进行篡改，从而在用户浏览网页时，对用户浏览器进行控制或者获取用户隐私数据的一种攻击方式。
+
+- XSS 攻击类型
+  1. 存储型
+  2. 反射型
+  3. 文档型
+- 防御 XSS 攻击
+  - **输入检查**：对输入内容中的 `script` 和 `<iframe>` 等标签进行转义或者过滤
+  - **设置 httpOnly**：设置此属性可防止 JavaScript 获取 `Cookie`，只能在 HTTP 请求过程中使用 `Cookie`
+  - **开启 CSP 白名单**：即开启白名单，可阻止白名单以外的资源加载和运行
+
+#### CSRF
+
+CSRF 攻击（Cross-site request forgery）即跨站请求伪造。
+
+是一种劫持受信任用户向服务器发送非预期请求的攻击方式，通常情况下，它是攻击者借助受害者的 Cookie 骗取服务器的信任，但是它并不能拿到 Cookie，也看不到 Cookie 的内容，它能做的就是给服务器发送请求，然后执行请求中所描述的命令，以此来改变服务器中的数据，也就是并不能窃取服务器中的数据。
+
+CSRF 攻击就是黑客利用用户的登录状态，并通过第三方的站点来做一些坏事。
+
+1. 利用用户的登录状态，并通过第三方的站点来做一些坏事
+2. 自动发 GET 请求
+3. 自动发 POST 请求
+4. 诱导点击发送 GET 请求
+
+- 防御 CSRF 攻击：
+  - **验证 Token**：浏览器请求服务器时，服务器返回一个 `token`，之后每个请求都需要同时带上 `token` 和 `Cookie` 才会被认为是合法请求
+  - **验证 Referer**：通过验证请求头的 `Referer` 来验证来源站点，但请求头很容易伪造
+  - **设置 SameSite**：设置 `Cookie` 的 `SameSite`，可以让 `Cookie` 不随跨站请求发出，但浏览器兼容不一
+
+#### 流量劫持
+
+流量劫持基本分两种：`DNS` 劫持 和 `HTTP` 劫持，
+
+> `DNS` 劫持，也叫做域名劫持。
+>
+> 当用户通过某一个域名访问一个站点的时候，被篡改的 `DNS` 服务器返回的是一个恶意的钓鱼站点的 `IP`，用户就被劫持到了恶意钓鱼站点，然后继而会被钓鱼输入各种账号密码信息，泄漏隐私。
+>
+> HTTP 劫持
+>
+> `HTTP` 劫持主要是当用户访问某个站点的时候会经过运营商网络，而不法运营商和黑产勾结能够截获 `HTTP` 请求返回内容，并且能够篡改内容，然后再返回给用户，从而实现劫持页面。
+>
+> `HTTPS` 是基于 `SSL` 协议的安全加密网络应用层协议，相当于 `HTTP` + `SSL`，可以很好地防止 `HTTP` 劫持。
+>
+### click在ios上有 300 ms延迟，原因及如何解决
+
+- 粗暴型，禁用缩放`<metaname="viewport"content="width=device-width,user-scalable=no">`
+- 利用FastClick，其原理是：检测到touchend事件后，立刻出发模拟click事件，并且把浏览器 300 毫秒之后真正出发的事件给阻断掉
+
+### 从URL 到渲染完成的整个过程，包括 DOM 构建的过程
+
+从 URL 到渲染完成的整个过程包含以下几个步骤：
+
+1. URL 解析：浏览器通过解析输入的 URL，获取域名、协议、端口、路径等信息。
+
+2. DNS 解析：浏览器向 DNS 服务器发送域名解析请求，并根据返回的 IP 地址进行连接。
+
+3. 建立 TCP 连接：浏览器和服务器进行 TCP 三次握手建立连接。
+
+4. 发送 HTTP 请求：浏览器向服务器发送 HTTP 请求，请求资源文件。
+
+5. 服务器处理请求：服务器接收到浏览器发送的请求，进行解析和处理，并返回相应的资源文件。
+
+6. 接收响应数据：浏览器接收到服务器返回的资源文件。
+
+7. HTML 解析：浏览器开始解析 HTML，构建 DOM 树。
+
+8. CSS 解析：解析 CSS 文件，并构建 CSSOM 树。
+
+9. 渲染页面：根据 DOM 树和 CSSOM 树构建渲染树，计算节点尺寸、位置等信息，并最终将页面渲染出来。
+
+10. JavaScript 执行：当浏览器遇到 JavaScript 时，会执行脚本，对 DOM 树和 CSSOM 树进行修改，从而还要重新进行渲染。
+
+11. 页面加载完成：当渲染进程完成页面渲染后，页面加载完成。
+
+至此，从 URL 到渲染完成的整个过程就结束了。在整个过程中，DOM 构建的过程是将 HTML 文件解析为一个文档树的过程，CSS 解析的过程是将 CSS 代码解析为 CSSOM 树的过程。DOM 树和 CSSOM 树构成了渲染树，完成了页面的渲染。
