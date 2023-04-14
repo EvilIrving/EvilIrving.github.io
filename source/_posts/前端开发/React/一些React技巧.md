@@ -6,7 +6,7 @@ tags:
 - React
 categories: 
 - React
-description: 项目中用到的一些技巧
+description: 项目用到的一些技巧
 ---
 
 ## 使用 TypeScript 开发函数式组件
