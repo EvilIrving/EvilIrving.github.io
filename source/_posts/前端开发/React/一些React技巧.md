@@ -147,4 +147,10 @@ Array(3).fill(<span>Chris1993</span>) as any as JSX.Element;
 - 执行 `setState` 后直接使用 state：`setState()`是异步的，后续操作封装成函数
 - 使用 `useState` + `useEffect` 时出现无限循环：设置 `useEffect` 第二个参数
 - 忘记在 `useEffect` 中清理副作用：为 useEffect()的副作用函数设置返回函数：比如定时器、事件监听
-- 错误的使用布尔运算符：避免 falsy 表达式
+- 错误的使用布尔运算符：避免 `falsy` 表达式
+
+## 面试题
+
+- <https://docs.wuwei.fun/FELib/react/50.html>
+- <https://mp.weixin.qq.com/s/IHDXK2sY48r0_Tyu9vrKMw>
+- <https://juejin.cn/post/7182382408807743548#heading-13>
