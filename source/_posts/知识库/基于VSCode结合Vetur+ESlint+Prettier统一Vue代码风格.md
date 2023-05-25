@@ -24,7 +24,7 @@ description:
 
 File -> Preferences -> Settings，选择User、Workspace 配置tab标签后，点击图示按钮，即可打开settings.json配置文件
 
-![配置图]('../../assets/jckbl4ecjn.png' 指示图)
+![配置图]('../../assets/jckbl4ecjn.png' 配置图)
 
 粘贴或修改以下配置至文件中。
 
