@@ -135,6 +135,10 @@ render(h) {
 
 ### utils
 
+### 多环境发布
+### 动态侧边栏
+### 面包屑
+
 ## Css
 
 ```css
@@ -183,3 +187,204 @@ normalize
 - mockjs
 
 ## Code Snippest
+
+### timeAgo
+
+```js
+/**
+ * @param {number} time
+ */
+function timeAgo(time) {
+  const between = Date.now() / 1000 - Number(time)
+  if (between < 3600) {
+    return pluralize(~~(between / 60), ' minute')
+  } else if (between < 86400) {
+    return pluralize(~~(between / 3600), ' hour')
+  } else {
+    return pluralize(~~(between / 86400), ' day')
+  }
+}
+
+/**
+ * Show plural label if time is plural number
+ * @param {number} time
+ * @param {string} label
+ * @return {string}
+ */
+function pluralize(time, label) {
+  if (time === 1) {
+    return time + label
+  }
+  return time + label + 's'
+}
+```
+
+### 数字添加单位
+
+```js
+/**
+ * Number formatting
+ * like 10000 => 10k
+ * @param {number} num
+ * @param {number} digits
+ */
+function numberFormatter(num, digits) {
+  const si = [
+    { value: 1E18, symbol: 'E' },
+    { value: 1E15, symbol: 'P' },
+    { value: 1E12, symbol: 'T' },
+    { value: 1E9, symbol: 'G' },
+    { value: 1E6, symbol: 'M' },
+    { value: 1E3, symbol: 'k' }
+  ]
+  for (let i = 0; i < si.length; i++) {
+    if (num >= si[i].value) {
+      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
+    }
+  }
+  return num.toString()
+}
+```
+
+### 千分位
+
+```js
+/**
+ * 10000 => "10,000"
+ * @param {number} num
+ */
+function toThousandFilter(num) {
+  return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+}
+```
+
+### 首字母大写
+
+```js
+/**
+ * Upper case first char
+ * @param {String} string
+ */
+function uppercaseFirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
+```
+
+### name
+
+```js
+
+```
+
+### name
+
+```js
+
+```
+
+## 正则
+
+### isExternal
+
+```js
+/**
+ * @param {string} path
+ * @returns {Boolean}
+ */
+export function isExternal(path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
+}
+
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validUsername(str) {
+  const valid_map = ['admin', 'editor']
+  return valid_map.indexOf(str.trim()) >= 0
+}
+```
+
+### validURL
+
+```js
+/**
+ * @param {string} url
+ * @returns {Boolean}
+ */
+export function validURL(url) {
+  const reg = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/
+  return reg.test(url)
+}
+```
+
+### validEmail
+
+```js
+/**
+ * @param {string} email
+ * @returns {Boolean}
+ */
+export function validEmail(email) {
+  const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return reg.test(email)
+}
+```
+
+### validUpperCase
+
+```js
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validLowerCase(str) {
+  const reg = /^[a-z]+$/
+  return reg.test(str)
+}
+
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validUpperCase(str) {
+  const reg = /^[A-Z]+$/
+  return reg.test(str)
+}
+
+/**
+ * @param {string} str
+ * @returns {Boolean}
+ */
+export function validAlphabets(str) {
+  const reg = /^[A-Za-z]+$/
+  return reg.test(str)
+}
+```
+
+## other
+
+echarts 饼图中自定义图例文字颜色
+
+```text
+设置图例文字颜色与图例一致: 设置textStyle的 color为'auto'，自定义样式rich放在后面，避免覆盖。如下：
+
+textStyle: {
+        color: 'auto'  , // 图例文字颜色
+        rich: { // 图例自定义样式
+          a: {
+            color: '#FFFFFF',
+          },
+          b: {
+            color: '#3F98FD',
+          }
+        }
+      }
+
+使用：
+formatter: function(name){
+  return name + '{a| custom},{a| custom}'
+}
+```
+
+参考：<https://www.cnblogs.com/YiFeng-Liu/p/15308026.html>
