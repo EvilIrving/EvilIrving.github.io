@@ -17,5 +17,5 @@ export default defineConfig({
     ]
   },
   ignoreDeadLinks:true,
-  base: 'cain-s-blog/'
+  base: '/cain-s-blog/'
 })
