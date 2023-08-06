@@ -1,5 +1,6 @@
 import type { DefaultTheme } from 'vitepress'
 const nav: DefaultTheme.Config['nav'] = [
+    
     {
         text: 'Work',
         items: [
@@ -26,6 +27,10 @@ const nav: DefaultTheme.Config['nav'] = [
             {
                 text: '算法',
                 link: '/tech/arithmetic/'
+            },
+            {
+                text: '设计模式',
+                link: '/tech/designpattern/'
             },
         ],
     },

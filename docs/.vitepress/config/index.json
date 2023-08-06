@@ -262,6 +262,115 @@
             "link": "/tech/arithmetic/LeetCode/抽稀算法"
         }
     ],
+    "designpattern": [
+        {
+            "text": "创建型设计模式",
+            "items": [
+                {
+                    "text": "🏠简单工厂模式（Simple Factory）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🏭工厂方法模式（Factory Method）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🔨抽象工厂模式（Abstract Factory）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "👷建造者模式",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🐑原型模式（Prototype）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "💍单例模式（Singleton）",
+                    "link": "/tech/designpattern/index"
+                }
+            ]
+        },
+        {
+            "text": "结构型设计模式",
+            "items": [
+                {
+                    "text": "🔌适配器模式（Adapter）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🚡桥梁模式（Bridge）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🌿组合模式（Composite）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "☕装饰模式（Decorator）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "📦门面模式（Facade））",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🍃享元模式（Flyweight）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🎱代理模式（Proxy）",
+                    "link": "/tech/designpattern/index"
+                }
+            ]
+        },
+        {
+            "text": "行为型设计模式",
+            "items": [
+                {
+                    "text": "🔗责任链模式（Chain Of Responsibilities）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "👮命令行模式（Command）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "➿迭代器模式（Iterator）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "👽中介者模式（Mediator）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "💾备忘录模式（Memento）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "😎观察者模式（Observer）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "🏃访问者模式（Visitor）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "💡策略模式（Strategy）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "💢状态模式（State）",
+                    "link": "/tech/designpattern/index"
+                },
+                {
+                    "text": "📒模板方法模式（Template Method）",
+                    "link": "/tech/designpattern/index"
+                }
+            ]
+        }
+    ],
     "reading": [
         {
             "text": "reading",

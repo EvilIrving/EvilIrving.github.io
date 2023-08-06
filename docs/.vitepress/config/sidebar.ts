@@ -8,6 +8,7 @@ const sidebar: DefaultTheme.Config['sidebar'] = {
     '/node/': SideBar.node,
     '/otherside/': SideBar.otherside,
     '/arithmetic/': SideBar.arithmetic,
+    '/designpattern/': SideBar.designpattern,
     '/reading/': SideBar.reading,
     '/photos/': SideBar.photos,
     '/videos/': SideBar.videos,

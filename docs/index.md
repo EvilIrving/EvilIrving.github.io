@@ -1,11 +1,11 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
-layout: home
+layout: home 
+# // doc, page, and home
 
 
 hero:
   name: Cain's space
-  text: 记录一切的地方
+  text: 记录一切的地
   tagline: 希望不会忘记的东西
   image: 
     # src: /black29.jpg
@@ -14,7 +14,7 @@ hero:
     - theme: brand
       text: Get Start
       link: /front/engineering/index.html
-    - theme: brand
+    - theme: alt
       text: GitHub
       link: https://github.com/EvilIrving
 
@@ -26,6 +26,8 @@ features:
     title: daily
     details: bored
   - icon: 🫶
+      # dark: gezi.svg
+      # light: gezi.svg
     title: 最近
     details: Cain's fall in love
 ---
