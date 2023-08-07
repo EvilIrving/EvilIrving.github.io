@@ -1,7 +1,7 @@
 # 留一些记忆
 
 <video id="video" controls :muted='true' preload="metadata">
-      <source id="mp4" src="lic../../pub/罗小黑Daily.mp4" type="video/mp4">
+      <source id="mp4" src="../../public/罗小黑Daily.mp4" type="video/mp4">
 </video>
 
 <script setup lang="ts">
