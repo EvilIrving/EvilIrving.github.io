@@ -4,3 +4,5 @@ issue22
 
 
 commitlint
+
+standaed
