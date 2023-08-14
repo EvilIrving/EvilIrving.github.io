@@ -1,7 +1,37 @@
-# Change Log
+# Changelog
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### 0.0.2 (2023-08-14)
+
+
+### Features
+
+* add github action ([8d005f1](https://github.com/EvilIrving/cain-s-blog/commit/8d005f1f444c54dea2e71cb283f1f84bc730eb09))
+* add github action ([1ac2baa](https://github.com/EvilIrving/cain-s-blog/commit/1ac2baa00ec5596d055a676514f704a8328fc168))
+* add github action ([ddf2bdb](https://github.com/EvilIrving/cain-s-blog/commit/ddf2bdb1899c824a40c19fea921d73d276af5d61))
+* add github action ([6fd22fd](https://github.com/EvilIrving/cain-s-blog/commit/6fd22fde336d4d40f4e1fea56138eb4a860ebaba))
+* add github action ([9e9fb3e](https://github.com/EvilIrving/cain-s-blog/commit/9e9fb3e403bfa54c7c784a971b4db0ca49ca6f38))
+* add github action ([d50c41c](https://github.com/EvilIrving/cain-s-blog/commit/d50c41cde3db0b7f93ad15dc14498215572a5f12))
+* add github action ([349155a](https://github.com/EvilIrving/cain-s-blog/commit/349155adea602ea3301f905db6a430ce2894db3f))
+* add github action ([cef9b0c](https://github.com/EvilIrving/cain-s-blog/commit/cef9b0c7a2346a526e1846e665880d9ec8f1a23d))
+* add github action ([69e3085](https://github.com/EvilIrving/cain-s-blog/commit/69e3085630bdc17150566b2a0111c6006cc0f131))
+* **article:** 更新约定式提交文章 ([3b7636d](https://github.com/EvilIrving/cain-s-blog/commit/3b7636d9645abf4b7bb92a879384af1d8f66d0dd))
+* **config:** add husky ([dc03f7b](https://github.com/EvilIrving/cain-s-blog/commit/dc03f7b62f7195c780c66f657327d2feb6e7ab12))
+* 添加video ([29a2060](https://github.com/EvilIrving/cain-s-blog/commit/29a206026c0479e97a375e6fbca04d7a8f3d35f2))
+* 添加word ([e2b49dd](https://github.com/EvilIrving/cain-s-blog/commit/e2b49ddd27cd7ca5b425950ec40d0c5269e5cddd))
+* 添加视频 ([98d4da5](https://github.com/EvilIrving/cain-s-blog/commit/98d4da5e65dfea83c8661cec31576573923ae5db))
+
+
+### Bug Fixes
+
+* clean code ([c5b3a99](https://github.com/EvilIrving/cain-s-blog/commit/c5b3a99ec6921bbafa7ffb25ff83d5215ce92344))
+* **text.txt:** link issue ([#23](https://github.com/EvilIrving/cain-s-blog/issues/23)) ([7a9497a](https://github.com/EvilIrving/cain-s-blog/commit/7a9497a4d816222e7e8161c173ed943ff1e5b696))
+* **text.txt:** 测试fix提交 ([a101dfa](https://github.com/EvilIrving/cain-s-blog/commit/a101dfa878a00de0398921229c4f521760cf5024))
+* **text.txt:** 测试关联issue ([8c2ca9a](https://github.com/EvilIrving/cain-s-blog/commit/8c2ca9ac073ef091f12abc0b64088f9c9524fb5e)), closes [#22](https://github.com/EvilIrving/cain-s-blog/issues/22)
+* video end 标签错误 ([2e83e68](https://github.com/EvilIrving/cain-s-blog/commit/2e83e68b398ecc54ef0eb4e33efb64d7e5d9a633))
+* video 标签错误 ([15b0d40](https://github.com/EvilIrving/cain-s-blog/commit/15b0d402eacbc6896b3a1f0dad7ab3077b2cb950))
+* 文字错误 ([77d9f79](https://github.com/EvilIrving/cain-s-blog/commit/77d9f7987c1e84d6f88790eb2509284660072881))
 
 ## [1.0.18](https://github.com/Tencent/wujie/compare/v1.0.17...v1.0.18) (2023-07-11)
 
