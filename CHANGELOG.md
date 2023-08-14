@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/EvilIrving/cain-s-blog/compare/v0.0.2...v0.0.3) (2023-08-14)
+
+
+### Features
+
+* realease ([5328c49](https://github.com/EvilIrving/cain-s-blog/commit/5328c49f9d8e2f197e027b5fdbeaf9458c301ff1))
+
 ### 0.0.2 (2023-08-14)
 
 
