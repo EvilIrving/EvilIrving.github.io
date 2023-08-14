@@ -12,5 +12,10 @@
   },
   "dependencies": {
     "vue": "^3.3.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   }
 }
