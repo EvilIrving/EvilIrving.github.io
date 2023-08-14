@@ -2,6 +2,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "husky": "^8.0.3",
+    "standard-version": "^9.5.0",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.1",
     "vitepress": "^1.0.0-beta.6"
@@ -9,6 +10,8 @@
   "scripts": {
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
+    "test": "",
+    "release": "standard-version",
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
