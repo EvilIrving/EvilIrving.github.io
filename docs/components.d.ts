@@ -7,7 +7,7 @@ export { }
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    // ImageBox: typeof import('./.vitepress/component/image-box/index.vue')['default']
+    Videos: typeof import('./.vitepress/component/videos-page/index.vue')['default']
     NavUl: typeof import('./.vitepress/component/nav-ul/index.vue')['default']
   }
 }

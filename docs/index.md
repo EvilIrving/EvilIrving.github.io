@@ -1,6 +1,6 @@
 ---
 layout: home 
-# // doc, page, and home
+// doc, page, and home
 
 
 hero:
