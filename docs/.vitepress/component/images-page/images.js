@@ -34,10 +34,11 @@ const images = [
         name: 'IU Pic',
         url: 'https://s2.loli.net/2023/08/21/IquNYnUevZOBfER.jpg'
     }, 
-    // {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/NR8plrJ4WLQOHqw.jpg'
-    // }, {
+    {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/Ep6akXbhDfRFnuz.jpg'
+    },
+    //  {
     //     name: 'IU Pic',
     //     url: 'https://s2.loli.net/2023/03/13/mSRdcaHIwuFK6XQ.jpg'
     // }, {
