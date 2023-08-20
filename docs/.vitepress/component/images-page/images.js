@@ -18,22 +18,23 @@ const images = [
         name: 'IU Pic',
         url: 'https://s2.loli.net/2023/08/21/7aSlRenGugsUxTq.jpg'
     }, 
+    {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/gdpbsG29LPoqKIE.jpg'
+    }, {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/92FVksyEip4gLlB.jpg'
+    }, {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/J8dBuDFGLvAgOSC.jpg'
+    }, {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/rvHbFYjeuplnRwS.jpg'
+    }, {
+        name: 'IU Pic',
+        url: 'https://s2.loli.net/2023/08/21/IquNYnUevZOBfER.jpg'
+    }, 
     // {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/qourATNLBU5s4MI.jpg'
-    // }, {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/JUPYvRl8ANHOnqb.jpg'
-    // }, {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/ChQjsUBo7X6TuPf.jpg'
-    // }, {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/IRL1PywgB8ihuAN.jpg'
-    // }, {
-    //     name: 'IU Pic',
-    //     url: 'https://s2.loli.net/2023/03/13/NR8plrJ4WLQOHqw.jpg'
-    // }, {
     //     name: 'IU Pic',
     //     url: 'https://s2.loli.net/2023/03/13/NR8plrJ4WLQOHqw.jpg'
     // }, {
