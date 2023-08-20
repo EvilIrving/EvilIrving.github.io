@@ -5,7 +5,7 @@ layout: home
 
 hero:
   name: Cain's space
-  text: 记录一切的地
+  text: 记录一切的地方
   tagline: 希望不会忘记的东西
   image: 
     # src: /black29.jpg
