@@ -5,6 +5,7 @@
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "autoprefixer": "^9",
     "husky": "^8.0.3",
+    "patch-vue-directive-ssr": "^0.0.1",
     "postcss": "^7",
     "standard-version": "^9.5.0",
     "tailwindcss": "^3.3.3",
@@ -20,6 +21,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
+    "v-viewer": "^3.0.11",
     "vue": "^3.3.4"
   },
   "config": {

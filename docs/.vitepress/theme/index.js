@@ -8,7 +8,8 @@ import Images from '../component/images-page/index.vue'
 import './normalize.css';
 import './style.css'
 import './tailwind.css'
-
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
 
 export default {
   extends: Theme,
@@ -21,5 +22,17 @@ export default {
     app.component('NavUl', NavUl)
     app.component('Videos', Videos)
     app.component('Images', Images)
+    app.use(Viewer, {
+      defaultOptions: {
+        zIndex: 9999,
+        toolbar: false,
+        title: false,
+        navbar: false,
+        scalable: false,
+        rotatable: false,
+        tooltip: false,
+        inline: false,
+      }
+    })
   }
 }
