@@ -5,7 +5,7 @@
       <div class="m-8 w-5/6  h-px bg-slate-300"></div>
     </div>
     <div ref="wrapper" class="wrapper w-5/6 min-h-screen m-auto ">
-      <div class="relative h-[200px] m-2 inline-block cursor-pointer" v-viewer @mouseover="showText(item)" @mouseleave="hideText" v-for="(item) in imgs" :key="item">
+      <div class="relative h-[300px] m-2 inline-block cursor-pointer" v-viewer @mouseover="showText(item)" @mouseleave="hideText" v-for="(item) in imgs" :key="item">
         <!-- justify-content对齐问题描述：最后一行的列表的个数不满，则就会出现最后一行没有完全垂直对齐的问题。
         如果每一行列数是固定的 中间的gap间隙我们使用margin进行控制或动态计算
         如果行数不固定，
@@ -16,7 +16,7 @@
                       flex: auto;    /* 或者flex: 1 */
                   }
          -->
-        <img :style="{'width':item.w + 'px'}" class="rounded-md hover:scale-105 hover:transition-all hover:duration-500 duration-500" :src="item.url" alt="">
+        <img :style="{'width':item.w + 'px','height':item.h + 'px'}" class="rounded-md hover:scale-105 hover:transition-all hover:duration-500 duration-500" :src="item.url" alt="">
         <span v-show="item.show" class="absolute bottom-4 left-5 text-lg">{{item.name}}</span>
       </div>
     </div>
@@ -42,8 +42,8 @@ export default defineComponent({
     const imgs = reactive([])
     images.forEach(item => {
       let { width, height } = getRange(item.url)
-      let a = 200 / height
-      item.w = a * width
+      item.h = 300
+      item.w = 300 / height * width
       item.show = false
       imgs.push(item)
     })
@@ -64,51 +64,10 @@ export default defineComponent({
       imgs.map(img => img.show = false)
     }
 
-
-    const allImages = reactive([])
-    const testImgs = reactive(images)
     onMounted(() => {
       // const wrapper = document.querySelector('.wrapper')
       // const wrapperWidth = wrapper.getBoundingClientRect().width
 
-      // for (let index = 0; index < images.length; index += 2) {
-      //   let rowWidth = 0, rowNum = 0
-      //   let rowImgs = [images[index], images[index++], images[index++]]
-
-      //   rowImgs.forEach(rowImg => {
-      //     let { width, height } = getRange(rowImg.url)
-      //     rowWidth += width
-      //   })
-
-      //   let h  = wrapperWidth / rowWidth * 300
-
-
-
-      // }
-
-
-      // console.log(allImages, '-____-----');
-
-      // while (testImgs.length !== 0) {
-      //   rowWidth = 0
-      //   index = 0
-      //   rowImgs = []
-      //   for (; index < testImgs.length - 1; index++) {
-      //     const image = testImgs[index];
-      //     let { width, height } = getRange(image.url)
-      //     image.orginWidth = width
-      //     image.originHeight = height
-      //     rowWidth += width
-      //     if (rowWidth > wrapperWidth) {
-      //       break;
-      //     } else {
-      //       rowImgs.push(image)
-      //     }
-      //   }
-      // testImgs.splice(0, index - 1)
-      // allImages.push(rowImgs)
-      // console.log(rowImgs, '-____-----', index);
-      // }
     })
 
 

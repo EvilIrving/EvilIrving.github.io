@@ -1,4 +1,7 @@
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
+    darkMode: 'media', // media or class
     purge: {
         //   enabled: process.env.NODE_ENV === 'production',
         content: [
@@ -11,6 +14,9 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/aspect-ratio'),
+        plugin(function ({ addVariant }) {
+            addVariant('child', '&section')
+        })
     ],
     theme: {
         extend: {
@@ -18,6 +24,12 @@ module.exports = {
                 '1/3': '33.33333%',
             }
         }
+    },
+    variants: {
+        extend: {
+            textOpacity: ['dark']
+        }
     }
+
 
 }

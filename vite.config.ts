@@ -1,5 +1,4 @@
 import { defineConfig } from 'vite'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 /* eslint-disable  import/no-unresolved */
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'

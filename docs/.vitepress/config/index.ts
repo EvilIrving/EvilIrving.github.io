@@ -41,8 +41,8 @@ export default defineConfig({
       prev: 'prev',
       next: 'next'
     },
-    returnToTopLabel:'back top', //  only displayed in the mobile view
-    externalLinkIcon:true, // 展示外部链接小尖头
+    returnToTopLabel: 'back top', //  only displayed in the mobile view
+    externalLinkIcon: true, // 展示外部链接小尖头
     search: {
       provider: 'local'
     }
