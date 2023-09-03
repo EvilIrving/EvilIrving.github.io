@@ -13,7 +13,7 @@
           <span>Search</span>
           <input @change.enter="queryGrid" v-model="inputValue" type="text" style="border:1px solid black" id="input" class="leading-tight ml-4 border-orange-200">
         </div>
-        <grid :columns="columns" :grid-data="gridData" :query-data="inputValue"></grid>
+        <grid :columns="columns" :data="gridData" :filterKey="inputValue"></grid>
 
       </section>
       <section :class="sectionClass">
