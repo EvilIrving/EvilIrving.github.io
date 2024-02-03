@@ -40,3 +40,10 @@ console.log(emptyArray.first()); // 输出：undefined
 
 这样，当数组为空时，`last()` 和 `first()` 方法将返回 `undefined`，以避免出现错误。
 
+## 按位运算
+
+## vxe-table renderer渲染器
+
+## vxe-table show-overflow无效
+
+ 和tooltip的`z-index`有关
