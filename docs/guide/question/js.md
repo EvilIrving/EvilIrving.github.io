@@ -47,3 +47,5 @@ console.log(emptyArray.first()); // 输出：undefined
 ## vxe-table show-overflow无效
 
  和tooltip的`z-index`有关
+
+## vxe-table 表格线不显示
