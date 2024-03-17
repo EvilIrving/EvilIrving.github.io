@@ -184,3 +184,32 @@ obj.a = 10
 console.log(sum.value, '-------sum-----');
 
 
+function watch(source, callback) {
+
+    registerEffect(() => traverse(source), {
+        scheduler() {
+            callback()
+        }
+    })
+
+}
+
+function traverse(value, seen = new Set()) {
+    if (typeof value === 'object' || typeof value === null || seen.has(value)) return
+    seen.add(value)
+
+    for (const key in value) {
+        if (Object.hasOwnProperty.call(value, key)) {
+            const element = value[key];
+            traverse(element, seen)
+        }
+    }
+
+    return value
+}
+
+watch(obj, () => {
+    console.log('哈哈哈哈');
+})
+
+obj.name = '88888'
