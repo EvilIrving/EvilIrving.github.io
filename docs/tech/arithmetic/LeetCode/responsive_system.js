@@ -1,4 +1,4 @@
-const rawData = { name: 'Cain' }
+const rawData = { ok: true, name: 'Cain' }
 // WeakMap 对 key 是弱引用，不影响垃圾回收器的工 作。
 const bucket = new WeakMap() // 桶
 let page
@@ -33,10 +33,16 @@ function registerEffect(fn) {
     fn()
 }
 
+registerEffect(() => {
+    console.log('副作用函数执行了');
+    page = obj.ok ? obj.name : "not"
+})
+
+
 function track(target, key) {
     if (!activeEffect) return target[key]
 
-    let depsMap = bucket.get(key)
+    let depsMap = bucket.get(target)
     if (!depsMap) {
         bucket.set(target, (depsMap = new Map()))
     }
@@ -53,11 +59,13 @@ function trigger(target, key) {
     let deps = depsMap.get(key)
     // 确保set陷阱在设置属性值时能够正确地返回一个真值，或者在set陷阱中处理好不存在的属性的情况。
     if (!deps) return true
-    deps.forEach(fn => fn);
+    deps.forEach(fn => fn());
 }
 
-registerEffect(() => page = obj.name)
-obj.name = "Garcia"
-obj.noExist = '---'
 
-console.log(obj, bucket);
+// obj.name = "Garcia"
+// obj.noExist = '---'
+obj.ok = false
+
+
+console.log(obj,page);
