@@ -597,6 +597,18 @@ class MacoImage {
     typeOf(str) {
         return Object.prototype.toString.call(str).slice(8, -1).toLowerCase()
     }
+
+    // 第二种方法
+    typeOf2(str) {
+        if (str === 'null') return 'null'
+        return typeof (str) === 'object' ? {
+            '[object Object]': "Object",
+            '[object Array]': "Array",
+            '[object Number]': "o-Number",
+            '[object String]': "o-String",
+            '[object Boolean]': "o-Boolean",
+        }[str.call(Object.prototype.toString)] : typeof (str)
+    }
 }
 export {
     images,

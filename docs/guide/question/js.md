@@ -49,3 +49,40 @@ console.log(emptyArray.first()); // 输出：undefined
  和tooltip的`z-index`有关
 
 ## vxe-table 表格线不显示
+
+## legnth与数据类型
+
+```js
+console.log(([]+[]).length)
+console.log(({}+{}).length)
+console.log((function(){}).length)
+``` 
+
+## Array push 方法
+
+返回值是 新的数组长度
+
+## Array 方法是否修改原数据
+
+修改: push shift pop unshift reverse sort splice 
+不修改: concat join slice toString 
+
+## Selection对象
+
+## String substring 方法
+
+返回该字符串从起始索引到结束索引（不包括）的部分，如果未提供结束索引，则返回到字符串末尾的部分。
+与 substr 相同,但是 substr 方法已废弃
+
+```js
+substring(indexStart) 
+substring(indexStart, indexEnd)
+```
+
+## git 恢复已删除代码
+
+```ssh
+git log/reflog -> git reset  // 将当前版本回退到指定的commit id。
+git log -> git cherry-pick // 将指定的提交应用到当前分支。
+git log -> git revert // 创建一个新的提交，撤销指定的提交。
+```

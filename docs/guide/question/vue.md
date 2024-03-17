@@ -27,3 +27,5 @@ inject: ['getApp']
 <!-- 使用 -->
 <div>子组件app:{{ getApp().month }}</div>
 ```
+
+## 透传attrs
