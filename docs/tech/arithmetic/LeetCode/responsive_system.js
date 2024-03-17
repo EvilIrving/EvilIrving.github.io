@@ -80,7 +80,7 @@ function cleanup(effect) {
 }
 
 function track(target, key) {
-    if (!activeEffect) return target[key]
+    if (!activeEffect) return true
 
     let depsMap = bucket.get(target)
     if (!depsMap) {
@@ -165,11 +165,11 @@ function computed(getter) {
 
     const innerObj = {
         get value() {
+            track(innerObj, 'value') // 调整位置 issue:https://github.com/HcySunYang/code-for-vue-3-book/issues/196
             if (dirty) {
                 value = effectFn()
                 dirty = false
             }
-            track(innerObj, 'value')
             return value
         }
     }
@@ -178,9 +178,9 @@ function computed(getter) {
 }
 
 const sum = computed(() => obj.a + obj.b)
-console.log(sum.value, '-------sum+++++++++');
-obj.a = 3
 
+console.log(sum.value, '-------sum+++++++++');
+obj.a = 10
 console.log(sum.value, '-------sum-----');
 
 
