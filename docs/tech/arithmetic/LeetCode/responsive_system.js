@@ -100,7 +100,7 @@ function trigger(target, key) {
     if (!depsMap) return true
     const deps = depsMap.get(key)
     if (!deps) return true
-    // 确保set陷阱在设置属性值时能够正确地返回一个真值，或者在set陷阱中处理好不存在的属性的情况。
+    // 确保setter在设置属性值时能够正确地返回一个真值，或者在setter中处理好不存在的属性的情况。
     const depsTorun = new Set(deps)
     // depsTorun.forEach(fn=>fn())
     depsTorun.forEach(fn => {
@@ -112,16 +112,11 @@ function trigger(target, key) {
     });
 }
 
-
 // obj.noExist = '---'
-
-
 // obj.name = "Garcia"
 obj.ok = false
 
-
 // TODO  此处存疑,到底 deps 这些东西如何理解,打断点执行的过程,不知道作者到底想表达什么
-
 
 const jobQueue = new Set(), p = Promise.resolve()
 let isFlushing = false
@@ -185,31 +180,46 @@ console.log(sum.value, '-------sum-----');
 
 
 function watch(source, callback) {
+    let getter
+    if (typeof source === 'function') {
+        getter = source
+    } else {
+        getter = () => traverse(source)
+    }
 
-    registerEffect(() => traverse(source), {
+    let oldVal, newVal
+
+    const effectFn = registerEffect(() => getter(), {
+        lazy:true,
         scheduler() {
-            callback()
+            newVal = effectFn()
+            callback(oldVal, newVal)
+            oldVal = newVal
         }
     })
+
+    oldVal = effectFn()
 
 }
 
 function traverse(value, seen = new Set()) {
-    if (typeof value === 'object' || typeof value === null || seen.has(value)) return
+    if (typeof value !== 'object' ||  value === null || seen.has(value)) return
     seen.add(value)
-
     for (const key in value) {
-        if (Object.hasOwnProperty.call(value, key)) {
+        // if (Object.hasOwnProperty.call(value, key)) {
             const element = value[key];
             traverse(element, seen)
-        }
+        // }
     }
 
     return value
 }
 
-watch(obj, () => {
-    console.log('哈哈哈哈');
+watch(()=>obj.name, (oldVal,newVal) => {
+    console.log(oldVal,'属性变化->',newVal);
+})
+watch(obj, (oldVal,newVal) => {
+    console.log(oldVal,'对象某个属性变化->',newVal);
 })
 
-obj.name = '88888'
+obj.name = 'Garcia'
