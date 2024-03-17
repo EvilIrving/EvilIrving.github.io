@@ -1,5 +1,5 @@
 
-const rawData = { ok: true, name: 'Cain',count:0 }
+const rawData = { ok: true, name: 'Cain', count: 0 }
 // WeakMap 对 key 是弱引用，不影响垃圾回收器的工 作。
 const bucket = new WeakMap() // 桶
 let page, temp1, temp2
@@ -54,16 +54,16 @@ function registerEffect(fn, options) {
 //     temp1 = obj.ok
 // })
 
-registerEffect(() => {
-    console.log('副作用函数执行了');
-    page = obj.ok ? obj.name : "not"
-}, {
-    scheduler(fn) {
-        setTimeout(() => {
-            fn()
-        }, 1000);
-    }
-})
+// registerEffect(() => {
+//     console.log('副作用函数执行了');
+//     page = obj.ok ? obj.name : "not"
+// }, {
+//     scheduler(fn) {
+//         setTimeout(() => {
+//             fn()
+//         }, 1000);
+//     }
+// })
 
 function cleanup(effect) {
     for (let index = 0; index < effect.deps.length; index++) {
@@ -131,10 +131,10 @@ function flushJob() {
 }
 
 
-registerEffect(()=>{
-    console.log(obj.count,'count')
-},{
-    scheduler(fn){
+registerEffect(() => {
+    console.log(obj.count, 'count')
+}, {
+    scheduler(fn) {
         jobQueue.add(fn)
         flushJob()
     }
@@ -142,5 +142,5 @@ registerEffect(()=>{
 
 obj.count++
 obj.count++
-
-console.log(obj);
+obj.count++
+obj.count++
