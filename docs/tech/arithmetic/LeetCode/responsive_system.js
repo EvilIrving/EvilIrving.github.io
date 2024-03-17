@@ -1,5 +1,5 @@
 
-const rawData = { ok: true, name: 'Cain', count: 0 }
+const rawData = { ok: true, name: 'Cain', count: 0, a: 1, b: 2 }
 // WeakMap 对 key 是弱引用，不影响垃圾回收器的工 作。
 const bucket = new WeakMap() // 桶
 let page, temp1, temp2
@@ -34,13 +34,18 @@ function registerEffect(fn, options) {
         cleanup(effectFn)
         activeEffect = effectFn
         effectStack.push(effectFn)
-        fn()
+        const res = fn()
+
         effectStack.pop()
         activeEffect = effectStack[effectStack.length - 1]
+        return res
     }
     effectFn.options = options
     effectFn.deps = []
-    effectFn()
+    if (!options.lazy) {
+        effectFn()
+    }
+    return effectFn
 }
 
 // registerEffect(function fn1() {
@@ -144,3 +149,38 @@ obj.count++
 obj.count++
 obj.count++
 obj.count++
+
+
+function computed(getter) {
+    let value, dirty = true
+    const effectFn = registerEffect(getter, {
+        lazy: true,
+        scheduler() {
+            if (!dirty) {
+                dirty = true
+                trigger(innerObj, 'value')
+            }
+        }
+    })
+
+    const innerObj = {
+        get value() {
+            if (dirty) {
+                value = effectFn()
+                dirty = false
+            }
+            track(innerObj, 'value')
+            return value
+        }
+    }
+
+    return innerObj
+}
+
+const sum = computed(() => obj.a + obj.b)
+console.log(sum.value, '-------sum+++++++++');
+obj.a = 3
+
+console.log(sum.value, '-------sum-----');
+
+
