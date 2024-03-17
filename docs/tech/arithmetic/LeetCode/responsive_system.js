@@ -1,5 +1,5 @@
 
-const rawData = { ok: true, name: 'Cain' }
+const rawData = { ok: true, name: 'Cain',count:0 }
 // WeakMap 对 key 是弱引用，不影响垃圾回收器的工 作。
 const bucket = new WeakMap() // 桶
 let page, temp1, temp2
@@ -29,7 +29,7 @@ const obj = new Proxy(rawData, {
 const effectStack = [] // 副作用函数栈
 let activeEffect  // 存储被注册的副作用函数.
 // 注册副作用函数
-function registerEffect(fn) {
+function registerEffect(fn, options) {
     const effectFn = () => {
         cleanup(effectFn)
         activeEffect = effectFn
@@ -38,7 +38,7 @@ function registerEffect(fn) {
         effectStack.pop()
         activeEffect = effectStack[effectStack.length - 1]
     }
-    effectFn.source = effectFn.toString()
+    effectFn.options = options
     effectFn.deps = []
     effectFn()
 }
@@ -57,6 +57,12 @@ function registerEffect(fn) {
 registerEffect(() => {
     console.log('副作用函数执行了');
     page = obj.ok ? obj.name : "not"
+}, {
+    scheduler(fn) {
+        setTimeout(() => {
+            fn()
+        }, 1000);
+    }
 })
 
 function cleanup(effect) {
@@ -77,10 +83,10 @@ function track(target, key) {
     }
     let deps = depsMap.get(key)
     if (!deps) {
-        depsMap.set(key, (deps = new Map()))
+        depsMap.set(key, (deps = new Set()))
     }
     // console.log(deps.has(activeEffect),activeEffect.toString(),'----------');
-    !deps.has(activeEffect.source) && deps.set(activeEffect.source, activeEffect)
+    !deps.has(activeEffect) && deps.add(activeEffect)
     activeEffect.deps.push(deps)
 }
 
@@ -90,13 +96,15 @@ function trigger(target, key) {
     const deps = depsMap.get(key)
     if (!deps) return true
     // 确保set陷阱在设置属性值时能够正确地返回一个真值，或者在set陷阱中处理好不存在的属性的情况。
-    const depsTorun = new Map(deps)
-    console.log(deps.size, 'deps');
-
-    deps.forEach((key, dep) => {
-        if (dep.source !== activeEffect) depsTorun.set(dep.toString(), dep)
-    })
-    depsTorun.forEach(fn => fn());
+    const depsTorun = new Set(deps)
+    // depsTorun.forEach(fn=>fn())
+    depsTorun.forEach(fn => {
+        if (fn.options.scheduler) {
+            fn.options.scheduler(fn)
+        } else {
+            fn()
+        }
+    });
 }
 
 
@@ -107,7 +115,32 @@ function trigger(target, key) {
 obj.ok = false
 
 
-console.log(obj, page);
-
-
 // TODO  此处存疑,到底 deps 这些东西如何理解,打断点执行的过程,不知道作者到底想表达什么
+
+
+const jobQueue = new Set(), p = Promise.resolve()
+let isFlushing = false
+function flushJob() {
+    if (isFlushing) return
+    isFlushing = true
+    p.then(() => {
+        jobQueue.forEach(job => job())
+    }).finally(() => {
+        isFlushing = false
+    })
+}
+
+
+registerEffect(()=>{
+    console.log(obj.count,'count')
+},{
+    scheduler(fn){
+        jobQueue.add(fn)
+        flushJob()
+    }
+})
+
+obj.count++
+obj.count++
+
+console.log(obj);
