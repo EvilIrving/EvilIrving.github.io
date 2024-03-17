@@ -179,7 +179,7 @@ obj.a = 10
 console.log(sum.value, '-------sum-----');
 
 
-function watch(source, callback) {
+function watch(source, callback, options = {}) {
     let getter
     if (typeof source === 'function') {
         getter = source
@@ -189,37 +189,43 @@ function watch(source, callback) {
 
     let oldVal, newVal
 
+    let job = () => {
+        newVal = effectFn()
+        callback(oldVal, newVal)
+        oldVal = newVal
+    }
+
     const effectFn = registerEffect(() => getter(), {
-        lazy:true,
-        scheduler() {
-            newVal = effectFn()
-            callback(oldVal, newVal)
-            oldVal = newVal
-        }
+        lazy: true,
+        scheduler: job
     })
 
-    oldVal = effectFn()
+    if (options.immediate) {
+        job()
+    } else {
+        oldVal = effectFn()
+    }
 
 }
 
 function traverse(value, seen = new Set()) {
-    if (typeof value !== 'object' ||  value === null || seen.has(value)) return
+    if (typeof value !== 'object' || value === null || seen.has(value)) return
     seen.add(value)
     for (const key in value) {
         // if (Object.hasOwnProperty.call(value, key)) {
-            const element = value[key];
-            traverse(element, seen)
+        const element = value[key];
+        traverse(element, seen)
         // }
     }
 
     return value
 }
 
-watch(()=>obj.name, (oldVal,newVal) => {
-    console.log(oldVal,'属性变化->',newVal);
-})
-watch(obj, (oldVal,newVal) => {
-    console.log(oldVal,'对象某个属性变化->',newVal);
+watch(() => obj.name, (oldVal, newVal) => {
+    console.log(oldVal, '属性变化->', newVal);
+}, { immediate: true })
+watch(obj, (oldVal, newVal) => {
+    console.log(oldVal, '对象某个属性变化->', newVal);
 })
 
 obj.name = 'Garcia'
