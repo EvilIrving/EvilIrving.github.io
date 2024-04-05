@@ -197,7 +197,14 @@ function watch(source, callback, options = {}) {
 
     const effectFn = registerEffect(() => getter(), {
         lazy: true,
-        scheduler: job
+        scheduler() {
+            if (options.flush === 'post') {
+                const p = Promise.resolve()
+                p.then(job)
+            } else {
+                job()
+            }
+        }
     })
 
     if (options.immediate) {
@@ -221,9 +228,15 @@ function traverse(value, seen = new Set()) {
     return value
 }
 
-watch(() => obj.name, (oldVal, newVal) => {
-    console.log(oldVal, '属性变化->', newVal);
-}, { immediate: true })
+watch(
+    () => obj.name,
+    (oldVal, newVal) => {
+        console.log(oldVal, '属性变化->', newVal);
+    },
+    {
+        // immediate: true,
+        flush: 'sync',// pre | post | sync
+    })
 watch(obj, (oldVal, newVal) => {
     console.log(oldVal, '对象某个属性变化->', newVal);
 })
