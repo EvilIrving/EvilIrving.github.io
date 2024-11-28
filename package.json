@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "v-viewer": "^3.0.11",
-    "vue": "^3.3.4"
+    "vue": "^3.3.7"
   },
   "config": {
     "commitizen": {
