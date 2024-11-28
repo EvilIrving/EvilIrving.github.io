@@ -3,7 +3,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/postcss7-compat": "^2.0.4",
-    "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "@vitejs/plugin-vue-jsx": "^3.0.2",
     "autoprefixer": "^9",
     "husky": "^8.0.3",
     "patch-vue-directive-ssr": "^0.0.1",
